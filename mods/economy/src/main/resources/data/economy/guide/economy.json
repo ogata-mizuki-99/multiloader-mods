@@ -1,0 +1,226 @@
+{
+  "name": "guide_lib.book.economy",
+  "description": "guide_lib.book.economy.desc",
+  "icon": "economy:mobile_terminal",
+  "theme": "economy:terminal",
+  "sort_priority": 25,
+  "list_columns": 2,
+  "categories": [
+    {
+      "id": "main",
+      "name": "guide_lib.category.economy.main",
+      "entries": [
+        "overview",
+        "money",
+        "atm",
+        "shop_npc",
+        "stock_trade",
+        "flea_market",
+        "loan"
+      ]
+    },
+    {
+      "id": "admin",
+      "name": "guide_lib.category.economy.admin",
+      "entries": [
+        "admin_setup",
+        "admin_block",
+        "admin_gui",
+        "admin_json"
+      ]
+    }
+  ],
+  "entries": {
+    "overview": {
+      "name": "guide_lib.entry.economy.overview",
+      "icon": "minecraft:gold_ingot",
+      "pages": [
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.overview.p1"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.overview.p2"
+        }
+      ]
+    },
+    "money": {
+      "name": "guide_lib.entry.economy.money",
+      "icon": "minecraft:emerald",
+      "pages": [
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.money.basics"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.money.rewards"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.money.penalty"
+        }
+      ]
+    },
+    "atm": {
+      "name": "guide_lib.entry.economy.atm",
+      "icon": "economy:atm",
+      "pages": [
+        {
+          "type": "spotlight",
+          "item": "economy:atm",
+          "text": "guide_lib.economy.page.atm.spotlight"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.atm.usage"
+        }
+      ]
+    },
+    "shop_npc": {
+      "name": "guide_lib.entry.economy.shop_npc",
+      "icon": "economy:bronze_coin",
+      "pages": [
+        {
+          "type": "spotlight",
+          "item": "economy:bronze_coin",
+          "text": "guide_lib.economy.page.shop_npc.spotlight"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.shop_npc.types"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.shop_npc.trade"
+        }
+      ]
+    },
+    "stock_trade": {
+      "name": "guide_lib.entry.economy.stock_trade",
+      "icon": "economy:mobile_terminal",
+      "pages": [
+        {
+          "type": "spotlight",
+          "item": "economy:mobile_terminal",
+          "text": "guide_lib.economy.page.stock_trade.spotlight"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.stock_trade.tabs"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.stock_trade.tips"
+        }
+      ]
+    },
+    "flea_market": {
+      "name": "guide_lib.entry.economy.flea_market",
+      "icon": "economy:silver_coin",
+      "pages": [
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.flea_market.overview"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.flea_market.list"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.flea_market.buy"
+        }
+      ]
+    },
+    "loan": {
+      "name": "guide_lib.entry.economy.loan",
+      "icon": "economy:gold_coin",
+      "pages": [
+        {
+          "type": "spotlight",
+          "item": "economy:gold_coin",
+          "text": "guide_lib.economy.page.loan.spotlight"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.loan.borrow"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.loan.repay"
+        }
+      ]
+    },
+    "admin_setup": {
+      "name": "guide_lib.entry.economy.admin_setup",
+      "icon": "economy:mobile_terminal",
+      "pages": [
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.admin_setup.p1"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.admin_setup.p2"
+        }
+      ]
+    },
+    "admin_block": {
+      "name": "guide_lib.entry.economy.admin_block",
+      "icon": "economy:economy_admin",
+      "pages": [
+        {
+          "type": "spotlight",
+          "item": "economy:economy_admin",
+          "text": "guide_lib.economy.page.admin_block.spotlight"
+        },
+        {
+          "type": "crafting",
+          "recipe": "economy:economy_admin"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.admin_block.place"
+        }
+      ]
+    },
+    "admin_gui": {
+      "name": "guide_lib.entry.economy.admin_gui",
+      "icon": "economy:economy_admin",
+      "pages": [
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.admin_gui.tabs"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.admin_gui.master"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.admin_gui.manage"
+        }
+      ]
+    },
+    "admin_json": {
+      "name": "guide_lib.entry.economy.admin_json",
+      "icon": "minecraft:writable_book",
+      "pages": [
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.admin_json.file"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.admin_json.sections"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.economy.page.admin_json.tips"
+        }
+      ]
+    }
+  }
+}

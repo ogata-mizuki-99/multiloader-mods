@@ -21,11 +21,11 @@ import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -52,21 +52,11 @@ public class RadialTeleportMod {
             props -> new TeleportCompassItem(props.stacksTo(1))
     );
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAB = CREATIVE_MODE_TABS.register(
-            "teleport_tab",
-            () -> CreativeModeTab.builder()
-                    .title(Component.translatable("itemGroup.radial_teleport"))
-                    .withTabsBefore(CreativeModeTabs.TOOLS_AND_UTILITIES)
-                    .icon(() -> TELEPORT_COMPASS.get().getDefaultInstance())
-                    .displayItems((parameters, output) -> output.accept(TELEPORT_COMPASS.get()))
-                    .build()
-    );
-
     public RadialTeleportMod(IEventBus modEventBus, ModContainer modContainer) {
         LOGGER.info("Radial Teleport Mod Initializing...");
 
         ITEMS.register(modEventBus);
-        CREATIVE_MODE_TABS.register(modEventBus);
+        registerCreativeTabIfStandalone(modEventBus);
         CONDITION_CODECS.register("crafting_recipe_enabled", () -> CraftingRecipeEnabledCondition.CODEC);
         CONDITION_CODECS.register(modEventBus);
         modEventBus.addListener(this::registerPayloads);
@@ -75,6 +65,23 @@ public class RadialTeleportMod {
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
         NeoForge.EVENT_BUS.register(this);
+    }
+
+    private static void registerCreativeTabIfStandalone(IEventBus modEventBus) {
+        if (WerewolfBundleDetection.isBundled()) {
+            LOGGER.info("Werewolf bundled; radial_teleport creative tab is omitted (use werewolf tab).");
+            return;
+        }
+        CREATIVE_MODE_TABS.register(
+                "teleport_tab",
+                () -> CreativeModeTab.builder()
+                        .title(Component.translatable("itemGroup.radial_teleport"))
+                        .withTabsBefore(CreativeModeTabs.TOOLS_AND_UTILITIES)
+                        .icon(() -> TELEPORT_COMPASS.get().getDefaultInstance())
+                        .displayItems((parameters, output) -> output.accept(TELEPORT_COMPASS.get()))
+                        .build()
+        );
+        CREATIVE_MODE_TABS.register(modEventBus);
     }
 
     private void onConfigReload(ModConfigEvent.Reloading event) {
@@ -87,8 +94,11 @@ public class RadialTeleportMod {
             return;
         }
 
-        server.execute(() -> server.reloadResources(server.getPackRepository().getSelectedIds())
-                .thenRun(() -> LOGGER.info("Reloaded datapacks after radial_teleport config change")));
+        server.execute(() -> {
+            syncClientFlagsToAllPlayers();
+            server.reloadResources(server.getPackRepository().getSelectedIds())
+                    .thenRun(() -> LOGGER.info("Reloaded datapacks after radial_teleport config change"));
+        });
     }
 
     private void registerPayloads(RegisterPayloadHandlersEvent event) {
@@ -98,6 +108,7 @@ public class RadialTeleportMod {
         registrar.playToClient(TeleportDestinationsPayload.TYPE, TeleportDestinationsPayload.STREAM_CODEC);
         registrar.playToClient(TeleportResultPayload.TYPE, TeleportResultPayload.STREAM_CODEC);
         registrar.playToClient(WaypointListPayload.TYPE, WaypointListPayload.STREAM_CODEC);
+        registrar.playToClient(RadialTeleportClientFlagsPayload.TYPE, RadialTeleportClientFlagsPayload.STREAM_CODEC);
 
         registrar.playToServer(
                 RequestDestinationsPayload.TYPE,
@@ -116,6 +127,74 @@ public class RadialTeleportMod {
                 WaypointActionPayload.STREAM_CODEC,
                 this::handleWaypointAction
         );
+
+        registrar.playToServer(
+                RadialTeleportCommonConfigPushPayload.TYPE,
+                RadialTeleportCommonConfigPushPayload.STREAM_CODEC,
+                this::handleCommonConfigPush
+        );
+    }
+
+    private void handleCommonConfigPush(RadialTeleportCommonConfigPushPayload payload, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            if (!(context.player() instanceof ServerPlayer serverPlayer)) {
+                return;
+            }
+            if (!serverPlayer.createCommandSourceStack().permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER)) {
+                serverPlayer.sendSystemMessage(
+                        Component.translatable("radial_teleport.configuration.push_denied")
+                                .withStyle(net.minecraft.ChatFormatting.RED));
+                return;
+            }
+
+            int maxWaypoints = Math.max(1, Math.min(32, payload.maxWaypointsPerPlayer()));
+            int cooldownTicks = Math.max(0, Math.min(72000, payload.teleportCooldownTicks()));
+            Config.ENABLE_CRAFTING_RECIPE.set(payload.enableCraftingRecipe());
+            Config.ENABLE_CRAFTING_RECIPE.save();
+            Config.ENABLE_WAYPOINTS.set(payload.enableWaypoints());
+            Config.ENABLE_WAYPOINTS.save();
+            Config.MAX_WAYPOINTS_PER_PLAYER.set(maxWaypoints);
+            Config.MAX_WAYPOINTS_PER_PLAYER.save();
+            Config.TELEPORT_COOLDOWN_TICKS.set(cooldownTicks);
+            Config.TELEPORT_COOLDOWN_TICKS.save();
+
+            MinecraftServer server = serverPlayer.level().getServer();
+            if (server != null) {
+                syncClientFlagsToAllPlayers();
+                server.execute(() -> server.reloadResources(server.getPackRepository().getSelectedIds())
+                        .thenRun(() -> LOGGER.info("Reloaded datapacks after radial_teleport config push")));
+            }
+
+            LOGGER.info(
+                    "Radial Teleport common config pushed by {}: enableCraftingRecipe={}, enableWaypoints={}, maxWaypointsPerPlayer={}, teleportCooldownTicks={}",
+                    serverPlayer.getGameProfile().name(),
+                    Config.ENABLE_CRAFTING_RECIPE.get(),
+                    Config.ENABLE_WAYPOINTS.get(),
+                    Config.MAX_WAYPOINTS_PER_PLAYER.get(),
+                    Config.TELEPORT_COOLDOWN_TICKS.get());
+            serverPlayer.sendSystemMessage(
+                    Component.translatable("radial_teleport.configuration.push_ok")
+                            .withStyle(net.minecraft.ChatFormatting.GREEN));
+        });
+    }
+
+    public static void syncClientFlagsToPlayer(ServerPlayer player) {
+        PacketDistributor.sendToPlayer(player, RadialTeleportClientFlagsPayload.fromConfig());
+    }
+
+    public static void syncClientFlagsToAllPlayers() {
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server == null) {
+            return;
+        }
+        PacketDistributor.sendToAllPlayers(RadialTeleportClientFlagsPayload.fromConfig());
+    }
+
+    @SubscribeEvent
+    public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            syncClientFlagsToPlayer(player);
+        }
     }
 
     private void handleRequestDestinations(RequestDestinationsPayload payload, IPayloadContext context) {
@@ -123,7 +202,7 @@ public class RadialTeleportMod {
             if (!(context.player() instanceof ServerPlayer player)) {
                 return;
             }
-            if (!isHoldingCompass(player)) {
+            if (!isHoldingCompass(player) && !player.isSpectator()) {
                 return;
             }
 
@@ -161,7 +240,7 @@ public class RadialTeleportMod {
                     }
                 }
                 case WaypointActionPayload.ACTION_OPEN_EDIT -> {
-                    if (!player.isUsingItem() || !player.getUseItem().is(TELEPORT_COMPASS.get())) {
+                    if (!canUseCompassMenu(player)) {
                         return;
                     }
                     sendWaypointList(player);
@@ -219,7 +298,7 @@ public class RadialTeleportMod {
             if (!(context.player() instanceof ServerPlayer player)) {
                 return;
             }
-            if (!player.isUsingItem() || !player.getUseItem().is(TELEPORT_COMPASS.get())) {
+            if (!canUseCompassMenu(player)) {
                 PacketDistributor.sendToPlayer(
                         player,
                         TeleportResultPayload.message(false, "radial_teleport.message.not_using_item")
@@ -230,10 +309,18 @@ public class RadialTeleportMod {
             TeleportResultPayload result = TeleportService.teleport(player, payload.destinationId());
             PacketDistributor.sendToPlayer(player, result);
 
-            if (result.success()) {
+            if (result.success() && player.isUsingItem()) {
                 player.stopUsingItem();
             }
         });
+    }
+
+    private static boolean canUseCompassMenu(ServerPlayer player) {
+        if (player.isUsingItem() && player.getUseItem().is(TELEPORT_COMPASS.get())) {
+            return true;
+        }
+        // スペクテーター: ホットバー不可のため所持なしでもメニュー/テレポートを許可
+        return player.isSpectator();
     }
 
     @SubscribeEvent

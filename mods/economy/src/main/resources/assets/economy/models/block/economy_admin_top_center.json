@@ -1,0 +1,31 @@
+{
+  "textures": {
+    "frame": "minecraft:block/dark_oak_planks",
+    "board": "minecraft:block/white_concrete",
+    "particle": "minecraft:block/dark_oak_planks"
+  },
+  "elements": [
+    {
+      "comment": "Top Board Frame",
+      "from": [0, 14, 6],
+      "to": [16, 16, 10],
+      "faces": {
+        "north": {"uv": [0, 0, 16, 2], "texture": "#frame"},
+        "south": {"uv": [0, 0, 16, 2], "texture": "#frame"},
+        "up": {"uv": [0, 6, 16, 10], "texture": "#frame"},
+        "down": {"uv": [0, 6, 16, 10], "texture": "#frame"}
+      }
+    },
+    {
+      "comment": "Board Backing",
+      "from": [0, 0, 7],
+      "to": [16, 14, 9],
+      "faces": {
+        "north": {"uv": [0, 2, 16, 16], "texture": "#board"},
+        "south": {"uv": [0, 2, 16, 16], "texture": "#frame"},
+        "up": {"uv": [0, 7, 16, 9], "texture": "#frame"},
+        "down": {"uv": [0, 7, 16, 9], "texture": "#frame"}
+      }
+    }
+  ]
+}

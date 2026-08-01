@@ -10,7 +10,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 
 public class WaypointSaveScreen extends Screen {
-    private static final int PANEL_WIDTH = 280;
     private static final int NAME_BOX_WIDTH = 220;
 
     private EditBox nameBox;

@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "facing=north,part=bottom_left": { "model": "economy:block/economy_admin_bottom_left" },
+    "facing=north,part=bottom_center": { "model": "economy:block/economy_admin_bottom_center" },
+    "facing=north,part=bottom_right": { "model": "economy:block/economy_admin_bottom_right" },
+    "facing=north,part=top_left": { "model": "economy:block/economy_admin_top_left" },
+    "facing=north,part=top_center": { "model": "economy:block/economy_admin_top_center" },
+    "facing=north,part=top_right": { "model": "economy:block/economy_admin_top_right" },
+
+    "facing=east,part=bottom_left": { "model": "economy:block/economy_admin_bottom_left", "y": 90 },
+    "facing=east,part=bottom_center": { "model": "economy:block/economy_admin_bottom_center", "y": 90 },
+    "facing=east,part=bottom_right": { "model": "economy:block/economy_admin_bottom_right", "y": 90 },
+    "facing=east,part=top_left": { "model": "economy:block/economy_admin_top_left", "y": 90 },
+    "facing=east,part=top_center": { "model": "economy:block/economy_admin_top_center", "y": 90 },
+    "facing=east,part=top_right": { "model": "economy:block/economy_admin_top_right", "y": 90 },
+
+    "facing=south,part=bottom_left": { "model": "economy:block/economy_admin_bottom_left", "y": 180 },
+    "facing=south,part=bottom_center": { "model": "economy:block/economy_admin_bottom_center", "y": 180 },
+    "facing=south,part=bottom_right": { "model": "economy:block/economy_admin_bottom_right", "y": 180 },
+    "facing=south,part=top_left": { "model": "economy:block/economy_admin_top_left", "y": 180 },
+    "facing=south,part=top_center": { "model": "economy:block/economy_admin_top_center", "y": 180 },
+    "facing=south,part=top_right": { "model": "economy:block/economy_admin_top_right", "y": 180 },
+
+    "facing=west,part=bottom_left": { "model": "economy:block/economy_admin_bottom_left", "y": 270 },
+    "facing=west,part=bottom_center": { "model": "economy:block/economy_admin_bottom_center", "y": 270 },
+    "facing=west,part=bottom_right": { "model": "economy:block/economy_admin_bottom_right", "y": 270 },
+    "facing=west,part=top_left": { "model": "economy:block/economy_admin_top_left", "y": 270 },
+    "facing=west,part=top_center": { "model": "economy:block/economy_admin_top_center", "y": 270 },
+    "facing=west,part=top_right": { "model": "economy:block/economy_admin_top_right", "y": 270 }
+  }
+}

@@ -6,7 +6,6 @@ import net.minecraft.server.level.ServerPlayer;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public final class WaypointService {
     private static final int MAX_NAME_LENGTH = 32;
@@ -161,7 +160,9 @@ public final class WaypointService {
     }
 
     private static void refreshDestinationsIfUsingCompass(ServerPlayer player, MinecraftServer server) {
-        if (!player.isUsingItem() || !player.getUseItem().is(RadialTeleportMod.TELEPORT_COMPASS.get())) {
+        boolean using = player.isUsingItem()
+                && player.getUseItem().is(RadialTeleportMod.TELEPORT_COMPASS.get());
+        if (!using && !player.isSpectator()) {
             return;
         }
         net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(

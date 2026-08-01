@@ -25,6 +25,15 @@ public class KeyMappings {
             CATEGORY
     );
 
+    /** Glide boost via firework slot. Default: R (rebindable in Controls). */
+    public static final KeyMapping FIREWORK_BOOST_KEY = new KeyMapping(
+            "key.elytra_slot.firework_boost",
+            KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_R,
+            CATEGORY
+    );
+
     public static void init() {
         NeoForge.EVENT_BUS.addListener(KeyMappings::onClientTick);
     }
@@ -68,9 +77,9 @@ public class KeyMappings {
             warningCooldown--;
         }
 
-        // Space key (jump key) check for firework while flying
+        // Dedicated boost key (default R; rebindable) while gliding
         if (mc.player.isFallFlying()) {
-            if (mc.options.keyJump.isDown() && fireworkCooldown == 0) {
+            if (FIREWORK_BOOST_KEY.isDown() && fireworkCooldown == 0) {
                 if (mc.getConnection() != null) {
                     mc.getConnection().send(new ActionPayload(2));
                 }

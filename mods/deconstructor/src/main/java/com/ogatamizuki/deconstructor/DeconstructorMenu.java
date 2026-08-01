@@ -137,25 +137,40 @@ public class DeconstructorMenu extends AbstractContainerMenu {
                 return;
             }
             
-            // 現在プレビュースロットが空かどうかチェック
-            boolean isPreviewEmpty = true;
-            for (int i = 1; i <= 9; i++) {
-                if (!this.container.getItem(i).isEmpty()) {
-                    isPreviewEmpty = false;
-                    break;
-                }
-            }
-            
-            if (isPreviewEmpty && !input.isEmpty()) {
+            boolean previewEmpty = isPreviewEmpty(this.container);
+
+            if (previewEmpty && !input.isEmpty()) {
                 blockEntity.setInputStackIfChanged(input.copy());
-                // 前回の分解が完了した場合はリセットしてプレビュー更新
+                // 前回の分解が完了した場合、または必要数に達するまで補充した場合
                 setCurrentExtractCount(0);
                 updateRecipePreview();
             } else {
-                // 個数のみの変更（消費など）は、プレビューを崩さずBlockEntity側のスタック数のみ更新
+                // 個数のみの変更（消費など）
                 blockEntity.setInputStackIfChanged(input.copy());
+                // 必要数を下回ったら回収不能なプレビューを消す（必要数は GUI 表示用に保持）
+                if (getCurrentExtractCount() == 0 && !input.isEmpty() && !hasEnoughInput(input)) {
+                    isUpdatingRecipe = true;
+                    clearPreviewSlots();
+                    isUpdatingRecipe = false;
+                }
             }
         }
+    }
+
+    private static boolean isPreviewEmpty(SimpleContainer container) {
+        for (int i = 1; i <= 9; i++) {
+            if (!container.getItem(i).isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean hasEnoughInput(ItemStack input) {
+        if (input.isEmpty()) {
+            return false;
+        }
+        return input.getCount() >= Math.max(1, getRecipeOutputCount());
     }
 
     // レシピを解決し、プレビュースロットを更新
@@ -184,8 +199,14 @@ public class DeconstructorMenu extends AbstractContainerMenu {
         );
 
         if (entry != null) {
-            setRecipeOutputCount(entry.recipeOutputCount());
-            applyIngredientsToPreview(entry.ingredients());
+            int need = Math.max(1, entry.recipeOutputCount());
+            setRecipeOutputCount(need);
+            // 必要数未満のときはプレビューを出さない（回収不能な表示で連続解体が止まったように見えるのを防ぐ）
+            if (input.getCount() >= need) {
+                applyIngredientsToPreview(entry.ingredients());
+            } else {
+                clearPreviewSlots();
+            }
         } else {
             setRecipeOutputCount(1);
             clearPreviewSlots();
@@ -214,43 +235,52 @@ public class DeconstructorMenu extends AbstractContainerMenu {
     public boolean canExtract() {
         ItemStack input = container.getItem(0);
         int currentCount = getCurrentExtractCount();
-        int reqCount = getRecipeOutputCount();
+        int reqCount = Math.max(1, getRecipeOutputCount());
         boolean hasInput = (currentCount > 0) || (!input.isEmpty() && input.getCount() >= reqCount);
         return hasInput && currentCount < maxExtractCount;
     }
 
     public void onPreviewTaken(int index, ItemStack takenStack) {
         if (level.isClientSide()) return;
+        if (!canExtract()) return;
 
-        ItemStack input = this.container.getItem(0);
-        int currentCount = getCurrentExtractCount();
-        int reqCount = getRecipeOutputCount();
+        boolean refreshPreview = false;
+        // slotsChanged が消費・クリア途中の状態でプレビューを壊さないようにする
+        isUpdatingRecipe = true;
+        try {
+            int currentCount = getCurrentExtractCount();
+            int reqCount = Math.max(1, getRecipeOutputCount());
 
-        if (canExtract()) {
             // slotsChangedでのリセットを防ぐため、先に回収カウントを増加させる
             setCurrentExtractCount(currentCount + 1);
             currentCount++;
 
             // 入力アイテムを減らす（最初の抽出タイミングのみ必要数分消費）
             if (currentCount == 1) {
+                ItemStack input = this.container.getItem(0);
                 if (!input.isEmpty()) {
                     input.shrink(reqCount);
-                    this.container.setItem(0, input.copy());
-                    blockEntity.setInputStackIfChanged(input.copy());
+                    ItemStack remaining = input.isEmpty() ? ItemStack.EMPTY : input.copy();
+                    this.container.setItem(0, remaining);
+                    blockEntity.setInputStackIfChanged(remaining.copy());
                 }
             }
 
             // 取り出されたプレビュースロットを空にする
             this.container.setItem(1 + index, ItemStack.EMPTY);
 
-            // 回収上限に達した場合のみクリア
+            // 回収上限に達した場合のみクリアし、残数があれば連続解体用に再プレビュー
             if (currentCount >= maxExtractCount) {
                 clearPreviewSlots();
                 setCurrentExtractCount(0);
-                
-                // 次のアイテムが残っていれば新しいプレビューを生成
-                updateRecipePreview();
+                refreshPreview = true;
             }
+        } finally {
+            isUpdatingRecipe = false;
+        }
+
+        if (refreshPreview) {
+            updateRecipePreview();
         }
     }
 
@@ -361,8 +391,9 @@ public class DeconstructorMenu extends AbstractContainerMenu {
 
         @Override
         public void onTake(Player player, ItemStack stack) {
-            super.onTake(player, stack);
+            // 消費・連続プレビュー更新を先に行い、super の setChanged で slotsChanged が中途半端な状態を見ないようにする
             menu.onPreviewTaken(this.index, stack);
+            super.onTake(player, stack);
         }
     }
 }

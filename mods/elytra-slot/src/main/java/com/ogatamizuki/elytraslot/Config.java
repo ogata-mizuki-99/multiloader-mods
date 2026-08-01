@@ -44,12 +44,12 @@ public class Config {
         BUILDER.push("hud");
         HUD_ENABLED = BUILDER.comment("Enable Elytra Durability & Firework HUD (Default: true)")
                 .define("hud_enabled", true);
-        ELYTRA_HUD_X = BUILDER.comment("Elytra HUD X offset from screen bottom center (Default: -120)")
-                .defineInRange("elytra_hud_x", -120, -1000, 1000);
+        ELYTRA_HUD_X = BUILDER.comment("Elytra HUD X offset from screen bottom center (Default: -150, left of offhand)")
+                .defineInRange("elytra_hud_x", -150, -1000, 1000);
         ELYTRA_HUD_Y = BUILDER.comment("Elytra HUD Y offset from screen bottom (Default: -22)")
                 .defineInRange("elytra_hud_y", -22, -1000, 1000);
-        FIREWORK_HUD_X = BUILDER.comment("Firework HUD X offset from screen bottom center (Default: -140)")
-                .defineInRange("firework_hud_x", -140, -1000, 1000);
+        FIREWORK_HUD_X = BUILDER.comment("Firework HUD X offset from screen bottom center (Default: -170, left of offhand)")
+                .defineInRange("firework_hud_x", -170, -1000, 1000);
         FIREWORK_HUD_Y = BUILDER.comment("Firework HUD Y offset from screen bottom (Default: -22)")
                 .defineInRange("firework_hud_y", -22, -1000, 1000);
         WARNING_THRESHOLD = BUILDER.comment("Durability threshold fraction to show a warning (Default: 0.05 for 5%)")

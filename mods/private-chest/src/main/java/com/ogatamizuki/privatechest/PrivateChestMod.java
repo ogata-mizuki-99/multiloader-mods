@@ -10,6 +10,14 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.MapColor;
+import com.mojang.serialization.MapCodec;
+import net.neoforged.neoforge.common.conditions.ICondition;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.event.config.ModConfigEvent;
+import net.neoforged.neoforge.server.ServerLifecycleHooks;
+import net.minecraft.server.MinecraftServer;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
@@ -41,9 +49,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.PlayerHeadBlock;
 import net.neoforged.neoforge.event.level.ExplosionEvent;
 import net.neoforged.neoforge.event.level.block.BreakBlockEvent;
-
-
-
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
 @Mod(PrivateChestMod.MODID)
 public class PrivateChestMod {
@@ -55,6 +63,8 @@ public class PrivateChestMod {
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, MODID);
     public static final DeferredRegister<MenuType<?>> MENUS = DeferredRegister.create(Registries.MENU, MODID);
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
+    public static final DeferredRegister<MapCodec<? extends ICondition>> CONDITION_CODECS =
+            DeferredRegister.create(NeoForgeRegistries.Keys.CONDITION_CODECS, MODID);
 
     public static final DeferredBlock<LockerBlock> LOCKER_BLOCK = BLOCKS.registerBlock("locker",
             LockerBlock::new,
@@ -89,21 +99,81 @@ public class PrivateChestMod {
                     }).build()
     );
 
-    public PrivateChestMod(IEventBus modEventBus) {
+    public PrivateChestMod(IEventBus modEventBus, ModContainer modContainer) {
         LOGGER.info("Private Locker Chest Mod Initializing...");
+        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
         BLOCK_ENTITY_TYPES.register(modEventBus);
         MENUS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
+        CONDITION_CODECS.register(modEventBus);
+
+        CONDITION_CODECS.register("crafting_recipe_enabled", () -> com.ogatamizuki.privatechest.CraftingRecipeEnabledCondition.CODEC);
 
         if (net.neoforged.fml.loading.FMLEnvironment.getDist() == net.neoforged.api.distmarker.Dist.CLIENT) {
             modEventBus.addListener(this::registerScreens);
             modEventBus.addListener(PrivateChestClient::registerRenderers);
         }
 
+        modEventBus.addListener(this::onConfigReload);
+        modEventBus.addListener(this::registerPayloads);
+
         net.neoforged.neoforge.common.NeoForge.EVENT_BUS.register(this);
+    }
+
+    private void registerPayloads(RegisterPayloadHandlersEvent event) {
+        PayloadRegistrar registrar = event.registrar("1");
+        registrar.playToServer(
+                PrivateChestCommonConfigPushPayload.TYPE,
+                PrivateChestCommonConfigPushPayload.STREAM_CODEC,
+                this::handleCommonConfigPush);
+    }
+
+    private void handleCommonConfigPush(PrivateChestCommonConfigPushPayload payload, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            if (!(context.player() instanceof ServerPlayer serverPlayer)) {
+                return;
+            }
+            if (!serverPlayer.createCommandSourceStack().permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER)) {
+                serverPlayer.sendSystemMessage(
+                        Component.translatable("privatechest.configuration.push_denied")
+                                .withStyle(ChatFormatting.RED));
+                return;
+            }
+
+            Config.enableLockerCrafting.set(payload.enableLockerCrafting());
+            Config.enableLockerCrafting.save();
+
+            MinecraftServer server = serverPlayer.level().getServer();
+            if (server != null) {
+                server.execute(() -> server.reloadResources(server.getPackRepository().getSelectedIds())
+                        .thenRun(() -> LOGGER.info("Reloaded datapacks after privatechest config push")));
+            }
+
+            LOGGER.info(
+                    "Private Chest common config pushed by {}: enableLockerCrafting={}",
+                    serverPlayer.getGameProfile().name(),
+                    Config.enableLockerCrafting.get());
+            serverPlayer.sendSystemMessage(
+                    Component.translatable("privatechest.configuration.push_ok")
+                            .withStyle(ChatFormatting.GREEN));
+        });
+    }
+
+    private void onConfigReload(ModConfigEvent.Reloading event) {
+        if (event.getConfig().getSpec() != Config.SPEC) {
+            return;
+        }
+
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server == null) {
+            return;
+        }
+
+        server.execute(() -> server.reloadResources(server.getPackRepository().getSelectedIds())
+                .thenRun(() -> LOGGER.info("Reloaded datapacks after privatechest config change")));
     }
 
     private void registerScreens(RegisterMenuScreensEvent event) {

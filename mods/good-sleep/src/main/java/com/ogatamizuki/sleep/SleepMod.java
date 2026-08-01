@@ -1,9 +1,12 @@
 package com.ogatamizuki.sleep;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.permissions.Permissions;
 import net.minecraft.world.clock.ClockTimeMarkers;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -22,8 +25,13 @@ import net.neoforged.neoforge.event.entity.player.CanContinueSleepingEvent;
 import net.neoforged.neoforge.event.entity.player.CanPlayerSleepEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerWakeUpEvent;
 import net.neoforged.neoforge.event.level.SleepFinishedTimeEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,7 +48,77 @@ public class SleepMod {
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
         modEventBus.addListener(this::onConfigReload);
+        modEventBus.addListener(this::registerPayloads);
         NeoForge.EVENT_BUS.register(this);
+    }
+
+    private void registerPayloads(RegisterPayloadHandlersEvent event) {
+        PayloadRegistrar registrar = event.registrar("1");
+        registrar.playToClient(SleepClientFlagsPayload.TYPE, SleepClientFlagsPayload.STREAM_CODEC);
+        registrar.playToServer(
+                SleepCommonConfigPushPayload.TYPE,
+                SleepCommonConfigPushPayload.STREAM_CODEC,
+                this::handleCommonConfigPush);
+    }
+
+    private void handleCommonConfigPush(SleepCommonConfigPushPayload payload, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            if (!(context.player() instanceof ServerPlayer serverPlayer)) {
+                return;
+            }
+            if (!serverPlayer.createCommandSourceStack().permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER)) {
+                serverPlayer.sendSystemMessage(
+                        Component.translatable("good_sleep.configuration.push_denied")
+                                .withStyle(ChatFormatting.RED));
+                return;
+            }
+
+            int healInterval = Math.max(0, Math.min(200, payload.healIntervalTicks()));
+            Config.ALLOW_DAY_SLEEP.set(payload.allowDaySleep());
+            Config.ALLOW_DAY_SLEEP.save();
+            Config.HEAL_WHILE_SLEEPING.set(payload.healWhileSleeping());
+            Config.HEAL_WHILE_SLEEPING.save();
+            Config.HEAL_INTERVAL_TICKS.set(healInterval);
+            Config.HEAL_INTERVAL_TICKS.save();
+            Config.ONE_PLAYER_SKIP.set(payload.onePlayerSkip());
+            Config.ONE_PLAYER_SKIP.save();
+
+            MinecraftServer server = serverPlayer.level().getServer();
+            if (server != null) {
+                applySleepingPercentage(server);
+            }
+            syncClientFlagsToAllPlayers();
+
+            LOGGER.info(
+                    "Good Sleep common config pushed by {}: allowDaySleep={}, healWhileSleeping={}, healIntervalTicks={}, onePlayerSkip={}",
+                    serverPlayer.getGameProfile().name(),
+                    Config.ALLOW_DAY_SLEEP.get(),
+                    Config.HEAL_WHILE_SLEEPING.get(),
+                    Config.HEAL_INTERVAL_TICKS.get(),
+                    Config.ONE_PLAYER_SKIP.get());
+            serverPlayer.sendSystemMessage(
+                    Component.translatable("good_sleep.configuration.push_ok")
+                            .withStyle(ChatFormatting.GREEN));
+        });
+    }
+
+    public static void syncClientFlagsToPlayer(ServerPlayer player) {
+        PacketDistributor.sendToPlayer(player, SleepClientFlagsPayload.fromConfig());
+    }
+
+    public static void syncClientFlagsToAllPlayers() {
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        if (server == null) {
+            return;
+        }
+        PacketDistributor.sendToAllPlayers(SleepClientFlagsPayload.fromConfig());
+    }
+
+    @SubscribeEvent
+    public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            syncClientFlagsToPlayer(player);
+        }
     }
 
     @SubscribeEvent
@@ -53,12 +131,19 @@ public class SleepMod {
             MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
             if (server != null) {
                 applySleepingPercentage(server);
+                syncClientFlagsToAllPlayers();
             }
         }
     }
 
     @SubscribeEvent
     public void onSleepFinished(SleepFinishedTimeEvent event) {
+        // 人狼の夜フェーズ中は時間スキップ処理を行わない
+        if (isWerewolfActiveNight()) {
+            event.setCanceled(true);
+            return;
+        }
+
         if (!Config.ALLOW_DAY_SLEEP.get() || !(event.getLevel() instanceof ServerLevel level)) {
             return;
         }
@@ -67,6 +152,31 @@ public class SleepMod {
         }
 
         event.setAdjustment(new ClockAdjustment.Marker(ClockTimeMarkers.NIGHT));
+    }
+
+    private boolean isWerewolfActiveNight() {
+        if (!net.neoforged.fml.ModList.get().isLoaded("werewolf")) {
+            return false;
+        }
+        try {
+            Class<?> managerClass = Class.forName("com.ogatamizuki.werewolf.game.WerewolfGameManager");
+            java.lang.reflect.Method getDataMethod = managerClass.getMethod("getData");
+            Object data = getDataMethod.invoke(null);
+            if (data == null) {
+                return false;
+            }
+            java.lang.reflect.Field phaseField = data.getClass().getField("phase");
+            java.lang.reflect.Field modeField = data.getClass().getField("mode");
+            Object phase = phaseField.get(data);
+            Object mode = modeField.get(data);
+            
+            Class<?> phasesClass = Class.forName("com.ogatamizuki.werewolf.game.WerewolfPhases");
+            java.lang.reflect.Method isActiveNightMethod = phasesClass.getMethod("isActiveNight", phase.getClass(), String.class);
+            return (boolean) isActiveNightMethod.invoke(null, phase, (String) mode);
+        } catch (Exception e) {
+            LOGGER.error("Failed to check werewolf active night state via reflection", e);
+            return false;
+        }
     }
 
     @SubscribeEvent

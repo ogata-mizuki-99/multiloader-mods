@@ -11,5 +11,6 @@
   "elytra_slot.screen.hud_config.title": "Edit HUD Position",
   "elytra_slot.screen.slot_config.title": "Edit Inventory Slots Position",
   "key.elytra_slot.quick_swap": "Quick Swap Elytra",
-  "key.categories.elytra_slot": "Elytra Slot Mod"
+  "key.elytra_slot.firework_boost": "Firework Boost (while gliding)",
+  "key.category.elytra_slot.main": "Elytra Slot"
 }

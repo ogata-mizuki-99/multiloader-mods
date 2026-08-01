@@ -2,6 +2,8 @@ package com.ogatamizuki.deconstructor;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.permissions.Permissions;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
@@ -15,6 +17,9 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -100,6 +105,7 @@ public class DeconstructorMod {
 
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
         modEventBus.addListener(this::onConfigReload);
+        modEventBus.addListener(this::registerPayloads);
 
         BLOCKS.register(modEventBus);
         ITEMS.register(modEventBus);
@@ -117,6 +123,41 @@ public class DeconstructorMod {
         if (event.getConfig().getSpec() == Config.SPEC) {
             DeconstructorRecipeIndex.invalidate();
         }
+    }
+
+    private void registerPayloads(RegisterPayloadHandlersEvent event) {
+        PayloadRegistrar registrar = event.registrar("1");
+        registrar.playToServer(
+                DeconstructorCommonConfigPushPayload.TYPE,
+                DeconstructorCommonConfigPushPayload.STREAM_CODEC,
+                this::handleCommonConfigPush);
+    }
+
+    private void handleCommonConfigPush(DeconstructorCommonConfigPushPayload payload, IPayloadContext context) {
+        context.enqueueWork(() -> {
+            if (!(context.player() instanceof ServerPlayer serverPlayer)) {
+                return;
+            }
+            if (!serverPlayer.createCommandSourceStack().permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER)) {
+                serverPlayer.sendSystemMessage(
+                        Component.translatable("deconstructor.configuration.push_denied")
+                                .withStyle(net.minecraft.ChatFormatting.RED));
+                return;
+            }
+
+            String excludedItems = payload.excludedItems() == null ? "" : payload.excludedItems();
+            Config.EXCLUDED_ITEMS.set(excludedItems);
+            Config.EXCLUDED_ITEMS.save();
+            DeconstructorRecipeIndex.invalidate();
+
+            LOGGER.info(
+                    "Deconstructor common config pushed by {}: excludedItems={}",
+                    serverPlayer.getGameProfile().name(),
+                    Config.EXCLUDED_ITEMS.get());
+            serverPlayer.sendSystemMessage(
+                    Component.translatable("deconstructor.configuration.push_ok")
+                            .withStyle(net.minecraft.ChatFormatting.GREEN));
+        });
     }
 
     private void registerRenderers(net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers event) {

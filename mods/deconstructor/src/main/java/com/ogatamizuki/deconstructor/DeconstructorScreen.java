@@ -4,6 +4,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemStack;
 
 public class DeconstructorScreen extends AbstractContainerScreen<DeconstructorMenu> {
     private static final int WIN_WIDTH = 176;
@@ -49,6 +50,16 @@ public class DeconstructorScreen extends AbstractContainerScreen<DeconstructorMe
         }
 
         super.extractContents(gui, mouseX, mouseY, partialTick);
+
+        // 梯子など成果物が複数個のレシピ: 解体に必要な個数を入力スロット右に表示
+        int required = this.menu.getRecipeOutputCount();
+        if (required > 1) {
+            ItemStack input = this.menu.getSlot(0).getItem();
+            boolean enough = !input.isEmpty() && input.getCount() >= required;
+            int color = enough ? 0xFF55FF55 : 0xFFFF5555;
+            Component label = Component.translatable("gui.deconstructor.required_count", required);
+            gui.text(this.font, label, x + 100, y + 24, color, false);
+        }
     }
 
     // 描画ユーティリティ

@@ -1,5 +1,6 @@
 package com.ogatamizuki.radialteleport;
 
+import com.ogatamizuki.radialteleport.api.RadialTeleportAPI;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -24,14 +25,22 @@ public final class TeleportService {
     }
 
     public static TeleportDestinationsPayload buildDestinations(MinecraftServer server, ServerPlayer viewer) {
-        List<TeleportDestination> destinations = new ArrayList<>();
-        destinations.add(new TeleportDestination(
-                SPAWN_DESTINATION_ID,
-                "radial_teleport.destination.spawn",
-                TeleportDestination.KIND_SPAWN
-        ));
+        RadialTeleportAPI.ViewerDestinationPolicy policy = RadialTeleportAPI.resolvePolicy(viewer);
+        boolean includeSpawn = policy == null || policy.includeSpawn();
+        boolean includeWaypoints = policy == null || policy.includeWaypoints();
+        java.util.function.Predicate<ServerPlayer> includePlayer =
+                policy == null ? player -> true : policy.includePlayer();
 
-        if (Config.ENABLE_WAYPOINTS.get()) {
+        List<TeleportDestination> destinations = new ArrayList<>();
+        if (includeSpawn) {
+            destinations.add(new TeleportDestination(
+                    SPAWN_DESTINATION_ID,
+                    "radial_teleport.destination.spawn",
+                    TeleportDestination.KIND_SPAWN
+            ));
+        }
+
+        if (includeWaypoints && Config.ENABLE_WAYPOINTS.get()) {
             for (PlayerWaypoint waypoint : PlayerWaypointStorage.get(server).getWaypoints(viewer.getUUID())) {
                 destinations.add(new TeleportDestination(
                         waypoint.destinationId(),
@@ -43,6 +52,9 @@ public final class TeleportService {
 
         for (ServerPlayer online : server.getPlayerList().getPlayers()) {
             if (online.getUUID().equals(viewer.getUUID())) {
+                continue;
+            }
+            if (!includePlayer.test(online)) {
                 continue;
             }
             destinations.add(new TeleportDestination(
@@ -196,6 +208,6 @@ public final class TeleportService {
             return TeleportResultPayload.message(false, "radial_teleport.message.teleport_failed");
         }
 
-        return TeleportResultPayload.message(true, "radial_teleport.message.teleport_player", target.getGameProfile().name());
+        return TeleportResultPayload.message(true, "radial_teleport.message.teleport_player", RadialTeleportNicknameBridge.resolvePlayerName(target));
     }
 }

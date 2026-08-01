@@ -21,5 +21,20 @@
   "guide_lib.privatechest.page.locker.spotlight": "縦 3 マスのロッカー構造物です。\n下段・中段が収納本体、\n最上段に設置者のプレイヤーヘッドが\n自動配置されます。",
   "guide_lib.privatechest.page.locker.placement": "【設置】下段を置く場所の上 2 マスが空いている必要があります。\n1 個のアイテムを置くと 3 段構造が自動的に完成します。\n設置者がオーナーとして登録されます。",
   "guide_lib.privatechest.page.locker.usage": "【利用】下段または中段を右クリックで\n81 スロット（9×9）の GUI を開きます。\n表示は 5 行で、マウスホイールで残り 4 行をスクロールできます。\nオーナー以外は開けず、チャットに拒否メッセージが表示されます。",
-  "guide_lib.privatechest.page.locker.breaking": "【破壊】いずれか 1 ブロックを破壊すると\n構造全体が連動して取り除かれます。\n破壊もオーナーのみ可能です。\n爆発ではロッカーは破壊されません。"
+  "guide_lib.privatechest.page.locker.breaking": "【破壊】いずれか 1 ブロックを破壊すると\n構造全体が連動して取り除かれます。\n破壊もオーナーのみ可能です。\n爆発ではロッカーは破壊されません。",
+  "guide_lib.privatechest.page.locker.text2": "プライベートロッカーは以下のクラフトレシピで作成できます。\n\n※サーバー設定（Mod設定）の「プライベートロッカーのクラフトを許可」がOFFになっている場合、サバイバルモードでのレシピは無効化されクラフトできなくなります。",
+  "privatechest.config.enableLockerCrafting": "プライベートロッカーのクラフトを許可",
+  "privatechest.config.enableLockerCrafting.tooltip": "有効な場合、サバイバルモードでプライベートロッカーをクラフトできるようにします。",
+  "privatechest.configuration.title": "プライベートロッカー 設定",
+  "privatechest.configuration.section.privatechest.common.toml": "共通設定",
+  "privatechest.configuration.section.privatechest.common.toml.title": "プライベートロッカー 共通設定",
+  "privatechest.configuration.enableLockerCrafting": "プライベートロッカーのクラフトを許可",
+  "privatechest.configuration.enableLockerCrafting.tooltip": "有効な場合、サバイバルモードでプライベートロッカーをクラフトできるようにします。",
+  "privatechest.configuration.push_to_server": "サーバーへ反映（COMMON）",
+  "privatechest.configuration.open_editor": "設定を編集…",
+  "privatechest.configuration.push_hint": "Dedicated ではサーバー側 toml が権威です。編集後に反映してください。",
+  "privatechest.configuration.push_sent": "サーバーへ設定を送信しました…",
+  "privatechest.configuration.push_ok": "サーバーの privatechest-common.toml に反映しました",
+  "privatechest.configuration.push_denied": "サーバーへ反映するには OP（ゲームマスター）権限が必要です",
+  "privatechest.configuration.push_need_connection": "マルチプレイ接続中のみサーバーへ反映できます"
 }

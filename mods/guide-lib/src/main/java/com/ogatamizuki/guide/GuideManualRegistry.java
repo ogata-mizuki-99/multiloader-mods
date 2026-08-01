@@ -1,7 +1,6 @@
 package com.ogatamizuki.guide;
 
 import com.ogatamizuki.guide.model.GuideManualDefinition;
-import com.ogatamizuki.guide.model.GuideTheme;
 import net.minecraft.resources.Identifier;
 
 import java.util.Collections;

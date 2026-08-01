@@ -54,10 +54,10 @@ public class HudConfigScreen extends Screen {
         }).bounds(centerX - 115, this.height - 60, 70, 20).build());
 
         addRenderableWidget(Button.builder(Component.translatable("elytra_slot.screen.config.default"), btn -> {
-            this.elytraHudX = -120;
-            this.elytraHudY = -22;
-            this.fireworkHudX = -140;
-            this.fireworkHudY = -22;
+            this.elytraHudX = -150;
+            this.elytraHudY = -20;
+            this.fireworkHudX = -170;
+            this.fireworkHudY = -20;
             this.selectedHud = 0;
         }).bounds(centerX - 35, this.height - 60, 70, 20).build());
 

@@ -1,0 +1,19 @@
+{
+  "extends": "guide_lib:tablet",
+  "colors": {
+    "title": "#00E5FF",
+    "subtitle": "#80CFFF",
+    "body": "#B0E0FF",
+    "muted": "#6699BB",
+    "accent": "#DFB323",
+    "link": "#00CCFF",
+    "link_hover": "#FFFFFF",
+    "panel_bg": "#0A1628",
+    "inner_bg": "#050D18"
+  },
+  "frame": "tablet",
+  "sounds": {
+    "open": "guide_lib:tablet_open",
+    "page_turn": "guide_lib:tablet_beep"
+  }
+}

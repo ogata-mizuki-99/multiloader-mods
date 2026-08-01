@@ -9,7 +9,8 @@
     "LivingEntityMixin",
     "WingsLayerMixin",
     "HumanoidRenderStateMixin",
-    "HumanoidMobRendererMixin"
+    "HumanoidMobRendererMixin",
+    "ServerGamePacketListenerImplMixin"
   ],
   "client": [
     "client.CreativeModeInventoryScreenMixin",

@@ -1,6 +1,6 @@
 # OgataMizuki NeoForge MODs
 
-NeoForge **26.1.2** 向けの公開 MOD 群です。Gradle マルチプロジェクトで 7 MOD をまとめてビルドできます。
+NeoForge **26.1.2** 向けの公開 MOD 群です。Gradle マルチプロジェクトで 8 MOD をまとめてビルドできます。
 
 | MOD | Gradle | mod id | License |
 |-----|--------|--------|---------|
@@ -11,6 +11,7 @@ NeoForge **26.1.2** 向けの公開 MOD 群です。Gradle マルチプロジェ
 | Elytra Slot | `:elytra-slot` | `elytra_slot` | All Rights Reserved |
 | Private Locker Chest | `:private-chest` | `privatechest` | All Rights Reserved |
 | Nickname | `:nickname` | `nickname` | All Rights Reserved |
+| Economy | `:economy` | `economy` | All Rights Reserved |
 
 各 MOD の説明・依存関係は `mods/<name>/README.md` を参照してください。
 
@@ -43,6 +44,9 @@ JAR は `mods/<name>/build/libs/` に出力されます。
 | deconstructor | guide_lib | In-game manual / Codex |
 | radial_teleport | guide_lib, nickname | Manual; player slice labels |
 | private-chest | guide_lib | In-game manual / Codex |
+| economy | nickname | Display names in rankings / admin |
+
+**Economy** does not require Node.js, PostgreSQL, Docker, or any external API server. Economy data is saved inside your Minecraft world.
 
 Minimum optional version: **1.0.0-beta.1**.  
 いずれもハード依存はありません。単体インストールで動作します。

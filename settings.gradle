@@ -30,3 +30,6 @@ project(':private-chest').projectDir = file('mods/private-chest')
 
 include 'nickname'
 project(':nickname').projectDir = file('mods/nickname')
+
+include 'economy'
+project(':economy').projectDir = file('mods/economy')

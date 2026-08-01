@@ -1,23 +1,25 @@
 package com.ogatamizuki.radialteleport.client;
 
+import com.ogatamizuki.radialteleport.RadialTeleportClientFlags;
+import com.ogatamizuki.radialteleport.RadialTeleportClientFlagsPayload;
 import com.ogatamizuki.radialteleport.RadialTeleportMod;
 import com.ogatamizuki.radialteleport.TeleportDestination;
 import com.ogatamizuki.radialteleport.TeleportDestinationsPayload;
 import com.ogatamizuki.radialteleport.TeleportRequestPayload;
 import com.ogatamizuki.radialteleport.TeleportResultPayload;
 import com.ogatamizuki.radialteleport.WaypointListPayload;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
-import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
@@ -32,7 +34,7 @@ public class RadialTeleportModClient {
     private static boolean wasUsingCompass = false;
 
     public RadialTeleportModClient(ModContainer container) {
-        container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        container.registerExtensionPoint(IConfigScreenFactory.class, RadialTeleportConfigScreen::new);
 
         IEventBus modEventBus = container.getEventBus();
         modEventBus.addListener(RadialTeleportModClient::onRegisterGuiLayers);
@@ -42,6 +44,11 @@ public class RadialTeleportModClient {
         NeoForge.EVENT_BUS.addListener(RadialTeleportModClient::onClientTick);
         NeoForge.EVENT_BUS.addListener(RadialTeleportModClient::onMouseInput);
         NeoForge.EVENT_BUS.addListener(RadialTeleportModClient::onMouseScroll);
+        NeoForge.EVENT_BUS.addListener(RadialTeleportModClient::onClientLoggingOut);
+    }
+
+    private static void onClientLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
+        RadialTeleportClientFlags.clear();
     }
 
     private static void onRegisterGuiLayers(RegisterGuiLayersEvent event) {
@@ -74,6 +81,11 @@ public class RadialTeleportModClient {
             Minecraft mc = Minecraft.getInstance();
             mc.execute(() -> WaypointEditScreen.applyList(payload.waypoints()));
         });
+
+        event.register(RadialTeleportClientFlagsPayload.TYPE, (payload, context) -> {
+            Minecraft mc = Minecraft.getInstance();
+            mc.execute(() -> RadialTeleportClientFlags.apply(payload));
+        });
     }
 
     private static void onClientTick(ClientTickEvent.Post event) {
@@ -87,8 +99,8 @@ public class RadialTeleportModClient {
             return;
         }
 
-        boolean usingCompass = player.isUsingItem()
-                && player.getUseItem().is(RadialTeleportMod.TELEPORT_COMPASS.get());
+        boolean usingCompass = isActivelyUsingCompass(player)
+                || isSpectatorRadialUse(mc, player);
 
         if (usingCompass && !wasUsingCompass) {
             RadialTeleportSession.begin(mc);
@@ -105,13 +117,26 @@ public class RadialTeleportModClient {
         wasUsingCompass = usingCompass;
     }
 
+    private static boolean isActivelyUsingCompass(LocalPlayer player) {
+        return player.isUsingItem()
+                && player.getUseItem().is(RadialTeleportMod.TELEPORT_COMPASS.get());
+    }
+
+    /**
+     * スペクテーターはホットバー操作できないため、右クリック押しっ放しだけでコンパス相当に開く。
+     * （コンパス所持は任意）
+     */
+    private static boolean isSpectatorRadialUse(Minecraft mc, LocalPlayer player) {
+        return player.isSpectator() && mc.options.keyUse.isDown();
+    }
+
     /** Keeps the radial menu closed after waypoint edit/save screens until right-click is released. */
     static void onWaypointScreenClosed() {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
         if (player != null) {
-            wasUsingCompass = player.isUsingItem()
-                    && player.getUseItem().is(RadialTeleportMod.TELEPORT_COMPASS.get());
+            wasUsingCompass = isActivelyUsingCompass(player)
+                    || isSpectatorRadialUse(mc, player);
         }
         if (RadialTeleportSession.isActive()) {
             RadialTeleportSession.end(mc);
@@ -125,8 +150,8 @@ public class RadialTeleportModClient {
         }
         LocalPlayer player = mc.player;
         if (player != null) {
-            wasUsingCompass = player.isUsingItem()
-                    && player.getUseItem().is(RadialTeleportMod.TELEPORT_COMPASS.get());
+            wasUsingCompass = isActivelyUsingCompass(player)
+                    || isSpectatorRadialUse(mc, player);
         }
     }
 
@@ -151,6 +176,14 @@ public class RadialTeleportModClient {
 
         if (RadialTeleportOverlay.isMouseOverCenter()) {
             event.setCanceled(true);
+            if (!RadialTeleportClientFlags.enableWaypoints()) {
+                if (mc.player != null) {
+                    mc.player.sendSystemMessage(
+                            Component.translatable("radial_teleport.message.waypoints_disabled")
+                                    .withStyle(ChatFormatting.RED));
+                }
+                return;
+            }
             WaypointEditScreen.open();
             return;
         }
@@ -184,6 +217,12 @@ public class RadialTeleportModClient {
         }
 
         event.setCanceled(true);
+        if (!RadialTeleportClientFlags.enableWaypoints()) {
+            player.sendSystemMessage(
+                    Component.translatable("radial_teleport.message.waypoints_disabled")
+                            .withStyle(ChatFormatting.RED));
+            return;
+        }
         WaypointSaveScreen.open();
     }
 

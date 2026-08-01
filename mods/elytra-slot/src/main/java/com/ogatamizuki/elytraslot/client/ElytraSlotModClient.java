@@ -26,6 +26,7 @@ public class ElytraSlotModClient {
             return;
         }
         migrateLegacyCreativeSlotPositions();
+        migrateLegacyHudPositions();
     }
 
     /** Old creative defaults overlapped the player preview; bump saved values once. */
@@ -45,6 +46,23 @@ public class ElytraSlotModClient {
         }
     }
 
+    /** Old HUD defaults overlapped the offhand slot; bump saved values once. */
+    private static void migrateLegacyHudPositions() {
+        if (Config.ELYTRA_HUD_X.get() == -120
+                && Config.ELYTRA_HUD_Y.get() == -22
+                && Config.FIREWORK_HUD_X.get() == -140
+                && Config.FIREWORK_HUD_Y.get() == -22) {
+            Config.ELYTRA_HUD_X.set(-150);
+            Config.ELYTRA_HUD_Y.set(-22);
+            Config.FIREWORK_HUD_X.set(-170);
+            Config.FIREWORK_HUD_Y.set(-22);
+            Config.ELYTRA_HUD_X.save();
+            Config.ELYTRA_HUD_Y.save();
+            Config.FIREWORK_HUD_X.save();
+            Config.FIREWORK_HUD_Y.save();
+        }
+    }
+
     private static void onRegisterGuiLayers(RegisterGuiLayersEvent event) {
         event.registerAbove(
                 VanillaGuiLayers.HOTBAR,
@@ -56,5 +74,6 @@ public class ElytraSlotModClient {
     private static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
         event.registerCategory(KeyMappings.CATEGORY);
         event.register(KeyMappings.QUICK_SWAP_KEY);
+        event.register(KeyMappings.FIREWORK_BOOST_KEY);
     }
 }

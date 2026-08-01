@@ -27,7 +27,7 @@ public final class GuideJeiClient {
             return;
         }
         var helpers = runtime.getJeiHelpers();
-        var typedOptional = helpers.getIngredientManager().createTypedIngredient(stack);
+        var typedOptional = helpers.getIngredientManager().createTypedIngredient(stack, false);
         if (typedOptional.isEmpty()) {
             return;
         }

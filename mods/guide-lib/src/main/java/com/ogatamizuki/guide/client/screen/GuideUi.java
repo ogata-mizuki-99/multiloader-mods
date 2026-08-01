@@ -138,19 +138,45 @@ public final class GuideUi {
     }
 
     public static void drawBackgroundDim(GuideTheme theme, GuiGraphicsExtractor gui, int screenWidth, int screenHeight) {
-        theme.drawBackgroundDim(gui, screenWidth, screenHeight);
+        gui.fill(0, 0, screenWidth, screenHeight, theme.colorDimOverlay());
     }
 
     public static void drawOuterPanel(GuideTheme theme, GuiGraphicsExtractor gui, int x1, int y1, int x2, int y2) {
-        theme.drawOuterPanel(gui, x1, y1, x2, y2);
+        if (theme.frameStyle() == GuideTheme.FrameStyle.TABLET) {
+            drawTabletFrame(gui, x1, y1, x2, y2, theme.colorPanelBg(), theme.colorAccent(), false);
+            return;
+        }
+        if (theme.frameStyle() == GuideTheme.FrameStyle.PAPER) {
+            drawPaperCover(gui, x1, y1, x2, y2);
+            return;
+        }
+        drawBevel(gui, x1, y1, x2, y2, false, theme.colorPanelBg());
+        gui.fill(x1 + 1, y1 + 1, x2 - 1, y2 - 1, theme.colorPanelBg());
+        gui.fill(x1 + 1, y1 + 1, x2 - 1, y1 + 2, theme.colorAccent());
     }
 
     public static void drawInnerPanel(GuideTheme theme, GuiGraphicsExtractor gui, int x1, int y1, int x2, int y2) {
-        theme.drawInnerPanel(gui, x1, y1, x2, y2);
+        if (theme.frameStyle() == GuideTheme.FrameStyle.TABLET) {
+            drawTabletFrame(gui, x1, y1, x2, y2, theme.colorInnerBg(), theme.colorAccent(), true);
+            return;
+        }
+        if (theme.frameStyle() == GuideTheme.FrameStyle.PAPER) {
+            drawPaperPage(theme, gui, x1, y1, x2, y2);
+            return;
+        }
+        drawBevel(gui, x1, y1, x2, y2, true, theme.colorInnerBg());
     }
 
     public static void drawTitle(GuideTheme theme, Font font, GuiGraphicsExtractor gui, Component title, int centerX, int y) {
-        theme.drawTitle(font, gui, title, centerX, y);
+        gui.centeredText(font, title, centerX, y, theme.colorTitle());
+    }
+
+    public static void drawBodyLines(GuideTheme theme, Font font, GuiGraphicsExtractor gui, List<FormattedCharSequence> lines, int left, int top) {
+        int lineY = top;
+        for (FormattedCharSequence line : lines) {
+            gui.text(font, line, left, lineY, theme.colorBody(), false);
+            lineY += font.lineHeight + 2;
+        }
     }
 
     public static void drawSubtitleLines(
@@ -161,15 +187,36 @@ public final class GuideUi {
             int left,
             int top
     ) {
-        theme.drawSubtitleLines(font, gui, lines, left, top);
+        int lineY = top;
+        for (FormattedCharSequence line : lines) {
+            gui.text(font, line, left, lineY, theme.colorSubtitle(), false);
+            lineY += font.lineHeight + 2;
+        }
     }
 
     public static void drawItemSlot(GuideTheme theme, GuiGraphicsExtractor gui, int slotX, int slotY) {
-        theme.drawItemSlot(gui, slotX, slotY);
+        if (theme.frameStyle() == GuideTheme.FrameStyle.TABLET) {
+            gui.fill(slotX, slotY, slotX + 18, slotY + 18, theme.colorSlotInner());
+            int border = theme.colorAccent();
+            gui.fill(slotX, slotY, slotX + 18, slotY + 1, border);
+            gui.fill(slotX, slotY, slotX + 1, slotY + 18, border);
+            gui.fill(slotX, slotY + 17, slotX + 18, slotY + 18, border);
+            gui.fill(slotX + 17, slotY, slotX + 18, slotY + 18, border);
+            return;
+        }
+        if (theme.frameStyle() == GuideTheme.FrameStyle.PAPER) {
+            drawPaperSlot(theme, gui, slotX, slotY);
+            return;
+        }
+        drawBevel(gui, slotX, slotY, slotX + 18, slotY + 18, true, theme.colorInnerBg());
+        gui.fill(slotX + 1, slotY + 1, slotX + 17, slotY + 17, theme.colorSlotInner());
     }
 
     public static void drawItemStack(GuideTheme theme, GuiGraphicsExtractor gui, ItemStack stack, int slotX, int slotY) {
-        theme.drawItemStack(gui, stack, slotX, slotY);
+        drawItemSlot(theme, gui, slotX, slotY);
+        if (!stack.isEmpty()) {
+            gui.fakeItem(stack, slotX + 1, slotY + 1);
+        }
     }
 
     public static int subtitleHeight(Font font, List<FormattedCharSequence> lines) {
@@ -362,5 +409,69 @@ public final class GuideUi {
 
     public static int panelHeight(int subtitleHeight, int entryCount) {
         return HEADER_HEIGHT + subtitleHeight + 10 + listAreaHeight(entryCount) + FOOTER_HEIGHT + 8;
+    }
+
+    private static void drawPaperCover(GuiGraphicsExtractor gui, int x1, int y1, int x2, int y2) {
+        gui.fill(x1, y1, x2, y2, 0xFF3D2914);
+        gui.fill(x1 + 1, y1 + 1, x2 - 1, y2 - 1, 0xFF5C4033);
+        gui.fill(x1 + 1, y1 + 1, x2 - 1, y1 + 2, 0xFF8B6914);
+        gui.fill(x1 + 1, y1 + 1, x1 + 2, y2 - 1, 0xFF8B6914);
+        gui.fill(x1 + 1, y2 - 2, x2 - 1, y2 - 1, 0xFF2A1A10);
+        gui.fill(x2 - 2, y1 + 1, x2 - 1, y2 - 1, 0xFF2A1A10);
+    }
+
+    private static void drawPaperPage(GuideTheme theme, GuiGraphicsExtractor gui, int x1, int y1, int x2, int y2) {
+        gui.fill(x1, y1, x2, y2, theme.colorInnerBg());
+        gui.fill(x1, y1, x2, y1 + 1, 0x50C0A878);
+        gui.fill(x1, y1, x1 + 1, y2, 0x50C0A878);
+        gui.fill(x1, y2 - 1, x2, y2, 0x35FFFFFF);
+        gui.fill(x2 - 1, y1, x2, y2, 0x35FFFFFF);
+
+        int lineY = y1 + 14;
+        int lineEnd = x2 - 6;
+        int lineStart = x1 + 6;
+        while (lineY < y2 - 8) {
+            gui.fill(lineStart, lineY, lineEnd, lineY + 1, 0x18A08060);
+            lineY += 11;
+        }
+    }
+
+    private static void drawPaperSlot(GuideTheme theme, GuiGraphicsExtractor gui, int slotX, int slotY) {
+        gui.fill(slotX, slotY, slotX + 18, slotY + 18, theme.colorSlotInner());
+        gui.fill(slotX, slotY, slotX + 18, slotY + 1, 0x70C0A878);
+        gui.fill(slotX, slotY, slotX + 1, slotY + 18, 0x70C0A878);
+        gui.fill(slotX, slotY + 17, slotX + 18, slotY + 18, 0x40FFFFFF);
+        gui.fill(slotX + 17, slotY, slotX + 18, slotY + 18, 0x40FFFFFF);
+    }
+
+    private static void drawTabletFrame(
+            GuiGraphicsExtractor gui,
+            int x1,
+            int y1,
+            int x2,
+            int y2,
+            int bgColor,
+            int accentColor,
+            boolean inset
+    ) {
+        gui.fill(x1, y1, x2, y2, bgColor);
+        int line = inset ? 0x6000E5FF : accentColor;
+        gui.fill(x1, y1, x2, y1 + 1, line);
+        gui.fill(x1, y1, x1 + 1, y2, line);
+        gui.fill(x1, y2 - 1, x2, y2, line);
+        gui.fill(x2 - 1, y1, x2, y2, line);
+        if (!inset) {
+            gui.fill(x1 + 1, y1 + 1, x2 - 1, y1 + 2, accentColor);
+        }
+    }
+
+    private static void drawBevel(GuiGraphicsExtractor gui, int x1, int y1, int x2, int y2, boolean sunken, int bgColor) {
+        int topLeftColor = sunken ? 0xFF1F1F1F : 0xFF5F5F5F;
+        int bottomRightColor = sunken ? 0xFF4A4A4A : 0xFF1F1F1F;
+        gui.fill(x1, y1, x2, y2, bgColor);
+        gui.fill(x1, y1, x2, y1 + 1, topLeftColor);
+        gui.fill(x1, y1, x1 + 1, y2, topLeftColor);
+        gui.fill(x1, y2 - 1, x2, y2, bottomRightColor);
+        gui.fill(x2 - 1, y1, x2, y2, bottomRightColor);
     }
 }

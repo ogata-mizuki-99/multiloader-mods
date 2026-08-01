@@ -161,9 +161,8 @@ public class CraftingPageRenderer implements PageRenderer {
             return fromCache;
         }
 
-        RecipeManager recipeManager = resolveRecipeManager(mc);
-        if (recipeManager != null) {
-            return lookupInManager(recipeManager, recipeId);
+        if (mc.hasSingleplayerServer()) {
+            return lookupInManager(mc.getSingleplayerServer().getRecipeManager(), recipeId);
         }
         return null;
     }
@@ -178,16 +177,6 @@ public class CraftingPageRenderer implements PageRenderer {
                     return typed;
                 })
                 .orElse(null);
-    }
-
-    private static RecipeManager resolveRecipeManager(Minecraft mc) {
-        if (mc.hasSingleplayerServer()) {
-            return mc.getSingleplayerServer().getRecipeManager();
-        }
-        if (mc.level != null && mc.level.getServer() != null) {
-            return mc.level.getServer().getRecipeManager();
-        }
-        return null;
     }
 
     private void renderShaped(

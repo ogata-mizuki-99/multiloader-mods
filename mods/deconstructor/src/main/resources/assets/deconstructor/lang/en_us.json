@@ -5,6 +5,7 @@
   "container.deconstructor.precision_deconstructor": "Precision Deconstructor (Extract 3)",
   "block.deconstructor.enchant_manager": "Enchantment Manager",
   "container.deconstructor.enchant_manager": "Enchantment Manager",
+  "gui.deconstructor.required_count": "Need ×%s",
   "itemGroup.deconstructor": "Deconstructor",
   "item.deconstructor.manual": "Deconstructor Manual",
   "guide_lib.book.deconstructor": "Deconstructor Guide",
@@ -21,7 +22,7 @@
   "guide_lib.deconstructor.page.guide_items.manual": "Craft the Deconstructor Manual from a book and a crafting table.\nRight-click to open this guide directly\n(not via the Codex list).",
   "guide_lib.deconstructor.page.guide_items.codex_tablet": "Craft the Codex Tablet from a written book, redstone, and glass pane.\nOpens the tablet UI listing all mod guides\n(requires guide_lib).",
   "guide_lib.deconstructor.page.deconstructor.spotlight": "The basic deconstructor reverses a crafting recipe\nand lets you take one preview slot of materials.",
-  "guide_lib.deconstructor.page.deconstructor.usage": "Place one item in the input slot to preview materials.\nTaking output consumes the input item.\nShift-click moves matching preview stacks (max one slot).",
+  "guide_lib.deconstructor.page.deconstructor.usage": "Place items in the input slot to preview materials.\nRecipes that craft multiple items (e.g. ladders) show the required count in the GUI and consume that many.\nTaking output consumes the input.\nShift-click moves matching preview stacks (max one slot).",
   "guide_lib.deconstructor.page.precision_deconstructor.spotlight": "An upgraded deconstructor that allows\nup to three preview slots to be collected.",
   "guide_lib.deconstructor.page.precision_deconstructor.usage": "Works like the basic deconstructor,\nbut you can collect up to three slots.\nUseful when a recipe yields multiple ingredients.",
   "guide_lib.deconstructor.page.enchant_manager.spotlight": "Uses books to extract, split, merge, and apply enchantments.\nNo experience cost.",
@@ -34,5 +35,12 @@
   "deconstructor.configuration.section.deconstructor.common.toml": "Common Settings",
   "deconstructor.configuration.section.deconstructor.common.toml.title": "Deconstructor Common Configuration",
   "deconstructor.configuration.excludedItems": "Excluded item IDs",
-  "deconstructor.configuration.excludedItems.tooltip": "Comma- or space-separated item IDs that cannot be deconstructed (e.g. minecraft:netherite_sword). Changes reload the recipe index."
+  "deconstructor.configuration.excludedItems.tooltip": "Comma- or space-separated item IDs that cannot be deconstructed (e.g. minecraft:netherite_sword). Changes reload the recipe index.",
+  "deconstructor.configuration.push_to_server": "Push to server (COMMON)",
+  "deconstructor.configuration.open_editor": "Edit settings…",
+  "deconstructor.configuration.push_hint": "On a dedicated server the server toml is authoritative. Push after editing.",
+  "deconstructor.configuration.push_sent": "Sending config to server…",
+  "deconstructor.configuration.push_ok": "Applied to server deconstructor-common.toml",
+  "deconstructor.configuration.push_denied": "OP (Game Master) permission required to push config",
+  "deconstructor.configuration.push_need_connection": "Connect to a multiplayer server to push config"
 }

@@ -31,7 +31,7 @@ public final class SleepHealthOverlay {
             return;
         }
 
-        if (mc.player.isSleeping() && Config.HEAL_WHILE_SLEEPING.get()) {
+        if (mc.player.isSleeping() && SleepClientFlags.healWhileSleeping()) {
             int width = guiGraphics.guiWidth();
             int height = guiGraphics.guiHeight();
             int defaultBaseY = height - mc.gui.leftHeight;

@@ -330,7 +330,7 @@ public class GuideBookScreen extends Screen {
                 GuideUi.runWithScissor(gui, paperLeft + 1, paperTop + 1, paperRight - 1, paperClipBottom, () -> {
                     int lineY = paperTop + GuideUi.PAPER_TOP_PADDING;
                     if (!descriptionLines.isEmpty()) {
-                        theme.drawBodyLines(this.font, gui, descriptionLines, contentX, lineY);
+                        GuideUi.drawBodyLines(theme, this.font, gui, descriptionLines, contentX, lineY);
                     }
                     entryLinks.render(
                             gui,

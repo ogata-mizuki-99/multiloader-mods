@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": "minecraft:book",
+    "E": "minecraft:emerald",
+    "G": "minecraft:gold_ingot",
+    "R": "minecraft:redstone_block"
+  },
+  "pattern": [
+    " E ",
+    "GBG",
+    " R "
+  ],
+  "result": {
+    "count": 1,
+    "id": "economy:economy_admin"
+  }
+}

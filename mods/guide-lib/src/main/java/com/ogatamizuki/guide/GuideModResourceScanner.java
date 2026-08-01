@@ -72,6 +72,9 @@ public final class GuideModResourceScanner {
                     return;
                 }
                 Identifier id = idFactory.apply(path, matcher);
+                if (id.getNamespace().equals("minecraft") || id.getNamespace().equals("neoforge")) {
+                    return;
+                }
                 try {
                     results.putIfAbsent(id, readJson(resource));
                 } catch (IOException | JsonParseException e) {

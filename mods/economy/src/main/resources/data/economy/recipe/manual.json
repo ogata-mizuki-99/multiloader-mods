@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:book",
+    "economy:mobile_terminal"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:written_book",
+    "components": {
+      "minecraft:custom_name": {
+        "translate": "item.economy.manual"
+      },
+      "guide_lib:guide_access": {
+        "kind": "manual",
+        "book": "economy:economy",
+        "theme": "economy:terminal"
+      }
+    }
+  }
+}

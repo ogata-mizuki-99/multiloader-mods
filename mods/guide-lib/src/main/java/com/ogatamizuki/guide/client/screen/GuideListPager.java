@@ -31,7 +31,8 @@ public final class GuideListPager {
         return new GuideListPager(packed);
     }
 
-    /** @deprecated 高さベース分割は本テーマでは使わない */
+    /** 高さベース分割は本テーマでは使わない */
+    @Deprecated
     public static GuideListPager byHeight(List<GuideLinkList.LinkItem> items, Font font, int viewportHeight) {
         return byHeight(items, font, viewportHeight, 1);
     }

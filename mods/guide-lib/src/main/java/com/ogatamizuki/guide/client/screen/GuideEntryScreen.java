@@ -46,7 +46,6 @@ public class GuideEntryScreen extends Screen {
     private int contentScrollBottom;
     private int contentWidth;
     private int footerTop;
-    private int footerY;
 
     public GuideEntryScreen(Screen parentScreen, Identifier bookId, String entryId) {
         this(parentScreen, bookId, entryId, null, false);
@@ -106,7 +105,6 @@ public class GuideEntryScreen extends Screen {
             this.contentScrollBottom = contentBottom;
         }
         this.contentWidth = GuideUi.innerContentWidth(theme);
-        this.footerY = footerTop + 16;
     }
 
     private List<GuidePage> buildDisplayPages() {

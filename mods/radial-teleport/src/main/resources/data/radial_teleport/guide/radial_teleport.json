@@ -63,6 +63,10 @@
           "text": "guide_lib.radial_teleport.page.teleport_compass.spotlight"
         },
         {
+          "type": "text",
+          "text": "guide_lib.radial_teleport.page.teleport_compass.config"
+        },
+        {
           "type": "crafting",
           "recipe": "radial_teleport:teleport_compass"
         },
@@ -73,10 +77,6 @@
         {
           "type": "text",
           "text": "guide_lib.radial_teleport.page.teleport_compass.destinations"
-        },
-        {
-          "type": "text",
-          "text": "guide_lib.radial_teleport.page.teleport_compass.config"
         }
       ]
     },

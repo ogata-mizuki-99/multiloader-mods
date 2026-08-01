@@ -1,0 +1,54 @@
+{
+  "textures": {
+    "screen": "economy:item/mobile_terminal_screen",
+    "body": "economy:item/mobile_terminal_body",
+    "particle": "economy:item/mobile_terminal_body"
+  },
+  "elements": [
+    {
+      "comment": "スマートフォン本体（薄い縦長板）",
+      "from": [4, 0, 7],
+      "to":   [12, 16, 9],
+      "faces": {
+        "north": { "texture": "#body",   "uv": [0, 0, 16, 16] },
+        "south": { "texture": "#screen", "uv": [0, 0, 16, 16] },
+        "east":  { "texture": "#body",   "uv": [7, 0, 9, 16] },
+        "west":  { "texture": "#body",   "uv": [7, 0, 9, 16] },
+        "up":    { "texture": "#body",   "uv": [4, 7, 12, 9] },
+        "down":  { "texture": "#body",   "uv": [4, 7, 12, 9] }
+      }
+    }
+  ],
+  "display": {
+    "gui": {
+      "rotation": [20, -45, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.9, 0.9, 0.9]
+    },
+    "ground": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 2, 0],
+      "scale": [0.35, 0.35, 0.35]
+    },
+    "fixed": {
+      "rotation": [0, 0, 0],
+      "translation": [0, 0, 0],
+      "scale": [0.5, 0.5, 0.5]
+    },
+    "thirdperson_righthand": {
+      "rotation": [65, 0, 0],
+      "translation": [0, 1, 0],
+      "scale": [0.4, 0.4, 0.4]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, -90, 25],
+      "translation": [1.13, 3.2, 1.13],
+      "scale": [0.68, 0.68, 0.68]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 90, -25],
+      "translation": [1.13, 3.2, 1.13],
+      "scale": [0.68, 0.68, 0.68]
+    }
+  }
+}

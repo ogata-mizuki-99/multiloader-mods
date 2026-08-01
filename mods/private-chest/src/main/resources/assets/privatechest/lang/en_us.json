@@ -21,5 +21,20 @@
   "guide_lib.privatechest.page.locker.spotlight": "A three-block-tall locker structure.\nThe bottom and middle blocks form the storage body;\nthe top block automatically shows the placer's player head.",
   "guide_lib.privatechest.page.locker.placement": "[Placement] Two empty blocks must be above the bottom placement spot.\nOne item expands into the full three-block structure.\nThe placer is registered as the owner.",
   "guide_lib.privatechest.page.locker.usage": "[Usage] Right-click the bottom or middle block\nto open the 81-slot (9×9) GUI.\nFive rows are visible; scroll the remaining four with the mouse wheel.\nNon-owners cannot open it and receive a chat message.",
-  "guide_lib.privatechest.page.locker.breaking": "[Breaking] Breaking any part removes the entire structure.\nOnly the owner may break it.\nLockers are immune to explosion damage."
+  "guide_lib.privatechest.page.locker.breaking": "[Breaking] Breaking any part removes the entire structure.\nOnly the owner may break it.\nLockers are immune to explosion damage.",
+  "guide_lib.privatechest.page.locker.text2": "The Private Locker can be crafted using the following recipe.\n\n*Note: If 'Enable Private Locker Crafting' is disabled on the server, the recipe will be inactive and you won't be able to craft it in survival mode.",
+  "privatechest.config.enableLockerCrafting": "Enable Private Locker Crafting",
+  "privatechest.config.enableLockerCrafting.tooltip": "If enabled, players can craft the Private Locker in survival mode.",
+  "privatechest.configuration.title": "Private Locker Configuration",
+  "privatechest.configuration.section.privatechest.common.toml": "Common Settings",
+  "privatechest.configuration.section.privatechest.common.toml.title": "Private Locker Common Configuration",
+  "privatechest.configuration.enableLockerCrafting": "Enable Private Locker Crafting",
+  "privatechest.configuration.enableLockerCrafting.tooltip": "If enabled, players can craft the Private Locker in survival mode.",
+  "privatechest.configuration.push_to_server": "Push to server (COMMON)",
+  "privatechest.configuration.open_editor": "Edit settings…",
+  "privatechest.configuration.push_hint": "On a dedicated server the server toml is authoritative. Push after editing.",
+  "privatechest.configuration.push_sent": "Sending config to server…",
+  "privatechest.configuration.push_ok": "Applied to server privatechest-common.toml",
+  "privatechest.configuration.push_denied": "OP (Game Master) permission required to push config",
+  "privatechest.configuration.push_need_connection": "Connect to a multiplayer server to push config"
 }

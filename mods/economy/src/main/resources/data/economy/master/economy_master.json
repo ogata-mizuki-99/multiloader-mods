@@ -1,0 +1,5816 @@
+{
+    "shops": [
+        {
+            "id": 1,
+            "shopName": "金物屋",
+            "npcModel": "minecraft:villager:cartographer",
+            "npcType": "SELLER",
+            "enabled": true
+        },
+        {
+            "id": 2,
+            "shopName": "武器屋",
+            "npcModel": "minecraft:villager:weaponsmith",
+            "npcType": "SELLER",
+            "enabled": true
+        },
+        {
+            "id": 3,
+            "shopName": "闇市",
+            "npcModel": "minecraft:witch",
+            "npcType": "SELLER",
+            "enabled": true
+        },
+        {
+            "id": 4,
+            "shopName": "スーパー",
+            "npcModel": "minecraft:villager:farmer",
+            "npcType": "SELLER",
+            "enabled": true
+        },
+        {
+            "id": 5,
+            "shopName": "質屋",
+            "npcModel": "minecraft:villager:armorer",
+            "npcType": "BUYER",
+            "enabled": true
+        },
+        {
+            "id": 6,
+            "shopName": "取引市場",
+            "npcModel": "minecraft:villager:librarian",
+            "npcType": "STOCK_TRADER",
+            "enabled": true
+        },
+        {
+            "id": 7,
+            "shopName": "フリーマーケット",
+            "npcModel": "minecraft:wandering_trader",
+            "npcType": "FLEA_MARKET",
+            "enabled": true
+        },
+        {
+            "id": 8,
+            "shopName": "ホームセンター",
+            "npcModel": "minecraft:villager:mason",
+            "npcType": "SELLER",
+            "enabled": true
+        },
+        {
+            "id": 9,
+            "shopName": "闇金融",
+            "npcModel": "minecraft:villager:pillager",
+            "npcType": "LOAN",
+            "enabled": true
+        }
+    ],
+    "items": [
+        {
+            "id": 1,
+            "unit": "枚",
+            "name": "金貨",
+            "itemKey": "economy:gold_coin",
+            "sellPrice": 10000,
+            "buyPrice": 10000,
+            "enabled": true
+        },
+        {
+            "id": 2,
+            "unit": "枚",
+            "name": "銀貨",
+            "itemKey": "economy:silver_coin",
+            "sellPrice": 1000,
+            "buyPrice": 1000,
+            "enabled": true
+        },
+        {
+            "id": 3,
+            "unit": "枚",
+            "name": "銅貨",
+            "itemKey": "economy:bronze_coin",
+            "sellPrice": 100,
+            "buyPrice": 100,
+            "enabled": true
+        },
+        {
+            "id": 4,
+            "unit": "個",
+            "name": "ダイヤモンド",
+            "itemKey": "minecraft:diamond",
+            "sellPrice": 300,
+            "buyPrice": 800,
+            "enabled": true
+        },
+        {
+            "id": 5,
+            "unit": "個",
+            "name": "エメラルド",
+            "itemKey": "minecraft:emerald",
+            "sellPrice": 50,
+            "buyPrice": 300,
+            "enabled": true
+        },
+        {
+            "id": 6,
+            "unit": "個",
+            "name": "ネザライトインゴット",
+            "itemKey": "minecraft:netherite_ingot",
+            "sellPrice": 2000,
+            "buyPrice": 8000,
+            "enabled": true
+        },
+        {
+            "id": 7,
+            "unit": "個",
+            "name": "金インゴット",
+            "itemKey": "minecraft:gold_ingot",
+            "sellPrice": 30,
+            "buyPrice": 120,
+            "enabled": true
+        },
+        {
+            "id": 8,
+            "unit": "個",
+            "name": "鉄インゴット",
+            "itemKey": "minecraft:iron_ingot",
+            "sellPrice": 15,
+            "buyPrice": 60,
+            "enabled": true
+        },
+        {
+            "id": 9,
+            "unit": "個",
+            "name": "銅インゴット",
+            "itemKey": "minecraft:copper_ingot",
+            "sellPrice": 8,
+            "buyPrice": 20,
+            "enabled": true
+        },
+        {
+            "id": 10,
+            "unit": "個",
+            "name": "石炭",
+            "itemKey": "minecraft:coal",
+            "sellPrice": 3,
+            "buyPrice": 10,
+            "enabled": true
+        },
+        {
+            "id": 11,
+            "unit": "個",
+            "name": "木炭",
+            "itemKey": "minecraft:charcoal",
+            "sellPrice": 2,
+            "buyPrice": 10,
+            "enabled": true
+        },
+        {
+            "id": 12,
+            "unit": "個",
+            "name": "ラピスラズリ",
+            "itemKey": "minecraft:lapis_lazuli",
+            "sellPrice": 10,
+            "buyPrice": 40,
+            "enabled": true
+        },
+        {
+            "id": 13,
+            "unit": "個",
+            "name": "レッドストーンダスト",
+            "itemKey": "minecraft:redstone",
+            "sellPrice": 4,
+            "buyPrice": 16,
+            "enabled": true
+        },
+        {
+            "id": 14,
+            "unit": "個",
+            "name": "エンダーパール",
+            "itemKey": "minecraft:ender_pearl",
+            "sellPrice": 40,
+            "buyPrice": 200,
+            "enabled": true
+        },
+        {
+            "id": 15,
+            "unit": "個",
+            "name": "スライムボール",
+            "itemKey": "minecraft:slime_ball",
+            "sellPrice": 8,
+            "buyPrice": 50,
+            "enabled": true
+        },
+        {
+            "id": 16,
+            "unit": "個",
+            "name": "火薬",
+            "itemKey": "minecraft:gunpowder",
+            "sellPrice": 6,
+            "buyPrice": 30,
+            "enabled": true
+        },
+        {
+            "id": 17,
+            "unit": "個",
+            "name": "ブレイズロッド",
+            "itemKey": "minecraft:blaze_rod",
+            "sellPrice": 40,
+            "buyPrice": 160,
+            "enabled": true
+        },
+        {
+            "id": 18,
+            "unit": "個",
+            "name": "ガストの涙",
+            "itemKey": "minecraft:ghast_tear",
+            "sellPrice": 120,
+            "buyPrice": 400,
+            "enabled": true
+        },
+        {
+            "id": 19,
+            "unit": "個",
+            "name": "ダイヤモンドのツルハシ",
+            "itemKey": "minecraft:diamond_pickaxe",
+            "sellPrice": 990,
+            "buyPrice": 2642,
+            "enabled": true
+        },
+        {
+            "id": 20,
+            "unit": "個",
+            "name": "ダイヤモンドの斧",
+            "itemKey": "minecraft:diamond_axe",
+            "sellPrice": 990,
+            "buyPrice": 2642,
+            "enabled": true
+        },
+        {
+            "id": 21,
+            "unit": "個",
+            "name": "ダイヤモンドの剣",
+            "itemKey": "minecraft:diamond_sword",
+            "sellPrice": 660,
+            "buyPrice": 1761,
+            "enabled": true
+        },
+        {
+            "id": 22,
+            "unit": "個",
+            "name": "鉄のツルハシ",
+            "itemKey": "minecraft:iron_pickaxe",
+            "sellPrice": 50,
+            "buyPrice": 200,
+            "enabled": true
+        },
+        {
+            "id": 23,
+            "unit": "個",
+            "name": "鉄の斧",
+            "itemKey": "minecraft:iron_axe",
+            "sellPrice": 50,
+            "buyPrice": 200,
+            "enabled": true
+        },
+        {
+            "id": 24,
+            "unit": "個",
+            "name": "鉄の剣",
+            "itemKey": "minecraft:iron_sword",
+            "sellPrice": 33,
+            "buyPrice": 133,
+            "enabled": true
+        },
+        {
+            "id": 25,
+            "unit": "個",
+            "name": "ネザライトのツルハシ",
+            "itemKey": "minecraft:netherite_pickaxe",
+            "sellPrice": 3289,
+            "buyPrice": 11706,
+            "enabled": true
+        },
+        {
+            "id": 26,
+            "unit": "個",
+            "name": "ネザライトの斧",
+            "itemKey": "minecraft:netherite_axe",
+            "sellPrice": 3289,
+            "buyPrice": 11706,
+            "enabled": true
+        },
+        {
+            "id": 27,
+            "unit": "個",
+            "name": "ネザライトの剣",
+            "itemKey": "minecraft:netherite_sword",
+            "sellPrice": 2926,
+            "buyPrice": 10737,
+            "enabled": true
+        },
+        {
+            "id": 28,
+            "unit": "個",
+            "name": "弓",
+            "itemKey": "minecraft:bow",
+            "sellPrice": 7,
+            "buyPrice": 35,
+            "enabled": true
+        },
+        {
+            "id": 29,
+            "unit": "個",
+            "name": "盾",
+            "itemKey": "minecraft:shield",
+            "sellPrice": 18,
+            "buyPrice": 76,
+            "enabled": true
+        },
+        {
+            "id": 30,
+            "unit": "個",
+            "name": "エリトラ",
+            "itemKey": "minecraft:elytra",
+            "sellPrice": 1000,
+            "buyPrice": 5000,
+            "enabled": true
+        },
+        {
+            "id": 31,
+            "unit": "個",
+            "name": "ロケット花火",
+            "itemKey": "minecraft:firework_rocket",
+            "sellPrice": 6,
+            "buyPrice": 20,
+            "enabled": true
+        },
+        {
+            "id": 32,
+            "unit": "個",
+            "name": "ガラス",
+            "itemKey": "minecraft:glass",
+            "sellPrice": 1,
+            "buyPrice": 8,
+            "enabled": true
+        },
+        {
+            "id": 33,
+            "unit": "個",
+            "name": "ウィザースケルトンの頭",
+            "itemKey": "minecraft:wither_skeleton_skull",
+            "sellPrice": 300,
+            "buyPrice": 2000,
+            "enabled": true
+        },
+        {
+            "id": 34,
+            "unit": "個",
+            "name": "額縁",
+            "itemKey": "minecraft:item_frame",
+            "sellPrice": 10,
+            "buyPrice": 40,
+            "enabled": true
+        },
+        {
+            "id": 35,
+            "unit": "個",
+            "name": "矢",
+            "itemKey": "minecraft:arrow",
+            "sellPrice": 1,
+            "buyPrice": 5,
+            "enabled": true
+        },
+        {
+            "id": 36,
+            "unit": "個",
+            "name": "不死のトーテム",
+            "itemKey": "minecraft:totem_of_undying",
+            "sellPrice": 500,
+            "buyPrice": 4000,
+            "enabled": true
+        },
+        {
+            "id": 37,
+            "unit": "個",
+            "name": "革",
+            "itemKey": "minecraft:leather",
+            "sellPrice": 8,
+            "buyPrice": 30,
+            "enabled": true
+        },
+        {
+            "id": 38,
+            "unit": "個",
+            "name": "骨",
+            "itemKey": "minecraft:bone",
+            "sellPrice": 2,
+            "buyPrice": 10,
+            "enabled": true
+        },
+        {
+            "id": 39,
+            "unit": "個",
+            "name": "糸",
+            "itemKey": "minecraft:string",
+            "sellPrice": 2,
+            "buyPrice": 10,
+            "enabled": true
+        },
+        {
+            "id": 40,
+            "unit": "個",
+            "name": "小麦",
+            "itemKey": "minecraft:wheat",
+            "sellPrice": 3,
+            "buyPrice": 10,
+            "enabled": true
+        },
+        {
+            "id": 41,
+            "unit": "個",
+            "name": "ジャガイモ",
+            "itemKey": "minecraft:potato",
+            "sellPrice": 5,
+            "buyPrice": 12,
+            "enabled": true
+        },
+        {
+            "id": 42,
+            "unit": "個",
+            "name": "ニンジン",
+            "itemKey": "minecraft:carrot",
+            "sellPrice": 5,
+            "buyPrice": 12,
+            "enabled": true
+        },
+        {
+            "id": 43,
+            "unit": "個",
+            "name": "カボチャ",
+            "itemKey": "minecraft:pumpkin",
+            "sellPrice": 8,
+            "buyPrice": 30,
+            "enabled": true
+        },
+        {
+            "id": 44,
+            "unit": "個",
+            "name": "リンゴ",
+            "itemKey": "minecraft:apple",
+            "sellPrice": 6,
+            "buyPrice": 15,
+            "enabled": true
+        },
+        {
+            "id": 45,
+            "unit": "個",
+            "name": "スイカの薄切り",
+            "itemKey": "minecraft:melon_slice",
+            "sellPrice": 2,
+            "buyPrice": 8,
+            "enabled": true
+        },
+        {
+            "id": 46,
+            "unit": "個",
+            "name": "スイートベリー",
+            "itemKey": "minecraft:sweet_berries",
+            "sellPrice": 2,
+            "buyPrice": 6,
+            "enabled": true
+        },
+        {
+            "id": 47,
+            "unit": "個",
+            "name": "グロウベリー",
+            "itemKey": "minecraft:glow_berries",
+            "sellPrice": 4,
+            "buyPrice": 10,
+            "enabled": true
+        },
+        {
+            "id": 48,
+            "unit": "個",
+            "name": "ベイクドポテト",
+            "itemKey": "minecraft:baked_potato",
+            "sellPrice": 6,
+            "buyPrice": 20,
+            "enabled": true
+        },
+        {
+            "id": 49,
+            "unit": "個",
+            "name": "パン",
+            "itemKey": "minecraft:bread",
+            "sellPrice": 10,
+            "buyPrice": 33,
+            "enabled": true
+        },
+        {
+            "id": 50,
+            "unit": "個",
+            "name": "クッキー",
+            "itemKey": "minecraft:cookie",
+            "sellPrice": 6,
+            "buyPrice": 10,
+            "enabled": true
+        },
+        {
+            "id": 51,
+            "unit": "個",
+            "name": "パンプキンパイ",
+            "itemKey": "minecraft:pumpkin_pie",
+            "sellPrice": 30,
+            "buyPrice": 60,
+            "enabled": true
+        },
+        {
+            "id": 52,
+            "unit": "個",
+            "name": "ケーキ",
+            "itemKey": "minecraft:cake",
+            "sellPrice": 85,
+            "buyPrice": 150,
+            "enabled": true
+        },
+        {
+            "id": 53,
+            "unit": "個",
+            "name": "ハチミツ入りの瓶",
+            "itemKey": "minecraft:honey_bottle",
+            "sellPrice": 12,
+            "buyPrice": 40,
+            "enabled": true
+        },
+        {
+            "id": 54,
+            "unit": "個",
+            "name": "ステーキ",
+            "itemKey": "minecraft:cooked_beef",
+            "sellPrice": 10,
+            "buyPrice": 36,
+            "enabled": true
+        },
+        {
+            "id": 55,
+            "unit": "個",
+            "name": "生の牛肉",
+            "itemKey": "minecraft:beef",
+            "sellPrice": 5,
+            "buyPrice": 24,
+            "enabled": true
+        },
+        {
+            "id": 56,
+            "unit": "個",
+            "name": "生の豚肉",
+            "itemKey": "minecraft:porkchop",
+            "sellPrice": 5,
+            "buyPrice": 24,
+            "enabled": true
+        },
+        {
+            "id": 57,
+            "unit": "個",
+            "name": "生の鶏肉",
+            "itemKey": "minecraft:chicken",
+            "sellPrice": 3,
+            "buyPrice": 16,
+            "enabled": true
+        },
+        {
+            "id": 58,
+            "unit": "個",
+            "name": "生鱈",
+            "itemKey": "minecraft:cod",
+            "sellPrice": 5,
+            "buyPrice": 24,
+            "enabled": true
+        },
+        {
+            "id": 59,
+            "unit": "個",
+            "name": "焼き豚",
+            "itemKey": "minecraft:cooked_porkchop",
+            "sellPrice": 10,
+            "buyPrice": 36,
+            "enabled": true
+        },
+        {
+            "id": 60,
+            "unit": "個",
+            "name": "焼き羊肉",
+            "itemKey": "minecraft:cooked_mutton",
+            "sellPrice": 8,
+            "buyPrice": 30,
+            "enabled": true
+        },
+        {
+            "id": 61,
+            "unit": "個",
+            "name": "焼き鳥",
+            "itemKey": "minecraft:cooked_chicken",
+            "sellPrice": 5,
+            "buyPrice": 24,
+            "enabled": true
+        },
+        {
+            "id": 62,
+            "unit": "個",
+            "name": "焼き兎肉",
+            "itemKey": "minecraft:cooked_rabbit",
+            "sellPrice": 8,
+            "buyPrice": 30,
+            "enabled": true
+        },
+        {
+            "id": 63,
+            "unit": "個",
+            "name": "焼き鱈",
+            "itemKey": "minecraft:cooked_cod",
+            "sellPrice": 10,
+            "buyPrice": 36,
+            "enabled": true
+        },
+        {
+            "id": 64,
+            "unit": "個",
+            "name": "焼き鮭",
+            "itemKey": "minecraft:cooked_salmon",
+            "sellPrice": 12,
+            "buyPrice": 40,
+            "enabled": true
+        },
+        {
+            "id": 65,
+            "unit": "個",
+            "name": "熱帯魚",
+            "itemKey": "minecraft:tropical_fish",
+            "sellPrice": 12,
+            "buyPrice": 50,
+            "enabled": true
+        },
+        {
+            "id": 66,
+            "unit": "個",
+            "name": "フグ",
+            "itemKey": "minecraft:pufferfish",
+            "sellPrice": 15,
+            "buyPrice": 60,
+            "enabled": true
+        },
+        {
+            "id": 67,
+            "unit": "個",
+            "name": "キノコシチュー",
+            "itemKey": "minecraft:mushroom_stew",
+            "sellPrice": 18,
+            "buyPrice": 30,
+            "enabled": true
+        },
+        {
+            "id": 68,
+            "unit": "個",
+            "name": "ビートルートスープ",
+            "itemKey": "minecraft:beetroot_soup",
+            "sellPrice": 18,
+            "buyPrice": 30,
+            "enabled": true
+        },
+        {
+            "id": 69,
+            "unit": "個",
+            "name": "ウサギのシチュー",
+            "itemKey": "minecraft:rabbit_stew",
+            "sellPrice": 48,
+            "buyPrice": 100,
+            "enabled": true
+        },
+        {
+            "id": 70,
+            "unit": "個",
+            "name": "怪しげなシチュー",
+            "itemKey": "minecraft:suspicious_stew",
+            "sellPrice": 30,
+            "buyPrice": 80,
+            "enabled": true
+        },
+        {
+            "id": 71,
+            "unit": "個",
+            "name": "金のリンゴ",
+            "itemKey": "minecraft:golden_apple",
+            "sellPrice": 271,
+            "buyPrice": 1072,
+            "enabled": true
+        },
+        {
+            "id": 72,
+            "unit": "個",
+            "name": "エンチャントされた金のリンゴ",
+            "itemKey": "minecraft:enchanted_golden_apple",
+            "sellPrice": 3000,
+            "buyPrice": 25000,
+            "enabled": true
+        },
+        {
+            "id": 73,
+            "unit": "個",
+            "name": "金のニンジン",
+            "itemKey": "minecraft:golden_carrot",
+            "sellPrice": 35,
+            "buyPrice": 131,
+            "enabled": true
+        },
+        {
+            "id": 74,
+            "unit": "個",
+            "name": "コーラスフルーツ",
+            "itemKey": "minecraft:chorus_fruit",
+            "sellPrice": 8,
+            "buyPrice": 40,
+            "enabled": true
+        },
+        {
+            "id": 75,
+            "unit": "個",
+            "name": "毒ジャガイモ",
+            "itemKey": "minecraft:poisonous_potato",
+            "sellPrice": 1,
+            "buyPrice": 10,
+            "enabled": true
+        },
+        {
+            "id": 76,
+            "unit": "個",
+            "name": "腐った肉",
+            "itemKey": "minecraft:rotten_flesh",
+            "sellPrice": 1,
+            "buyPrice": 6,
+            "enabled": true
+        },
+        {
+            "id": 77,
+            "unit": "個",
+            "name": "クモの目",
+            "itemKey": "minecraft:spider_eye",
+            "sellPrice": 3,
+            "buyPrice": 15,
+            "enabled": true
+        },
+        {
+            "id": 78,
+            "unit": "個",
+            "name": "コンブ",
+            "itemKey": "minecraft:kelp",
+            "sellPrice": 1,
+            "buyPrice": 4,
+            "enabled": true
+        },
+        {
+            "id": 79,
+            "unit": "個",
+            "name": "乾燥したコンブ",
+            "itemKey": "minecraft:dried_kelp",
+            "sellPrice": 2,
+            "buyPrice": 8,
+            "enabled": true
+        },
+        {
+            "id": 80,
+            "unit": "個",
+            "name": "ネザースター",
+            "itemKey": "minecraft:nether_star",
+            "sellPrice": 2000,
+            "buyPrice": 15000,
+            "enabled": true
+        },
+        {
+            "id": 81,
+            "unit": "個",
+            "name": "ネザークォーツ",
+            "itemKey": "minecraft:quartz",
+            "sellPrice": 5,
+            "buyPrice": 20,
+            "enabled": true
+        },
+        {
+            "id": 82,
+            "unit": "個",
+            "name": "グロウストーンダスト",
+            "itemKey": "minecraft:glowstone_dust",
+            "sellPrice": 3,
+            "buyPrice": 15,
+            "enabled": true
+        },
+        {
+            "id": 83,
+            "unit": "個",
+            "name": "黒曜石",
+            "itemKey": "minecraft:obsidian",
+            "sellPrice": 12,
+            "buyPrice": 50,
+            "enabled": true
+        },
+        {
+            "id": 84,
+            "unit": "個",
+            "name": "泣く黒曜石",
+            "itemKey": "minecraft:crying_obsidian",
+            "sellPrice": 25,
+            "buyPrice": 100,
+            "enabled": true
+        },
+        {
+            "id": 85,
+            "unit": "個",
+            "name": "プリズマリンの破片",
+            "itemKey": "minecraft:prismarine_shard",
+            "sellPrice": 5,
+            "buyPrice": 20,
+            "enabled": true
+        },
+        {
+            "id": 86,
+            "unit": "個",
+            "name": "プリズマリンの結晶",
+            "itemKey": "minecraft:prismarine_crystals",
+            "sellPrice": 8,
+            "buyPrice": 30,
+            "enabled": true
+        },
+        {
+            "id": 87,
+            "unit": "個",
+            "name": "海の心",
+            "itemKey": "minecraft:heart_of_the_sea",
+            "sellPrice": 2000,
+            "buyPrice": 5000,
+            "enabled": true
+        },
+        {
+            "id": 88,
+            "unit": "個",
+            "name": "オウムガイの殻",
+            "itemKey": "minecraft:nautilus_shell",
+            "sellPrice": 50,
+            "buyPrice": 300,
+            "enabled": true
+        },
+        {
+            "id": 89,
+            "unit": "個",
+            "name": "カメのウロコ",
+            "itemKey": "minecraft:turtle_scute",
+            "sellPrice": 25,
+            "buyPrice": 150,
+            "enabled": true
+        },
+        {
+            "id": 90,
+            "unit": "個",
+            "name": "ネザーウォート",
+            "itemKey": "minecraft:nether_wart",
+            "sellPrice": 4,
+            "buyPrice": 15,
+            "enabled": true
+        },
+        {
+            "id": 91,
+            "unit": "個",
+            "name": "マグマクリーム",
+            "itemKey": "minecraft:magma_cream",
+            "sellPrice": 31,
+            "buyPrice": 143,
+            "enabled": true
+        },
+        {
+            "id": 92,
+            "unit": "個",
+            "name": "ファントムの皮膜",
+            "itemKey": "minecraft:phantom_membrane",
+            "sellPrice": 30,
+            "buyPrice": 100,
+            "enabled": true
+        },
+        {
+            "id": 93,
+            "unit": "個",
+            "name": "ドラゴンブレス",
+            "itemKey": "minecraft:dragon_breath",
+            "sellPrice": 50,
+            "buyPrice": 200,
+            "enabled": true
+        },
+        {
+            "id": 94,
+            "unit": "個",
+            "name": "発酵したクモの目",
+            "itemKey": "minecraft:fermented_spider_eye",
+            "sellPrice": 15,
+            "buyPrice": 40,
+            "enabled": true
+        },
+        {
+            "id": 95,
+            "unit": "個",
+            "name": "サドル",
+            "itemKey": "minecraft:saddle",
+            "sellPrice": 50,
+            "buyPrice": 300,
+            "enabled": true
+        },
+        {
+            "id": 96,
+            "unit": "個",
+            "name": "名札",
+            "itemKey": "minecraft:name_tag",
+            "sellPrice": 30,
+            "buyPrice": 200,
+            "enabled": true
+        },
+        {
+            "id": 97,
+            "unit": "個",
+            "name": "スポンジ",
+            "itemKey": "minecraft:sponge",
+            "sellPrice": 80,
+            "buyPrice": 400,
+            "enabled": true
+        },
+        {
+            "id": 98,
+            "unit": "個",
+            "name": "エンダーチェスト",
+            "itemKey": "minecraft:ender_chest",
+            "sellPrice": 200,
+            "buyPrice": 1200,
+            "enabled": true
+        },
+        {
+            "id": 99,
+            "unit": "個",
+            "name": "シュルカーボックス",
+            "itemKey": "minecraft:shulker_box",
+            "sellPrice": 400,
+            "buyPrice": 2500,
+            "enabled": true
+        },
+        {
+            "id": 100,
+            "unit": "個",
+            "name": "エンドクリスタル",
+            "itemKey": "minecraft:end_crystal",
+            "sellPrice": 206,
+            "buyPrice": 810,
+            "enabled": true
+        },
+        {
+            "id": 101,
+            "unit": "個",
+            "name": "シーランタン",
+            "itemKey": "minecraft:sea_lantern",
+            "sellPrice": 62,
+            "buyPrice": 210,
+            "enabled": true
+        },
+        {
+            "id": 102,
+            "unit": "個",
+            "name": "ハニカム",
+            "itemKey": "minecraft:honeycomb",
+            "sellPrice": 3,
+            "buyPrice": 15,
+            "enabled": true
+        },
+        {
+            "id": 103,
+            "unit": "個",
+            "name": "ハチミツブロック",
+            "itemKey": "minecraft:honey_block",
+            "sellPrice": 53,
+            "buyPrice": 176,
+            "enabled": true
+        },
+        {
+            "id": 104,
+            "unit": "冊",
+            "name": "本",
+            "itemKey": "minecraft:book",
+            "sellPrice": 55,
+            "buyPrice": 100,
+            "enabled": true
+        },
+        {
+            "id": 105,
+            "unit": "個",
+            "name": "白の羊毛",
+            "itemKey": "minecraft:white_wool",
+            "sellPrice": 9,
+            "buyPrice": 44,
+            "enabled": true
+        },
+        {
+            "id": 106,
+            "unit": "個",
+            "name": "橙の羊毛",
+            "itemKey": "minecraft:orange_wool",
+            "sellPrice": 9,
+            "buyPrice": 44,
+            "enabled": true
+        },
+        {
+            "id": 107,
+            "unit": "個",
+            "name": "赤紫の羊毛",
+            "itemKey": "minecraft:magenta_wool",
+            "sellPrice": 9,
+            "buyPrice": 44,
+            "enabled": true
+        },
+        {
+            "id": 108,
+            "unit": "個",
+            "name": "空色の羊毛",
+            "itemKey": "minecraft:light_blue_wool",
+            "sellPrice": 9,
+            "buyPrice": 44,
+            "enabled": true
+        },
+        {
+            "id": 109,
+            "unit": "個",
+            "name": "黄色の羊毛",
+            "itemKey": "minecraft:yellow_wool",
+            "sellPrice": 9,
+            "buyPrice": 44,
+            "enabled": true
+        },
+        {
+            "id": 110,
+            "unit": "個",
+            "name": "黄緑の羊毛",
+            "itemKey": "minecraft:lime_wool",
+            "sellPrice": 9,
+            "buyPrice": 44,
+            "enabled": true
+        },
+        {
+            "id": 111,
+            "unit": "個",
+            "name": "桃色の羊毛",
+            "itemKey": "minecraft:pink_wool",
+            "sellPrice": 9,
+            "buyPrice": 44,
+            "enabled": true
+        },
+        {
+            "id": 112,
+            "unit": "個",
+            "name": "灰色の羊毛",
+            "itemKey": "minecraft:gray_wool",
+            "sellPrice": 9,
+            "buyPrice": 44,
+            "enabled": true
+        },
+        {
+            "id": 113,
+            "unit": "個",
+            "name": "薄灰色の羊毛",
+            "itemKey": "minecraft:light_gray_wool",
+            "sellPrice": 9,
+            "buyPrice": 44,
+            "enabled": true
+        },
+        {
+            "id": 114,
+            "unit": "個",
+            "name": "青緑の羊毛",
+            "itemKey": "minecraft:cyan_wool",
+            "sellPrice": 9,
+            "buyPrice": 44,
+            "enabled": true
+        },
+        {
+            "id": 115,
+            "unit": "個",
+            "name": "紫色の羊毛",
+            "itemKey": "minecraft:purple_wool",
+            "sellPrice": 9,
+            "buyPrice": 44,
+            "enabled": true
+        },
+        {
+            "id": 116,
+            "unit": "個",
+            "name": "青色の羊毛",
+            "itemKey": "minecraft:blue_wool",
+            "sellPrice": 9,
+            "buyPrice": 44,
+            "enabled": true
+        },
+        {
+            "id": 117,
+            "unit": "個",
+            "name": "茶色の羊毛",
+            "itemKey": "minecraft:brown_wool",
+            "sellPrice": 9,
+            "buyPrice": 44,
+            "enabled": true
+        },
+        {
+            "id": 118,
+            "unit": "個",
+            "name": "緑色の羊毛",
+            "itemKey": "minecraft:green_wool",
+            "sellPrice": 9,
+            "buyPrice": 44,
+            "enabled": true
+        },
+        {
+            "id": 119,
+            "unit": "個",
+            "name": "赤色の羊毛",
+            "itemKey": "minecraft:red_wool",
+            "sellPrice": 9,
+            "buyPrice": 44,
+            "enabled": true
+        },
+        {
+            "id": 120,
+            "unit": "個",
+            "name": "黒色の羊毛",
+            "itemKey": "minecraft:black_wool",
+            "sellPrice": 9,
+            "buyPrice": 44,
+            "enabled": true
+        },
+        {
+            "id": 121,
+            "unit": "個",
+            "name": "オークの原木",
+            "itemKey": "minecraft:oak_log",
+            "sellPrice": 1,
+            "buyPrice": 6,
+            "enabled": true
+        },
+        {
+            "id": 122,
+            "unit": "個",
+            "name": "トウヒの原木",
+            "itemKey": "minecraft:spruce_log",
+            "sellPrice": 1,
+            "buyPrice": 6,
+            "enabled": true
+        },
+        {
+            "id": 123,
+            "unit": "個",
+            "name": "シラカバの原木",
+            "itemKey": "minecraft:birch_log",
+            "sellPrice": 1,
+            "buyPrice": 6,
+            "enabled": true
+        },
+        {
+            "id": 124,
+            "unit": "個",
+            "name": "ジャングルの原木",
+            "itemKey": "minecraft:jungle_log",
+            "sellPrice": 1,
+            "buyPrice": 6,
+            "enabled": true
+        },
+        {
+            "id": 125,
+            "unit": "個",
+            "name": "アカシアの原木",
+            "itemKey": "minecraft:acacia_log",
+            "sellPrice": 1,
+            "buyPrice": 6,
+            "enabled": true
+        },
+        {
+            "id": 126,
+            "unit": "個",
+            "name": "ダークオークの原木",
+            "itemKey": "minecraft:dark_oak_log",
+            "sellPrice": 1,
+            "buyPrice": 6,
+            "enabled": true
+        },
+        {
+            "id": 127,
+            "unit": "個",
+            "name": "マングローブの原木",
+            "itemKey": "minecraft:mangrove_log",
+            "sellPrice": 1,
+            "buyPrice": 6,
+            "enabled": true
+        },
+        {
+            "id": 128,
+            "unit": "個",
+            "name": "サクラの原木",
+            "itemKey": "minecraft:cherry_log",
+            "sellPrice": 1,
+            "buyPrice": 6,
+            "enabled": true
+        },
+        {
+            "id": 129,
+            "unit": "個",
+            "name": "真紅の幹",
+            "itemKey": "minecraft:crimson_stem",
+            "sellPrice": 1,
+            "buyPrice": 6,
+            "enabled": true
+        },
+        {
+            "id": 130,
+            "unit": "個",
+            "name": "歪んだ幹",
+            "itemKey": "minecraft:warped_stem",
+            "sellPrice": 1,
+            "buyPrice": 6,
+            "enabled": true
+        },
+        {
+            "id": 131,
+            "unit": "個",
+            "name": "鉄のヘルメット",
+            "itemKey": "minecraft:iron_helmet",
+            "sellPrice": 82,
+            "buyPrice": 330,
+            "enabled": true
+        },
+        {
+            "id": 132,
+            "unit": "個",
+            "name": "鉄のチェストプレート",
+            "itemKey": "minecraft:iron_chestplate",
+            "sellPrice": 132,
+            "buyPrice": 528,
+            "enabled": true
+        },
+        {
+            "id": 133,
+            "unit": "個",
+            "name": "鉄のレギンス",
+            "itemKey": "minecraft:iron_leggings",
+            "sellPrice": 116,
+            "buyPrice": 462,
+            "enabled": true
+        },
+        {
+            "id": 134,
+            "unit": "個",
+            "name": "鉄のブーツ",
+            "itemKey": "minecraft:iron_boots",
+            "sellPrice": 66,
+            "buyPrice": 264,
+            "enabled": true
+        },
+        {
+            "id": 135,
+            "unit": "個",
+            "name": "金のヘルメット",
+            "itemKey": "minecraft:golden_helmet",
+            "sellPrice": 165,
+            "buyPrice": 660,
+            "enabled": true
+        },
+        {
+            "id": 136,
+            "unit": "個",
+            "name": "金のチェストプレート",
+            "itemKey": "minecraft:golden_chestplate",
+            "sellPrice": 264,
+            "buyPrice": 1056,
+            "enabled": true
+        },
+        {
+            "id": 137,
+            "unit": "個",
+            "name": "金のレギンス",
+            "itemKey": "minecraft:golden_leggings",
+            "sellPrice": 231,
+            "buyPrice": 924,
+            "enabled": true
+        },
+        {
+            "id": 138,
+            "unit": "個",
+            "name": "金のブーツ",
+            "itemKey": "minecraft:golden_boots",
+            "sellPrice": 132,
+            "buyPrice": 528,
+            "enabled": true
+        },
+        {
+            "id": 139,
+            "unit": "個",
+            "name": "ダイヤモンドのヘルメット",
+            "itemKey": "minecraft:diamond_helmet",
+            "sellPrice": 1650,
+            "buyPrice": 4400,
+            "enabled": true
+        },
+        {
+            "id": 140,
+            "unit": "個",
+            "name": "ダイヤモンドのチェストプレート",
+            "itemKey": "minecraft:diamond_chestplate",
+            "sellPrice": 2640,
+            "buyPrice": 7040,
+            "enabled": true
+        },
+        {
+            "id": 141,
+            "unit": "個",
+            "name": "ダイヤモンドのレギンス",
+            "itemKey": "minecraft:diamond_leggings",
+            "sellPrice": 2310,
+            "buyPrice": 6160,
+            "enabled": true
+        },
+        {
+            "id": 142,
+            "unit": "個",
+            "name": "ダイヤモンドのブーツ",
+            "itemKey": "minecraft:diamond_boots",
+            "sellPrice": 1320,
+            "buyPrice": 3520,
+            "enabled": true
+        },
+        {
+            "id": 143,
+            "unit": "個",
+            "name": "ネザライトのヘルメット",
+            "itemKey": "minecraft:netherite_helmet",
+            "sellPrice": 4015,
+            "buyPrice": 13640,
+            "enabled": true
+        },
+        {
+            "id": 144,
+            "unit": "個",
+            "name": "ネザライトのチェストプレート",
+            "itemKey": "minecraft:netherite_chestplate",
+            "sellPrice": 5104,
+            "buyPrice": 16544,
+            "enabled": true
+        },
+        {
+            "id": 145,
+            "unit": "個",
+            "name": "ネザライトのレギンス",
+            "itemKey": "minecraft:netherite_leggings",
+            "sellPrice": 4741,
+            "buyPrice": 15576,
+            "enabled": true
+        },
+        {
+            "id": 146,
+            "unit": "個",
+            "name": "ネザライトのブーツ",
+            "itemKey": "minecraft:netherite_boots",
+            "sellPrice": 3652,
+            "buyPrice": 12672,
+            "enabled": true
+        },
+        {
+            "id": 147,
+            "name": "ポーション（暗視）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:night_vision",
+            "sellPrice": 32,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 148,
+            "name": "ポーション（暗視（長））",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:long_night_vision",
+            "sellPrice": 40,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 149,
+            "name": "ポーション（透明化）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:invisibility",
+            "sellPrice": 36,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 150,
+            "name": "ポーション（透明化（長））",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:long_invisibility",
+            "sellPrice": 44,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 151,
+            "name": "ポーション（跳躍）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:leaping",
+            "sellPrice": 34,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 152,
+            "name": "ポーション（跳躍（長））",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:long_leaping",
+            "sellPrice": 42,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 153,
+            "name": "ポーション（跳躍 II）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:strong_leaping",
+            "sellPrice": 48,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 154,
+            "name": "ポーション（耐火）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:fire_resistance",
+            "sellPrice": 38,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 155,
+            "name": "ポーション（耐火（長））",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:long_fire_resistance",
+            "sellPrice": 46,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 156,
+            "name": "ポーション（俊敏）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:swiftness",
+            "sellPrice": 34,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 157,
+            "name": "ポーション（俊敏（長））",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:long_swiftness",
+            "sellPrice": 42,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 158,
+            "name": "ポーション（俊敏 II）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:strong_swiftness",
+            "sellPrice": 48,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 159,
+            "name": "ポーション（鈍化）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:slowness",
+            "sellPrice": 30,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 160,
+            "name": "ポーション（鈍化（長））",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:long_slowness",
+            "sellPrice": 38,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 161,
+            "name": "ポーション（鈍化 II）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:strong_slowness",
+            "sellPrice": 44,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 162,
+            "name": "ポーション（タートルマスター）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:turtle_master",
+            "sellPrice": 50,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 163,
+            "name": "ポーション（タートルマスター（長））",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:long_turtle_master",
+            "sellPrice": 58,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 164,
+            "name": "ポーション（タートルマスター II）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:strong_turtle_master",
+            "sellPrice": 65,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 165,
+            "name": "ポーション（水中呼吸）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:water_breathing",
+            "sellPrice": 36,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 166,
+            "name": "ポーション（水中呼吸（長））",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:long_water_breathing",
+            "sellPrice": 44,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 167,
+            "name": "ポーション（治癒）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:healing",
+            "sellPrice": 40,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 168,
+            "name": "ポーション（治癒 II）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:strong_healing",
+            "sellPrice": 52,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 169,
+            "name": "ポーション（負傷）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:harming",
+            "sellPrice": 36,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 170,
+            "name": "ポーション（負傷 II）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:strong_harming",
+            "sellPrice": 48,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 171,
+            "name": "ポーション（毒）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:poison",
+            "sellPrice": 34,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 172,
+            "name": "ポーション（毒（長））",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:long_poison",
+            "sellPrice": 42,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 173,
+            "name": "ポーション（毒 II）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:strong_poison",
+            "sellPrice": 48,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 174,
+            "name": "ポーション（再生）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:regeneration",
+            "sellPrice": 42,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 175,
+            "name": "ポーション（再生（長））",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:long_regeneration",
+            "sellPrice": 52,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 176,
+            "name": "ポーション（再生 II）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:strong_regeneration",
+            "sellPrice": 58,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 177,
+            "name": "ポーション（力）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:strength",
+            "sellPrice": 40,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 178,
+            "name": "ポーション（力（長））",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:long_strength",
+            "sellPrice": 50,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 179,
+            "name": "ポーション（力 II）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:strong_strength",
+            "sellPrice": 58,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 180,
+            "name": "ポーション（弱体化）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:weakness",
+            "sellPrice": 30,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 181,
+            "name": "ポーション（弱体化（長））",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:long_weakness",
+            "sellPrice": 38,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 182,
+            "name": "ポーション（緩降）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:slow_falling",
+            "sellPrice": 36,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 183,
+            "name": "ポーション（緩降（長））",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:long_slow_falling",
+            "sellPrice": 44,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 184,
+            "name": "ポーション（風チャージ）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:wind_charged",
+            "sellPrice": 34,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 185,
+            "name": "ポーション（織物）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:weaving",
+            "sellPrice": 34,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 186,
+            "name": "ポーション（滲出）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:oozing",
+            "sellPrice": 34,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 187,
+            "name": "ポーション（寄生）",
+            "unit": "個",
+            "itemKey": "minecraft:potion",
+            "matchPotion": "minecraft:infestation",
+            "sellPrice": 34,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 188,
+            "name": "スプラッシュポーション（暗視）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:night_vision",
+            "sellPrice": 44,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 189,
+            "name": "スプラッシュポーション（暗視（長））",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:long_night_vision",
+            "sellPrice": 52,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 190,
+            "name": "スプラッシュポーション（透明化）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:invisibility",
+            "sellPrice": 48,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 191,
+            "name": "スプラッシュポーション（透明化（長））",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:long_invisibility",
+            "sellPrice": 56,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 192,
+            "name": "スプラッシュポーション（跳躍）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:leaping",
+            "sellPrice": 46,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 193,
+            "name": "スプラッシュポーション（跳躍（長））",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:long_leaping",
+            "sellPrice": 54,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 194,
+            "name": "スプラッシュポーション（跳躍 II）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:strong_leaping",
+            "sellPrice": 60,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 195,
+            "name": "スプラッシュポーション（耐火）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:fire_resistance",
+            "sellPrice": 50,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 196,
+            "name": "スプラッシュポーション（耐火（長））",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:long_fire_resistance",
+            "sellPrice": 58,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 197,
+            "name": "スプラッシュポーション（俊敏）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:swiftness",
+            "sellPrice": 46,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 198,
+            "name": "スプラッシュポーション（俊敏（長））",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:long_swiftness",
+            "sellPrice": 54,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 199,
+            "name": "スプラッシュポーション（俊敏 II）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:strong_swiftness",
+            "sellPrice": 60,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 200,
+            "name": "スプラッシュポーション（鈍化）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:slowness",
+            "sellPrice": 42,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 201,
+            "name": "スプラッシュポーション（鈍化（長））",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:long_slowness",
+            "sellPrice": 50,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 202,
+            "name": "スプラッシュポーション（鈍化 II）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:strong_slowness",
+            "sellPrice": 56,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 203,
+            "name": "スプラッシュポーション（タートルマスター）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:turtle_master",
+            "sellPrice": 62,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 204,
+            "name": "スプラッシュポーション（タートルマスター（長））",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:long_turtle_master",
+            "sellPrice": 70,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 205,
+            "name": "スプラッシュポーション（タートルマスター II）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:strong_turtle_master",
+            "sellPrice": 77,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 206,
+            "name": "スプラッシュポーション（水中呼吸）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:water_breathing",
+            "sellPrice": 48,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 207,
+            "name": "スプラッシュポーション（水中呼吸（長））",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:long_water_breathing",
+            "sellPrice": 56,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 208,
+            "name": "スプラッシュポーション（治癒）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:healing",
+            "sellPrice": 52,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 209,
+            "name": "スプラッシュポーション（治癒 II）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:strong_healing",
+            "sellPrice": 64,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 210,
+            "name": "スプラッシュポーション（負傷）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:harming",
+            "sellPrice": 48,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 211,
+            "name": "スプラッシュポーション（負傷 II）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:strong_harming",
+            "sellPrice": 60,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 212,
+            "name": "スプラッシュポーション（毒）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:poison",
+            "sellPrice": 46,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 213,
+            "name": "スプラッシュポーション（毒（長））",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:long_poison",
+            "sellPrice": 54,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 214,
+            "name": "スプラッシュポーション（毒 II）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:strong_poison",
+            "sellPrice": 60,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 215,
+            "name": "スプラッシュポーション（再生）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:regeneration",
+            "sellPrice": 54,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 216,
+            "name": "スプラッシュポーション（再生（長））",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:long_regeneration",
+            "sellPrice": 64,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 217,
+            "name": "スプラッシュポーション（再生 II）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:strong_regeneration",
+            "sellPrice": 70,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 218,
+            "name": "スプラッシュポーション（力）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:strength",
+            "sellPrice": 52,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 219,
+            "name": "スプラッシュポーション（力（長））",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:long_strength",
+            "sellPrice": 62,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 220,
+            "name": "スプラッシュポーション（力 II）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:strong_strength",
+            "sellPrice": 70,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 221,
+            "name": "スプラッシュポーション（弱体化）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:weakness",
+            "sellPrice": 42,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 222,
+            "name": "スプラッシュポーション（弱体化（長））",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:long_weakness",
+            "sellPrice": 50,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 223,
+            "name": "スプラッシュポーション（緩降）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:slow_falling",
+            "sellPrice": 48,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 224,
+            "name": "スプラッシュポーション（緩降（長））",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:long_slow_falling",
+            "sellPrice": 56,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 225,
+            "name": "スプラッシュポーション（風チャージ）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:wind_charged",
+            "sellPrice": 46,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 226,
+            "name": "スプラッシュポーション（織物）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:weaving",
+            "sellPrice": 46,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 227,
+            "name": "スプラッシュポーション（滲出）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:oozing",
+            "sellPrice": 46,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 228,
+            "name": "スプラッシュポーション（寄生）",
+            "unit": "個",
+            "itemKey": "minecraft:splash_potion",
+            "matchPotion": "minecraft:infestation",
+            "sellPrice": 46,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 229,
+            "name": "残留ポーション（暗視）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:night_vision",
+            "sellPrice": 87,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 230,
+            "name": "残留ポーション（暗視（長））",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:long_night_vision",
+            "sellPrice": 95,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 231,
+            "name": "残留ポーション（透明化）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:invisibility",
+            "sellPrice": 91,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 232,
+            "name": "残留ポーション（透明化（長））",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:long_invisibility",
+            "sellPrice": 99,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 233,
+            "name": "残留ポーション（跳躍）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:leaping",
+            "sellPrice": 89,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 234,
+            "name": "残留ポーション（跳躍（長））",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:long_leaping",
+            "sellPrice": 97,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 235,
+            "name": "残留ポーション（跳躍 II）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:strong_leaping",
+            "sellPrice": 103,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 236,
+            "name": "残留ポーション（耐火）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:fire_resistance",
+            "sellPrice": 93,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 237,
+            "name": "残留ポーション（耐火（長））",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:long_fire_resistance",
+            "sellPrice": 101,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 238,
+            "name": "残留ポーション（俊敏）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:swiftness",
+            "sellPrice": 89,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 239,
+            "name": "残留ポーション（俊敏（長））",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:long_swiftness",
+            "sellPrice": 97,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 240,
+            "name": "残留ポーション（俊敏 II）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:strong_swiftness",
+            "sellPrice": 103,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 241,
+            "name": "残留ポーション（鈍化）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:slowness",
+            "sellPrice": 85,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 242,
+            "name": "残留ポーション（鈍化（長））",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:long_slowness",
+            "sellPrice": 93,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 243,
+            "name": "残留ポーション（鈍化 II）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:strong_slowness",
+            "sellPrice": 99,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 244,
+            "name": "残留ポーション（タートルマスター）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:turtle_master",
+            "sellPrice": 105,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 245,
+            "name": "残留ポーション（タートルマスター（長））",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:long_turtle_master",
+            "sellPrice": 113,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 246,
+            "name": "残留ポーション（タートルマスター II）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:strong_turtle_master",
+            "sellPrice": 120,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 247,
+            "name": "残留ポーション（水中呼吸）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:water_breathing",
+            "sellPrice": 91,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 248,
+            "name": "残留ポーション（水中呼吸（長））",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:long_water_breathing",
+            "sellPrice": 99,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 249,
+            "name": "残留ポーション（治癒）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:healing",
+            "sellPrice": 95,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 250,
+            "name": "残留ポーション（治癒 II）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:strong_healing",
+            "sellPrice": 107,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 251,
+            "name": "残留ポーション（負傷）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:harming",
+            "sellPrice": 91,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 252,
+            "name": "残留ポーション（負傷 II）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:strong_harming",
+            "sellPrice": 103,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 253,
+            "name": "残留ポーション（毒）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:poison",
+            "sellPrice": 89,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 254,
+            "name": "残留ポーション（毒（長））",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:long_poison",
+            "sellPrice": 97,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 255,
+            "name": "残留ポーション（毒 II）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:strong_poison",
+            "sellPrice": 103,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 256,
+            "name": "残留ポーション（再生）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:regeneration",
+            "sellPrice": 97,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 257,
+            "name": "残留ポーション（再生（長））",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:long_regeneration",
+            "sellPrice": 107,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 258,
+            "name": "残留ポーション（再生 II）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:strong_regeneration",
+            "sellPrice": 113,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 259,
+            "name": "残留ポーション（力）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:strength",
+            "sellPrice": 95,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 260,
+            "name": "残留ポーション（力（長））",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:long_strength",
+            "sellPrice": 105,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 261,
+            "name": "残留ポーション（力 II）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:strong_strength",
+            "sellPrice": 113,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 262,
+            "name": "残留ポーション（弱体化）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:weakness",
+            "sellPrice": 85,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 263,
+            "name": "残留ポーション（弱体化（長））",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:long_weakness",
+            "sellPrice": 93,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 264,
+            "name": "残留ポーション（緩降）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:slow_falling",
+            "sellPrice": 91,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 265,
+            "name": "残留ポーション（緩降（長））",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:long_slow_falling",
+            "sellPrice": 99,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 266,
+            "name": "残留ポーション（風チャージ）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:wind_charged",
+            "sellPrice": 89,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 267,
+            "name": "残留ポーション（織物）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:weaving",
+            "sellPrice": 89,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 268,
+            "name": "残留ポーション（滲出）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:oozing",
+            "sellPrice": 89,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 269,
+            "name": "残留ポーション（寄生）",
+            "unit": "個",
+            "itemKey": "minecraft:lingering_potion",
+            "matchPotion": "minecraft:infestation",
+            "sellPrice": 89,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 270,
+            "name": "エンチャント本（ダメージ軽減 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:protection",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 80,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 271,
+            "name": "エンチャント本（ダメージ軽減 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:protection",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 115,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 272,
+            "name": "エンチャント本（ダメージ軽減 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:protection",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 150,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 273,
+            "name": "エンチャント本（ダメージ軽減 4）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:protection",
+            "matchEnchantmentLevel": 4,
+            "sellPrice": 185,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 274,
+            "name": "エンチャント本（火炎耐性 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:fire_protection",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 75,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 275,
+            "name": "エンチャント本（火炎耐性 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:fire_protection",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 105,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 276,
+            "name": "エンチャント本（火炎耐性 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:fire_protection",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 135,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 277,
+            "name": "エンチャント本（火炎耐性 4）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:fire_protection",
+            "matchEnchantmentLevel": 4,
+            "sellPrice": 165,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 278,
+            "name": "エンチャント本（落下耐性 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:feather_falling",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 85,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 279,
+            "name": "エンチャント本（落下耐性 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:feather_falling",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 120,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 280,
+            "name": "エンチャント本（落下耐性 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:feather_falling",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 155,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 281,
+            "name": "エンチャント本（落下耐性 4）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:feather_falling",
+            "matchEnchantmentLevel": 4,
+            "sellPrice": 190,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 282,
+            "name": "エンチャント本（爆発耐性 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:blast_protection",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 75,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 283,
+            "name": "エンチャント本（爆発耐性 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:blast_protection",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 105,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 284,
+            "name": "エンチャント本（爆発耐性 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:blast_protection",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 135,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 285,
+            "name": "エンチャント本（爆発耐性 4）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:blast_protection",
+            "matchEnchantmentLevel": 4,
+            "sellPrice": 165,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 286,
+            "name": "エンチャント本（飛び道具耐性 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:projectile_protection",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 75,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 287,
+            "name": "エンチャント本（飛び道具耐性 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:projectile_protection",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 105,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 288,
+            "name": "エンチャント本（飛び道具耐性 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:projectile_protection",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 135,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 289,
+            "name": "エンチャント本（飛び道具耐性 4）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:projectile_protection",
+            "matchEnchantmentLevel": 4,
+            "sellPrice": 165,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 290,
+            "name": "エンチャント本（水中呼吸 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:respiration",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 90,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 291,
+            "name": "エンチャント本（水中呼吸 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:respiration",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 130,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 292,
+            "name": "エンチャント本（水中呼吸 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:respiration",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 170,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 293,
+            "name": "エンチャント本（水中採掘）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:aqua_affinity",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 100,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 294,
+            "name": "エンチャント本（棘の鎧 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:thorns",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 95,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 295,
+            "name": "エンチャント本（棘の鎧 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:thorns",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 135,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 296,
+            "name": "エンチャント本（棘の鎧 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:thorns",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 175,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 297,
+            "name": "エンチャント本（水中歩行 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:depth_strider",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 90,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 298,
+            "name": "エンチャント本（水中歩行 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:depth_strider",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 130,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 299,
+            "name": "エンチャント本（水中歩行 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:depth_strider",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 170,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 300,
+            "name": "エンチャント本（氷渡り 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:frost_walker",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 140,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 301,
+            "name": "エンチャント本（氷渡り 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:frost_walker",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 190,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 302,
+            "name": "エンチャント本（ソウルスピード 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:soul_speed",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 130,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 303,
+            "name": "エンチャント本（ソウルスピード 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:soul_speed",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 175,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 304,
+            "name": "エンチャント本（ソウルスピード 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:soul_speed",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 220,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 305,
+            "name": "エンチャント本（スニーク速度 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:swift_sneak",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 120,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 306,
+            "name": "エンチャント本（スニーク速度 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:swift_sneak",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 160,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 307,
+            "name": "エンチャント本（スニーク速度 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:swift_sneak",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 200,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 308,
+            "name": "エンチャント本（シャープネス 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:sharpness",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 90,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 309,
+            "name": "エンチャント本（シャープネス 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:sharpness",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 130,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 310,
+            "name": "エンチャント本（シャープネス 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:sharpness",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 170,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 311,
+            "name": "エンチャント本（シャープネス 4）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:sharpness",
+            "matchEnchantmentLevel": 4,
+            "sellPrice": 210,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 312,
+            "name": "エンチャント本（シャープネス 5）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:sharpness",
+            "matchEnchantmentLevel": 5,
+            "sellPrice": 250,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 313,
+            "name": "エンチャント本（アンデッド特効 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:smite",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 80,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 314,
+            "name": "エンチャント本（アンデッド特効 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:smite",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 115,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 315,
+            "name": "エンチャント本（アンデッド特効 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:smite",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 150,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 316,
+            "name": "エンチャント本（アンデッド特効 4）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:smite",
+            "matchEnchantmentLevel": 4,
+            "sellPrice": 185,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 317,
+            "name": "エンチャント本（アンデッド特効 5）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:smite",
+            "matchEnchantmentLevel": 5,
+            "sellPrice": 220,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 318,
+            "name": "エンチャント本（虫特効 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:bane_of_arthropods",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 75,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 319,
+            "name": "エンチャント本（虫特効 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:bane_of_arthropods",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 105,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 320,
+            "name": "エンチャント本（虫特効 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:bane_of_arthropods",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 135,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 321,
+            "name": "エンチャント本（虫特効 4）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:bane_of_arthropods",
+            "matchEnchantmentLevel": 4,
+            "sellPrice": 165,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 322,
+            "name": "エンチャント本（虫特効 5）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:bane_of_arthropods",
+            "matchEnchantmentLevel": 5,
+            "sellPrice": 195,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 323,
+            "name": "エンチャント本（ノックバック 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:knockback",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 80,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 324,
+            "name": "エンチャント本（ノックバック 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:knockback",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 120,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 325,
+            "name": "エンチャント本（火属性 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:fire_aspect",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 95,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 326,
+            "name": "エンチャント本（火属性 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:fire_aspect",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 140,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 327,
+            "name": "エンチャント本（ドロップ増加 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:looting",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 110,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 328,
+            "name": "エンチャント本（ドロップ増加 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:looting",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 160,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 329,
+            "name": "エンチャント本（ドロップ増加 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:looting",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 210,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 330,
+            "name": "エンチャント本（範囲ダメージ 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:sweeping_edge",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 100,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 331,
+            "name": "エンチャント本（範囲ダメージ 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:sweeping_edge",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 140,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 332,
+            "name": "エンチャント本（範囲ダメージ 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:sweeping_edge",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 180,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 333,
+            "name": "エンチャント本（効率 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:efficiency",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 85,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 334,
+            "name": "エンチャント本（効率 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:efficiency",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 120,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 335,
+            "name": "エンチャント本（効率 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:efficiency",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 155,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 336,
+            "name": "エンチャント本（効率 4）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:efficiency",
+            "matchEnchantmentLevel": 4,
+            "sellPrice": 190,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 337,
+            "name": "エンチャント本（効率 5）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:efficiency",
+            "matchEnchantmentLevel": 5,
+            "sellPrice": 225,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 338,
+            "name": "エンチャント本（シルクタッチ）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:silk_touch",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 180,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 339,
+            "name": "エンチャント本（耐久力 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:unbreaking",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 90,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 340,
+            "name": "エンチャント本（耐久力 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:unbreaking",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 130,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 341,
+            "name": "エンチャント本（耐久力 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:unbreaking",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 170,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 342,
+            "name": "エンチャント本（幸運 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:fortune",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 130,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 343,
+            "name": "エンチャント本（幸運 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:fortune",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 185,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 344,
+            "name": "エンチャント本（幸運 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:fortune",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 240,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 345,
+            "name": "エンチャント本（パワー 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:power",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 85,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 346,
+            "name": "エンチャント本（パワー 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:power",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 120,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 347,
+            "name": "エンチャント本（パワー 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:power",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 155,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 348,
+            "name": "エンチャント本（パワー 4）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:power",
+            "matchEnchantmentLevel": 4,
+            "sellPrice": 190,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 349,
+            "name": "エンチャント本（パワー 5）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:power",
+            "matchEnchantmentLevel": 5,
+            "sellPrice": 225,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 350,
+            "name": "エンチャント本（パンチ 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:punch",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 80,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 351,
+            "name": "エンチャント本（パンチ 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:punch",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 115,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 352,
+            "name": "エンチャント本（フレイム）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:flame",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 100,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 353,
+            "name": "エンチャント本（無限）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:infinity",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 160,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 354,
+            "name": "エンチャント本（海の幸運 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:luck_of_the_sea",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 90,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 355,
+            "name": "エンチャント本（海の幸運 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:luck_of_the_sea",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 125,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 356,
+            "name": "エンチャント本（海の幸運 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:luck_of_the_sea",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 160,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 357,
+            "name": "エンチャント本（入れ食い 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:lure",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 90,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 358,
+            "name": "エンチャント本（入れ食い 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:lure",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 125,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 359,
+            "name": "エンチャント本（入れ食い 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:lure",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 160,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 360,
+            "name": "エンチャント本（忠誠 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:loyalty",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 100,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 361,
+            "name": "エンチャント本（忠誠 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:loyalty",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 140,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 362,
+            "name": "エンチャント本（忠誠 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:loyalty",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 180,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 363,
+            "name": "エンチャント本（突き 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:impaling",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 90,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 364,
+            "name": "エンチャント本（突き 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:impaling",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 125,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 365,
+            "name": "エンチャント本（突き 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:impaling",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 160,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 366,
+            "name": "エンチャント本（突き 4）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:impaling",
+            "matchEnchantmentLevel": 4,
+            "sellPrice": 195,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 367,
+            "name": "エンチャント本（突き 5）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:impaling",
+            "matchEnchantmentLevel": 5,
+            "sellPrice": 230,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 368,
+            "name": "エンチャント本（激流 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:riptide",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 110,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 369,
+            "name": "エンチャント本（激流 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:riptide",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 155,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 370,
+            "name": "エンチャント本（激流 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:riptide",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 200,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 371,
+            "name": "エンチャント本（召雷）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:channeling",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 140,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 372,
+            "name": "エンチャント本（拡散）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:multishot",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 130,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 373,
+            "name": "エンチャント本（高速装填 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:quick_charge",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 100,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 374,
+            "name": "エンチャント本（高速装填 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:quick_charge",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 140,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 375,
+            "name": "エンチャント本（高速装填 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:quick_charge",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 180,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 376,
+            "name": "エンチャント本（貫通 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:piercing",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 95,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 377,
+            "name": "エンチャント本（貫通 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:piercing",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 130,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 378,
+            "name": "エンチャント本（貫通 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:piercing",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 165,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 379,
+            "name": "エンチャント本（貫通 4）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:piercing",
+            "matchEnchantmentLevel": 4,
+            "sellPrice": 200,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 380,
+            "name": "エンチャント本（修繕）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:mending",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 280,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 381,
+            "name": "エンチャント本（束縛の呪い）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:binding_curse",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 40,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 382,
+            "name": "エンチャント本（消滅の呪い）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:vanishing_curse",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 40,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 383,
+            "name": "エンチャント本（密度 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:density",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 100,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 384,
+            "name": "エンチャント本（密度 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:density",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 140,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 385,
+            "name": "エンチャント本（密度 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:density",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 180,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 386,
+            "name": "エンチャント本（密度 4）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:density",
+            "matchEnchantmentLevel": 4,
+            "sellPrice": 220,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 387,
+            "name": "エンチャント本（密度 5）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:density",
+            "matchEnchantmentLevel": 5,
+            "sellPrice": 260,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 388,
+            "name": "エンチャント本（貫通破砕 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:breach",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 100,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 389,
+            "name": "エンチャント本（貫通破砕 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:breach",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 140,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 390,
+            "name": "エンチャント本（貫通破砕 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:breach",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 180,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 391,
+            "name": "エンチャント本（貫通破砕 4）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:breach",
+            "matchEnchantmentLevel": 4,
+            "sellPrice": 220,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 392,
+            "name": "エンチャント本（風爆 1）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:wind_burst",
+            "matchEnchantmentLevel": 1,
+            "sellPrice": 110,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 393,
+            "name": "エンチャント本（風爆 2）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:wind_burst",
+            "matchEnchantmentLevel": 2,
+            "sellPrice": 155,
+            "buyPrice": null,
+            "enabled": true
+        },
+        {
+            "id": 394,
+            "name": "エンチャント本（風爆 3）",
+            "unit": "冊",
+            "itemKey": "minecraft:enchanted_book",
+            "matchEnchantment": "minecraft:wind_burst",
+            "matchEnchantmentLevel": 3,
+            "sellPrice": 200,
+            "buyPrice": null,
+            "enabled": true
+        }
+    ],
+    "config": [
+        {
+            "value": {
+                "money": -0.1
+            },
+            "id": 1,
+            "actionType": "DEATH_PENALTY_RATE",
+            "enabled": true
+        },
+        {
+            "value": {
+                "rate": 0.5
+            },
+            "id": 2,
+            "actionType": "SHORT_SELL_LIMIT_RATE",
+            "enabled": true
+        },
+        {
+            "value": {
+                "minutes": 10
+            },
+            "id": 3,
+            "actionType": "ETF_RANDOM_WALK_INTERVAL",
+            "enabled": true
+        },
+        {
+            "value": {
+                "max_amount": 1000000,
+                "asset_multiplier": 2
+            },
+            "id": 4,
+            "actionType": "LOAN_DEBT_LIMIT",
+            "enabled": true
+        }
+    ],
+    "etfItems": [
+        {
+            "id": 1,
+            "etfCode": "新興工業",
+            "influenceWeight": 0.08,
+            "itemKey": "minecraft:iron_ingot",
+            "enabled": true
+        },
+        {
+            "id": 2,
+            "etfCode": "新興工業",
+            "influenceWeight": 0.05,
+            "itemKey": "minecraft:copper_ingot",
+            "enabled": true
+        },
+        {
+            "id": 3,
+            "etfCode": "新興工業",
+            "influenceWeight": 0.03,
+            "itemKey": "minecraft:coal",
+            "enabled": true
+        },
+        {
+            "id": 4,
+            "etfCode": "新興工業",
+            "influenceWeight": 0.05,
+            "itemKey": "minecraft:redstone",
+            "enabled": true
+        },
+        {
+            "id": 5,
+            "etfCode": "新興工業",
+            "influenceWeight": 0.05,
+            "itemKey": "minecraft:obsidian",
+            "enabled": true
+        },
+        {
+            "id": 6,
+            "etfCode": "新興工業",
+            "influenceWeight": 0.03,
+            "itemKey": "minecraft:glass",
+            "enabled": true
+        },
+        {
+            "id": 7,
+            "etfCode": "大衆バイオ",
+            "influenceWeight": 0.08,
+            "itemKey": "minecraft:wheat",
+            "enabled": true
+        },
+        {
+            "id": 8,
+            "etfCode": "大衆バイオ",
+            "influenceWeight": 0.05,
+            "itemKey": "minecraft:potato",
+            "enabled": true
+        },
+        {
+            "id": 9,
+            "etfCode": "大衆バイオ",
+            "influenceWeight": 0.05,
+            "itemKey": "minecraft:carrot",
+            "enabled": true
+        },
+        {
+            "id": 10,
+            "etfCode": "大衆バイオ",
+            "influenceWeight": 0.08,
+            "itemKey": "minecraft:leather",
+            "enabled": true
+        },
+        {
+            "id": 11,
+            "etfCode": "大衆バイオ",
+            "influenceWeight": 0.05,
+            "itemKey": "minecraft:rotten_flesh",
+            "enabled": true
+        },
+        {
+            "id": 12,
+            "etfCode": "大衆バイオ",
+            "influenceWeight": 0.03,
+            "itemKey": "minecraft:apple",
+            "enabled": true
+        },
+        {
+            "id": 13,
+            "etfCode": "狩猟開拓",
+            "influenceWeight": 0.08,
+            "itemKey": "minecraft:bone",
+            "enabled": true
+        },
+        {
+            "id": 14,
+            "etfCode": "狩猟開拓",
+            "influenceWeight": 0.08,
+            "itemKey": "minecraft:arrow",
+            "enabled": true
+        },
+        {
+            "id": 15,
+            "etfCode": "狩猟開拓",
+            "influenceWeight": 0.07,
+            "itemKey": "minecraft:string",
+            "enabled": true
+        },
+        {
+            "id": 16,
+            "etfCode": "狩猟開拓",
+            "influenceWeight": 0.05,
+            "itemKey": "minecraft:gunpowder",
+            "enabled": true
+        },
+        {
+            "id": 17,
+            "etfCode": "狩猟開拓",
+            "influenceWeight": 0.04,
+            "itemKey": "minecraft:spider_eye",
+            "enabled": true
+        },
+        {
+            "id": 18,
+            "etfCode": "狩猟開拓",
+            "influenceWeight": 0.04,
+            "itemKey": "minecraft:slime_ball",
+            "enabled": true
+        },
+        {
+            "id": 19,
+            "etfCode": "魔物ドロップ",
+            "influenceWeight": 0.12,
+            "itemKey": "minecraft:ender_pearl",
+            "enabled": true
+        },
+        {
+            "id": 20,
+            "etfCode": "魔物ドロップ",
+            "influenceWeight": 0.18,
+            "itemKey": "minecraft:ghast_tear",
+            "enabled": true
+        },
+        {
+            "id": 21,
+            "etfCode": "魔物ドロップ",
+            "influenceWeight": 0.12,
+            "itemKey": "minecraft:blaze_rod",
+            "enabled": true
+        },
+        {
+            "id": 22,
+            "etfCode": "魔物ドロップ",
+            "influenceWeight": 0.12,
+            "itemKey": "minecraft:wither_skeleton_skull",
+            "enabled": true
+        },
+        {
+            "id": 23,
+            "etfCode": "魔物ドロップ",
+            "influenceWeight": 0.08,
+            "itemKey": "minecraft:totem_of_undying",
+            "enabled": true
+        },
+        {
+            "id": 24,
+            "etfCode": "魔物ドロップ",
+            "influenceWeight": 0.18,
+            "itemKey": "minecraft:nether_star",
+            "enabled": true
+        },
+        {
+            "id": 25,
+            "etfCode": "貴金属のみ",
+            "influenceWeight": 0.03,
+            "itemKey": "minecraft:diamond",
+            "enabled": true
+        },
+        {
+            "id": 26,
+            "etfCode": "貴金属のみ",
+            "influenceWeight": 0.025,
+            "itemKey": "minecraft:emerald",
+            "enabled": true
+        },
+        {
+            "id": 27,
+            "etfCode": "貴金属のみ",
+            "influenceWeight": 0.015,
+            "itemKey": "minecraft:netherite_ingot",
+            "enabled": true
+        },
+        {
+            "id": 28,
+            "etfCode": "貴金属のみ",
+            "influenceWeight": 0.015,
+            "itemKey": "minecraft:gold_ingot",
+            "enabled": true
+        },
+        {
+            "id": 29,
+            "etfCode": "貴金属のみ",
+            "influenceWeight": 0.015,
+            "itemKey": "minecraft:lapis_lazuli",
+            "enabled": true
+        },
+        {
+            "id": 30,
+            "etfCode": "高級食料のみ",
+            "influenceWeight": 0.05,
+            "itemKey": "minecraft:golden_apple",
+            "enabled": true
+        },
+        {
+            "id": 31,
+            "etfCode": "高級食料のみ",
+            "influenceWeight": 0.05,
+            "itemKey": "minecraft:golden_carrot",
+            "enabled": true
+        },
+        {
+            "id": 32,
+            "etfCode": "高級食料のみ",
+            "influenceWeight": 0.08,
+            "itemKey": "minecraft:cooked_beef",
+            "enabled": true
+        },
+        {
+            "id": 33,
+            "etfCode": "高級食料のみ",
+            "influenceWeight": 0.08,
+            "itemKey": "minecraft:cooked_porkchop",
+            "enabled": true
+        },
+        {
+            "id": 34,
+            "etfCode": "高級食料のみ",
+            "influenceWeight": 0.05,
+            "itemKey": "minecraft:cake",
+            "enabled": true
+        },
+        {
+            "id": 35,
+            "etfCode": "高級食料のみ",
+            "influenceWeight": 0.04,
+            "itemKey": "minecraft:honey_bottle",
+            "enabled": true
+        },
+        {
+            "id": 36,
+            "etfCode": "高級食料のみ",
+            "influenceWeight": 0.04,
+            "itemKey": "minecraft:rabbit_stew",
+            "enabled": true
+        }
+    ],
+    "shopItems": [
+        {
+            "id": 1,
+            "itemId": 1,
+            "dailyLimit": null,
+            "orderNo": 1,
+            "shopId": 1,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 2,
+            "itemId": 2,
+            "dailyLimit": null,
+            "orderNo": 2,
+            "shopId": 1,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 3,
+            "itemId": 3,
+            "dailyLimit": null,
+            "orderNo": 3,
+            "shopId": 1,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 4,
+            "itemId": 4,
+            "dailyLimit": null,
+            "orderNo": 4,
+            "shopId": 1,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 5,
+            "itemId": 5,
+            "dailyLimit": null,
+            "orderNo": 5,
+            "shopId": 1,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 6,
+            "itemId": 6,
+            "dailyLimit": 20,
+            "orderNo": 6,
+            "shopId": 1,
+            "enabled": false,
+            "userLimit": 5
+        },
+        {
+            "id": 7,
+            "itemId": 7,
+            "dailyLimit": null,
+            "orderNo": 7,
+            "shopId": 1,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 8,
+            "itemId": 8,
+            "dailyLimit": null,
+            "orderNo": 8,
+            "shopId": 1,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 9,
+            "itemId": 9,
+            "dailyLimit": null,
+            "orderNo": 9,
+            "shopId": 1,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 10,
+            "itemId": 10,
+            "dailyLimit": null,
+            "orderNo": 10,
+            "shopId": 1,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 11,
+            "itemId": 11,
+            "dailyLimit": null,
+            "orderNo": 11,
+            "shopId": 1,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 12,
+            "itemId": 12,
+            "dailyLimit": null,
+            "orderNo": 12,
+            "shopId": 1,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 13,
+            "itemId": 13,
+            "dailyLimit": null,
+            "orderNo": 13,
+            "shopId": 1,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 14,
+            "itemId": 19,
+            "dailyLimit": null,
+            "orderNo": 14,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 15,
+            "itemId": 20,
+            "dailyLimit": null,
+            "orderNo": 15,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 16,
+            "itemId": 21,
+            "dailyLimit": null,
+            "orderNo": 16,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 17,
+            "itemId": 22,
+            "dailyLimit": null,
+            "orderNo": 17,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 18,
+            "itemId": 23,
+            "dailyLimit": null,
+            "orderNo": 18,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 19,
+            "itemId": 24,
+            "dailyLimit": null,
+            "orderNo": 19,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 20,
+            "itemId": 25,
+            "dailyLimit": 5,
+            "orderNo": 20,
+            "shopId": 2,
+            "enabled": false,
+            "userLimit": 1
+        },
+        {
+            "id": 21,
+            "itemId": 26,
+            "dailyLimit": 5,
+            "orderNo": 21,
+            "shopId": 2,
+            "enabled": false,
+            "userLimit": 1
+        },
+        {
+            "id": 22,
+            "itemId": 27,
+            "dailyLimit": 5,
+            "orderNo": 22,
+            "shopId": 2,
+            "enabled": false,
+            "userLimit": 1
+        },
+        {
+            "id": 23,
+            "itemId": 28,
+            "dailyLimit": null,
+            "orderNo": 23,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 24,
+            "itemId": 35,
+            "dailyLimit": null,
+            "orderNo": 24,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 25,
+            "itemId": 29,
+            "dailyLimit": null,
+            "orderNo": 25,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 125,
+            "itemId": 131,
+            "dailyLimit": null,
+            "orderNo": 26,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 126,
+            "itemId": 132,
+            "dailyLimit": null,
+            "orderNo": 27,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 127,
+            "itemId": 133,
+            "dailyLimit": null,
+            "orderNo": 28,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 128,
+            "itemId": 134,
+            "dailyLimit": null,
+            "orderNo": 29,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 129,
+            "itemId": 135,
+            "dailyLimit": null,
+            "orderNo": 30,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 130,
+            "itemId": 136,
+            "dailyLimit": null,
+            "orderNo": 31,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 131,
+            "itemId": 137,
+            "dailyLimit": null,
+            "orderNo": 32,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 132,
+            "itemId": 138,
+            "dailyLimit": null,
+            "orderNo": 33,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 133,
+            "itemId": 139,
+            "dailyLimit": null,
+            "orderNo": 34,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 134,
+            "itemId": 140,
+            "dailyLimit": null,
+            "orderNo": 35,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 135,
+            "itemId": 141,
+            "dailyLimit": null,
+            "orderNo": 36,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 136,
+            "itemId": 142,
+            "dailyLimit": null,
+            "orderNo": 37,
+            "shopId": 2,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 137,
+            "itemId": 143,
+            "dailyLimit": 5,
+            "orderNo": 38,
+            "shopId": 2,
+            "enabled": false,
+            "userLimit": 1
+        },
+        {
+            "id": 138,
+            "itemId": 144,
+            "dailyLimit": 5,
+            "orderNo": 39,
+            "shopId": 2,
+            "enabled": false,
+            "userLimit": 1
+        },
+        {
+            "id": 139,
+            "itemId": 145,
+            "dailyLimit": 5,
+            "orderNo": 40,
+            "shopId": 2,
+            "enabled": false,
+            "userLimit": 1
+        },
+        {
+            "id": 140,
+            "itemId": 146,
+            "dailyLimit": 5,
+            "orderNo": 41,
+            "shopId": 2,
+            "enabled": false,
+            "userLimit": 1
+        },
+        {
+            "id": 26,
+            "itemId": 98,
+            "dailyLimit": null,
+            "orderNo": 26,
+            "shopId": 3,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 27,
+            "itemId": 99,
+            "dailyLimit": null,
+            "orderNo": 27,
+            "shopId": 3,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 28,
+            "itemId": 6,
+            "dailyLimit": 20,
+            "orderNo": 6,
+            "shopId": 3,
+            "enabled": true,
+            "userLimit": 5
+        },
+        {
+            "id": 29,
+            "itemId": 25,
+            "dailyLimit": 5,
+            "orderNo": 20,
+            "shopId": 3,
+            "enabled": true,
+            "userLimit": 1
+        },
+        {
+            "id": 30,
+            "itemId": 26,
+            "dailyLimit": 5,
+            "orderNo": 21,
+            "shopId": 3,
+            "enabled": true,
+            "userLimit": 1
+        },
+        {
+            "id": 31,
+            "itemId": 27,
+            "dailyLimit": 5,
+            "orderNo": 22,
+            "shopId": 3,
+            "enabled": true,
+            "userLimit": 1
+        },
+        {
+            "id": 32,
+            "itemId": 33,
+            "dailyLimit": null,
+            "orderNo": 28,
+            "shopId": 3,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 33,
+            "itemId": 36,
+            "dailyLimit": 10,
+            "orderNo": 29,
+            "shopId": 3,
+            "enabled": true,
+            "userLimit": 2
+        },
+        {
+            "id": 34,
+            "itemId": 80,
+            "dailyLimit": null,
+            "orderNo": 30,
+            "shopId": 3,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 35,
+            "itemId": 81,
+            "dailyLimit": null,
+            "orderNo": 31,
+            "shopId": 3,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 36,
+            "itemId": 87,
+            "dailyLimit": null,
+            "orderNo": 32,
+            "shopId": 3,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 37,
+            "itemId": 88,
+            "dailyLimit": null,
+            "orderNo": 33,
+            "shopId": 3,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 38,
+            "itemId": 93,
+            "dailyLimit": null,
+            "orderNo": 34,
+            "shopId": 3,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 39,
+            "itemId": 94,
+            "dailyLimit": null,
+            "orderNo": 35,
+            "shopId": 3,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 40,
+            "itemId": 100,
+            "dailyLimit": null,
+            "orderNo": 36,
+            "shopId": 3,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 41,
+            "itemId": 40,
+            "dailyLimit": null,
+            "orderNo": 37,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 42,
+            "itemId": 41,
+            "dailyLimit": null,
+            "orderNo": 38,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 43,
+            "itemId": 42,
+            "dailyLimit": null,
+            "orderNo": 39,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 44,
+            "itemId": 43,
+            "dailyLimit": null,
+            "orderNo": 40,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 45,
+            "itemId": 44,
+            "dailyLimit": null,
+            "orderNo": 41,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 46,
+            "itemId": 45,
+            "dailyLimit": null,
+            "orderNo": 42,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 47,
+            "itemId": 46,
+            "dailyLimit": null,
+            "orderNo": 43,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 48,
+            "itemId": 47,
+            "dailyLimit": null,
+            "orderNo": 44,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 49,
+            "itemId": 48,
+            "dailyLimit": null,
+            "orderNo": 45,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 50,
+            "itemId": 49,
+            "dailyLimit": null,
+            "orderNo": 46,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 51,
+            "itemId": 50,
+            "dailyLimit": null,
+            "orderNo": 47,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 52,
+            "itemId": 51,
+            "dailyLimit": null,
+            "orderNo": 48,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 53,
+            "itemId": 52,
+            "dailyLimit": null,
+            "orderNo": 49,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 54,
+            "itemId": 53,
+            "dailyLimit": null,
+            "orderNo": 50,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 55,
+            "itemId": 54,
+            "dailyLimit": null,
+            "orderNo": 51,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 56,
+            "itemId": 55,
+            "dailyLimit": null,
+            "orderNo": 52,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 57,
+            "itemId": 56,
+            "dailyLimit": null,
+            "orderNo": 53,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 58,
+            "itemId": 57,
+            "dailyLimit": null,
+            "orderNo": 54,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 59,
+            "itemId": 58,
+            "dailyLimit": null,
+            "orderNo": 55,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 60,
+            "itemId": 59,
+            "dailyLimit": null,
+            "orderNo": 56,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 61,
+            "itemId": 60,
+            "dailyLimit": null,
+            "orderNo": 57,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 62,
+            "itemId": 61,
+            "dailyLimit": null,
+            "orderNo": 58,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 63,
+            "itemId": 62,
+            "dailyLimit": null,
+            "orderNo": 59,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 64,
+            "itemId": 63,
+            "dailyLimit": null,
+            "orderNo": 60,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 65,
+            "itemId": 64,
+            "dailyLimit": null,
+            "orderNo": 61,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 66,
+            "itemId": 65,
+            "dailyLimit": null,
+            "orderNo": 62,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 67,
+            "itemId": 66,
+            "dailyLimit": null,
+            "orderNo": 63,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 68,
+            "itemId": 67,
+            "dailyLimit": null,
+            "orderNo": 64,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 69,
+            "itemId": 68,
+            "dailyLimit": null,
+            "orderNo": 65,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 70,
+            "itemId": 69,
+            "dailyLimit": null,
+            "orderNo": 66,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 71,
+            "itemId": 70,
+            "dailyLimit": null,
+            "orderNo": 67,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 72,
+            "itemId": 71,
+            "dailyLimit": null,
+            "orderNo": 68,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 73,
+            "itemId": 72,
+            "dailyLimit": 3,
+            "orderNo": 69,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": 1
+        },
+        {
+            "id": 74,
+            "itemId": 73,
+            "dailyLimit": null,
+            "orderNo": 70,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 75,
+            "itemId": 74,
+            "dailyLimit": null,
+            "orderNo": 71,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 76,
+            "itemId": 75,
+            "dailyLimit": null,
+            "orderNo": 72,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 77,
+            "itemId": 76,
+            "dailyLimit": null,
+            "orderNo": 73,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 78,
+            "itemId": 77,
+            "dailyLimit": null,
+            "orderNo": 74,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 79,
+            "itemId": 78,
+            "dailyLimit": null,
+            "orderNo": 75,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 80,
+            "itemId": 79,
+            "dailyLimit": null,
+            "orderNo": 76,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 81,
+            "itemId": 82,
+            "dailyLimit": null,
+            "orderNo": 77,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 82,
+            "itemId": 85,
+            "dailyLimit": null,
+            "orderNo": 78,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 83,
+            "itemId": 86,
+            "dailyLimit": null,
+            "orderNo": 79,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 84,
+            "itemId": 89,
+            "dailyLimit": null,
+            "orderNo": 80,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 85,
+            "itemId": 90,
+            "dailyLimit": null,
+            "orderNo": 81,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 86,
+            "itemId": 91,
+            "dailyLimit": null,
+            "orderNo": 82,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 87,
+            "itemId": 92,
+            "dailyLimit": null,
+            "orderNo": 83,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 88,
+            "itemId": 96,
+            "dailyLimit": null,
+            "orderNo": 84,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 89,
+            "itemId": 97,
+            "dailyLimit": null,
+            "orderNo": 85,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 90,
+            "itemId": 102,
+            "dailyLimit": null,
+            "orderNo": 86,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 91,
+            "itemId": 103,
+            "dailyLimit": null,
+            "orderNo": 87,
+            "shopId": 4,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 92,
+            "itemId": 30,
+            "dailyLimit": 3,
+            "orderNo": 88,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": 1
+        },
+        {
+            "id": 93,
+            "itemId": 31,
+            "dailyLimit": null,
+            "orderNo": 89,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 94,
+            "itemId": 104,
+            "dailyLimit": null,
+            "orderNo": 90,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 95,
+            "itemId": 14,
+            "dailyLimit": null,
+            "orderNo": 91,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 96,
+            "itemId": 15,
+            "dailyLimit": null,
+            "orderNo": 92,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 97,
+            "itemId": 16,
+            "dailyLimit": null,
+            "orderNo": 93,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 98,
+            "itemId": 17,
+            "dailyLimit": null,
+            "orderNo": 94,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 99,
+            "itemId": 18,
+            "dailyLimit": null,
+            "orderNo": 95,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 100,
+            "itemId": 95,
+            "dailyLimit": null,
+            "orderNo": 96,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 101,
+            "itemId": 32,
+            "dailyLimit": null,
+            "orderNo": 97,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 102,
+            "itemId": 37,
+            "dailyLimit": null,
+            "orderNo": 98,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 103,
+            "itemId": 38,
+            "dailyLimit": null,
+            "orderNo": 99,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 104,
+            "itemId": 39,
+            "dailyLimit": null,
+            "orderNo": 100,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 105,
+            "itemId": 83,
+            "dailyLimit": null,
+            "orderNo": 101,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 106,
+            "itemId": 84,
+            "dailyLimit": null,
+            "orderNo": 102,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 107,
+            "itemId": 34,
+            "dailyLimit": null,
+            "orderNo": 103,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 108,
+            "itemId": 101,
+            "dailyLimit": null,
+            "orderNo": 104,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 109,
+            "itemId": 105,
+            "dailyLimit": null,
+            "orderNo": 105,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 110,
+            "itemId": 106,
+            "dailyLimit": null,
+            "orderNo": 106,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 111,
+            "itemId": 107,
+            "dailyLimit": null,
+            "orderNo": 107,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 112,
+            "itemId": 108,
+            "dailyLimit": null,
+            "orderNo": 108,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 113,
+            "itemId": 109,
+            "dailyLimit": null,
+            "orderNo": 109,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 114,
+            "itemId": 110,
+            "dailyLimit": null,
+            "orderNo": 110,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 115,
+            "itemId": 111,
+            "dailyLimit": null,
+            "orderNo": 111,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 116,
+            "itemId": 112,
+            "dailyLimit": null,
+            "orderNo": 112,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 117,
+            "itemId": 113,
+            "dailyLimit": null,
+            "orderNo": 113,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 118,
+            "itemId": 114,
+            "dailyLimit": null,
+            "orderNo": 114,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 119,
+            "itemId": 115,
+            "dailyLimit": null,
+            "orderNo": 115,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 120,
+            "itemId": 116,
+            "dailyLimit": null,
+            "orderNo": 116,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 121,
+            "itemId": 117,
+            "dailyLimit": null,
+            "orderNo": 117,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 122,
+            "itemId": 118,
+            "dailyLimit": null,
+            "orderNo": 118,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 123,
+            "itemId": 119,
+            "dailyLimit": null,
+            "orderNo": 119,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        },
+        {
+            "id": 124,
+            "itemId": 120,
+            "dailyLimit": null,
+            "orderNo": 120,
+            "shopId": 8,
+            "enabled": true,
+            "userLimit": null
+        }
+    ],
+    "actionRewards": [
+        {
+            "id": 1,
+            "displayName": "討伐：ゾンビ",
+            "rewardAmount": 15,
+            "actionType": "KILL_ZOMBIE",
+            "enabled": true
+        },
+        {
+            "id": 2,
+            "displayName": "討伐：スケルトン",
+            "rewardAmount": 20,
+            "actionType": "KILL_SKELETON",
+            "enabled": true
+        },
+        {
+            "id": 3,
+            "displayName": "討伐：クモ",
+            "rewardAmount": 15,
+            "actionType": "KILL_SPIDER",
+            "enabled": true
+        },
+        {
+            "id": 4,
+            "displayName": "討伐：クリーパー",
+            "rewardAmount": 30,
+            "actionType": "KILL_CREEPER",
+            "enabled": true
+        },
+        {
+            "id": 5,
+            "displayName": "討伐：エンダーマン",
+            "rewardAmount": 100,
+            "actionType": "KILL_ENDERMAN",
+            "enabled": true
+        },
+        {
+            "id": 6,
+            "displayName": "討伐：ウィッチ",
+            "rewardAmount": 80,
+            "actionType": "KILL_WITCH",
+            "enabled": true
+        },
+        {
+            "id": 7,
+            "displayName": "討伐：スライム",
+            "rewardAmount": 5,
+            "actionType": "KILL_SLIME",
+            "enabled": true
+        },
+        {
+            "id": 8,
+            "displayName": "討伐：ウィザー",
+            "rewardAmount": 5000,
+            "actionType": "KILL_WITHER",
+            "enabled": true
+        },
+        {
+            "id": 9,
+            "displayName": "討伐：エンダードラゴン",
+            "rewardAmount": 10000,
+            "actionType": "KILL_ENDER_DRAGON",
+            "enabled": true
+        },
+        {
+            "id": 10,
+            "displayName": "採掘：石炭",
+            "rewardAmount": 5,
+            "actionType": "MINE_COAL_ORE",
+            "enabled": true
+        },
+        {
+            "id": 11,
+            "displayName": "採掘：銅",
+            "rewardAmount": 3,
+            "actionType": "MINE_COPPER_ORE",
+            "enabled": true
+        },
+        {
+            "id": 12,
+            "displayName": "採掘：鉄",
+            "rewardAmount": 10,
+            "actionType": "MINE_IRON_ORE",
+            "enabled": true
+        },
+        {
+            "id": 13,
+            "displayName": "採掘：金",
+            "rewardAmount": 20,
+            "actionType": "MINE_GOLD_ORE",
+            "enabled": true
+        },
+        {
+            "id": 14,
+            "displayName": "採掘：レッドストーン",
+            "rewardAmount": 5,
+            "actionType": "MINE_REDSTONE_ORE",
+            "enabled": true
+        },
+        {
+            "id": 15,
+            "displayName": "採掘：ラピスラズリ",
+            "rewardAmount": 10,
+            "actionType": "MINE_LAPIS_ORE",
+            "enabled": true
+        },
+        {
+            "id": 16,
+            "displayName": "採掘：ダイアモンド",
+            "rewardAmount": 150,
+            "actionType": "MINE_DIAMOND_ORE",
+            "enabled": true
+        },
+        {
+            "id": 17,
+            "displayName": "採掘：エメラルド",
+            "rewardAmount": 160,
+            "actionType": "MINE_EMERALD_ORE",
+            "enabled": true
+        },
+        {
+            "id": 18,
+            "displayName": "採掘：ネザライトの欠片",
+            "rewardAmount": 1000,
+            "actionType": "MINE_ANCIENT_DEBRIS",
+            "enabled": true
+        },
+        {
+            "id": 19,
+            "displayName": "釣り：通常",
+            "rewardAmount": 10,
+            "actionType": "FISH_COMMON",
+            "enabled": true
+        },
+        {
+            "id": 20,
+            "displayName": "釣り：レア",
+            "rewardAmount": 50,
+            "actionType": "FISH_RARE",
+            "enabled": true
+        },
+        {
+            "id": 21,
+            "displayName": "農業：小麦",
+            "rewardAmount": 1,
+            "actionType": "HARVEST_WHEAT",
+            "enabled": true
+        },
+        {
+            "id": 22,
+            "displayName": "農業：ジャガイモ",
+            "rewardAmount": 2,
+            "actionType": "HARVEST_POTATO",
+            "enabled": true
+        },
+        {
+            "id": 23,
+            "displayName": "農業：ニンジン",
+            "rewardAmount": 2,
+            "actionType": "HARVEST_CARROT",
+            "enabled": true
+        },
+        {
+            "id": 24,
+            "displayName": "農業：ビートルート",
+            "rewardAmount": 1,
+            "actionType": "HARVEST_BEETROOT",
+            "enabled": true
+        },
+        {
+            "id": 25,
+            "displayName": "農業：スイカ",
+            "rewardAmount": 1,
+            "actionType": "HARVEST_MELON",
+            "enabled": true
+        },
+        {
+            "id": 26,
+            "displayName": "農業：カボチャ",
+            "rewardAmount": 2,
+            "actionType": "HARVEST_PUMPKIN",
+            "enabled": true
+        },
+        {
+            "id": 27,
+            "displayName": "討伐：ブレイズ",
+            "rewardAmount": 60,
+            "actionType": "KILL_BLAZE",
+            "enabled": true
+        },
+        {
+            "id": 28,
+            "displayName": "討伐：ガスト",
+            "rewardAmount": 50,
+            "actionType": "KILL_GHAST",
+            "enabled": true
+        },
+        {
+            "id": 29,
+            "displayName": "討伐：ファントム",
+            "rewardAmount": 30,
+            "actionType": "KILL_PHANTOM",
+            "enabled": true
+        },
+        {
+            "id": 30,
+            "displayName": "討伐：ガーディアン",
+            "rewardAmount": 40,
+            "actionType": "KILL_GUARDIAN",
+            "enabled": true
+        },
+        {
+            "id": 31,
+            "displayName": "討伐：ゾンビ化ピグリン",
+            "rewardAmount": 20,
+            "actionType": "KILL_ZOMBIFIED_PIGLIN",
+            "enabled": true
+        },
+        {
+            "id": 32,
+            "displayName": "討伐：ゾンビ化ピグリン",
+            "rewardAmount": 20,
+            "actionType": "KILL_ZOMBIE_PIGLIN",
+            "enabled": true
+        },
+        {
+            "id": 33,
+            "displayName": "討伐：ウィザースケルトン",
+            "rewardAmount": 45,
+            "actionType": "KILL_WITHER_SKELETON",
+            "enabled": true
+        },
+        {
+            "id": 34,
+            "displayName": "討伐：マグマキューブ",
+            "rewardAmount": 8,
+            "actionType": "KILL_MAGMA_CUBE",
+            "enabled": true
+        },
+        {
+            "id": 35,
+            "displayName": "討伐：ホグリン",
+            "rewardAmount": 35,
+            "actionType": "KILL_HOGLIN",
+            "enabled": true
+        },
+        {
+            "id": 36,
+            "displayName": "討伐：ピグリン",
+            "rewardAmount": 15,
+            "actionType": "KILL_PIGLIN",
+            "enabled": true
+        },
+        {
+            "id": 37,
+            "displayName": "討伐：ピグリンブルート",
+            "rewardAmount": 90,
+            "actionType": "KILL_PIGLIN_BRUTE",
+            "enabled": true
+        },
+        {
+            "id": 38,
+            "displayName": "討伐：ゾグリン",
+            "rewardAmount": 40,
+            "actionType": "KILL_ZOGLIN",
+            "enabled": true
+        },
+        {
+            "id": 39,
+            "displayName": "討伐：ストライダー",
+            "rewardAmount": 10,
+            "actionType": "KILL_STRIDER",
+            "enabled": true
+        }
+    ],
+    "generatedAt": "2026-07-01T17:33:46.4065272Z",
+    "schemaVersion": 1
+}

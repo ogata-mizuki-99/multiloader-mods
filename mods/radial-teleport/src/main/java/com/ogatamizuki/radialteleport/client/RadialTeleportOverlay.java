@@ -5,7 +5,6 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 
 import java.util.List;
@@ -33,8 +32,7 @@ public final class RadialTeleportOverlay {
         int centerY = menuCenterY(mc);
         int hoveredIndex = RadialTeleportSession.getHoveredIndex();
 
-        RadialMenuTextureCache.update(mc, destinations, hoveredIndex);
-        RadialMenuTextureCache.blit(graphics, centerX, centerY);
+        RadialSliceRaster.drawMenu(graphics, centerX, centerY, destinations, hoveredIndex);
 
         for (int i = 0; i < RadialTeleportLabelCache.entries().size(); i++) {
             renderSliceLabel(graphics, mc, RadialTeleportLabelCache.entries().get(i), centerX, centerY, i == hoveredIndex);
@@ -112,9 +110,8 @@ public final class RadialTeleportOverlay {
             int centerY,
             boolean hovered
     ) {
-        float midRadians = (float) Math.toRadians(entry.midDegrees());
-        int labelX = centerX + (int) (Math.cos(midRadians) * RadialMenuLayout.LABEL_RADIUS);
-        int labelY = centerY + (int) (Math.sin(midRadians) * RadialMenuLayout.LABEL_RADIUS);
+        int labelX = resolveLabelX(entry, centerX);
+        int labelY = resolveLabelY(entry, centerY);
         Font font = mc.font;
 
         if (hovered) {
@@ -186,5 +183,26 @@ public final class RadialTeleportOverlay {
         graphics.fill(boxLeft, boxTop, boxLeft + 1, boxBottom, 0xFF56CFE1);
         graphics.fill(boxRight - 1, boxTop, boxRight, boxBottom, 0xFF56CFE1);
         graphics.text(font, fullName, textLeft, textTop, textColor, false);
+    }
+
+    private static int resolveLabelX(RadialTeleportLabelCache.LabelEntry entry, int centerX) {
+        if (usesTopAnchor(entry)) {
+            return centerX;
+        }
+        float midRadians = (float) Math.toRadians(entry.midDegrees());
+        return centerX + (int) (Math.cos(midRadians) * RadialMenuLayout.LABEL_RADIUS);
+    }
+
+    private static int resolveLabelY(RadialTeleportLabelCache.LabelEntry entry, int centerY) {
+        if (usesTopAnchor(entry)) {
+            return centerY - RadialMenuLayout.LABEL_RADIUS;
+        }
+        float midRadians = (float) Math.toRadians(entry.midDegrees());
+        return centerY + (int) (Math.sin(midRadians) * RadialMenuLayout.LABEL_RADIUS);
+    }
+
+    /** Full-ring (single destination) menus place the label at the top; multi-slice menus use slice mid-angle. */
+    private static boolean usesTopAnchor(RadialTeleportLabelCache.LabelEntry entry) {
+        return entry.sliceAngle() >= 359.9F;
     }
 }

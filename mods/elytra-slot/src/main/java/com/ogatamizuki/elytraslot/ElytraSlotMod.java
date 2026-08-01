@@ -187,14 +187,12 @@ public class ElytraSlotMod {
 
     private void handleServerAction(ServerPlayer player, int actionId) {
         if (actionId == 1) {
-            // Quick Swap
-            ItemStack held = player.getMainHandItem();
+            // Quick Swap: toggle dedicated slot ↔ inventory/hotbar (no need to hold the elytra)
             ItemStack elytraInSlot = player.getData(ELYTRA_SLOT);
-
-            if (held.is(net.minecraft.world.item.Items.ELYTRA) || (!elytraInSlot.isEmpty() && held.isEmpty())) {
-                player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, elytraInSlot.copy());
-                player.setData(ELYTRA_SLOT, held.copy());
-                syncSlot(player, held);
+            if (!elytraInSlot.isEmpty()) {
+                unequipElytraToInventory(player, elytraInSlot);
+            } else {
+                equipElytraFromInventory(player);
             }
         } else if (actionId == 2) {
             // Firework Use
@@ -234,7 +232,40 @@ public class ElytraSlotMod {
         }
     }
 
-    // Handle right-click with elytra to auto-equip
+    /** Move dedicated-slot elytra into inventory/hotbar; drop remainder if full. */
+    private static void unequipElytraToInventory(ServerPlayer player, ItemStack elytraInSlot) {
+        ItemStack toReturn = elytraInSlot.copy();
+        player.setData(ELYTRA_SLOT, ItemStack.EMPTY);
+        syncSlot(player, ItemStack.EMPTY);
+        player.getInventory().placeItemBackInInventory(toReturn);
+    }
+
+    /**
+     * Equip the first elytra found in hotbar / main inventory / offhand
+     * (armor chest is excluded — right-click hand swap covers that case).
+     */
+    private static void equipElytraFromInventory(ServerPlayer player) {
+        var inventory = player.getInventory();
+        for (int i = 0; i < 36; i++) {
+            ItemStack stack = inventory.getItem(i);
+            if (stack.is(net.minecraft.world.item.Items.ELYTRA)) {
+                ItemStack found = stack.copy();
+                inventory.setItem(i, ItemStack.EMPTY);
+                player.setData(ELYTRA_SLOT, found);
+                syncSlot(player, found);
+                return;
+            }
+        }
+        ItemStack offhand = player.getOffhandItem();
+        if (offhand.is(net.minecraft.world.item.Items.ELYTRA)) {
+            ItemStack found = offhand.copy();
+            player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, ItemStack.EMPTY);
+            player.setData(ELYTRA_SLOT, found);
+            syncSlot(player, found);
+        }
+    }
+
+    // Handle right-click with elytra to auto-equip (hand ↔ dedicated slot only)
     @SubscribeEvent
     public void onRightClickItem(net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickItem event) {
         net.minecraft.world.entity.player.Player player = event.getEntity();
@@ -300,15 +331,22 @@ public class ElytraSlotMod {
     @SubscribeEvent
     public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
-            ItemStack elytraStack = player.getData(ELYTRA_SLOT);
-            if (!elytraStack.isEmpty()) {
-                PacketDistributor.sendToPlayer(player, new ElytraSlotSyncPayload(player.getUUID(), elytraStack));
-            }
-            ItemStack fireworkStack = player.getData(FIREWORK_SLOT);
-            if (!fireworkStack.isEmpty()) {
-                PacketDistributor.sendToPlayer(player, new FireworkSlotSyncPayload(player.getUUID(), fireworkStack));
-            }
+            syncAttachmentSlotsToPlayer(player);
         }
+    }
+
+    /** Push attachment state (including empty) so creative ghosts cannot linger after mode switches. */
+    @SubscribeEvent
+    public void onPlayerChangeGameMode(PlayerEvent.PlayerChangeGameModeEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            syncAttachmentSlotsToPlayer(player);
+        }
+    }
+
+    /** Always sync both slots so clients clear ghosts when the server side is empty. */
+    public static void syncAttachmentSlotsToPlayer(ServerPlayer player) {
+        PacketDistributor.sendToPlayer(player, new ElytraSlotSyncPayload(player.getUUID(), player.getData(ELYTRA_SLOT)));
+        PacketDistributor.sendToPlayer(player, new FireworkSlotSyncPayload(player.getUUID(), player.getData(FIREWORK_SLOT)));
     }
 
     // Sync when tracking starts (so other clients render the elytra)
