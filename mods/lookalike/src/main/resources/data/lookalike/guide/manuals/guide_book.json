@@ -1,0 +1,5 @@
+{
+  "item": "minecraft:written_book",
+  "opens_book": "lookalike:guide_book",
+  "theme": "guide_lib:book"
+}

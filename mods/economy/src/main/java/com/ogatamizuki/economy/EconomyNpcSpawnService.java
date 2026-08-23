@@ -1,13 +1,17 @@
 package com.ogatamizuki.economy;
 
+import com.google.gson.JsonElement;
+import com.mojang.serialization.JsonOps;
 import com.ogatamizuki.economy.master.EconomyMasterData;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.ComponentSerialization;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -64,6 +68,27 @@ public final class EconomyNpcSpawnService {
         return message.getString();
     }
 
+    /**
+     * 頭上ネームをクライアント言語で解決できるよう、翻訳 Component をセットする。
+     * 既存ワールドの日本語リテラル名も上書きする。
+     */
+    public static void applyLocalizedDisplayName(Entity entity, int shopId) {
+        String fallback = EconomyMasterData.get().shop(shopId)
+                .map(EconomyMasterData.ShopDef::shopName)
+                .orElse("Shop " + shopId);
+        entity.setCustomName(EconomyMasterI18n.shopNameComponent(shopId, fallback));
+        entity.setCustomNameVisible(true);
+    }
+
+    /** スポーンエッグ EntityData 用: CustomName を translate JSON で書き込む。 */
+    static String customNameNbtJson(int shopId, String shopNameFallback) {
+        Component name = EconomyMasterI18n.shopNameComponent(shopId, shopNameFallback);
+        JsonElement json = ComponentSerialization.CODEC
+                .encodeStart(JsonOps.INSTANCE, name)
+                .getOrThrow();
+        return json.toString();
+    }
+
     static void giveConfiguredSpawnEgg(ServerPlayer player, int shopId, String npcType, String npcModel, String shopName) {
         String baseModel = npcModel;
         String profession = null;
@@ -114,8 +139,7 @@ public final class EconomyNpcSpawnService {
             entityTag.put("VillagerData", villagerData);
         }
 
-        // エンティティ表示名はマスタ日本語をフォールバックとして保存（ワールド互換）
-        entityTag.putString("CustomName", shopName);
+        entityTag.putString("CustomName", customNameNbtJson(shopId, shopName));
         entityTag.putByte("CustomNameVisible", (byte) 1);
 
         eggStack.set(DataComponents.ENTITY_DATA, TypedEntityData.of(entityType, entityTag));
@@ -138,7 +162,7 @@ public final class EconomyNpcSpawnService {
         entityTag.putByte("Invulnerable", (byte) 1);
         entityTag.putByte("PersistenceRequired", (byte) 1);
         entityTag.putByte("Silent", (byte) 1);
-        entityTag.putString("CustomName", shopName);
+        entityTag.putString("CustomName", customNameNbtJson(shopId, shopName));
         entityTag.putByte("CustomNameVisible", (byte) 1);
 
         net.minecraft.nbt.ListTag handItems = new net.minecraft.nbt.ListTag();

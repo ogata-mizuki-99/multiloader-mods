@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "neoforge:conditions": [
+    {
+      "type": "instant_structure:crafting_recipe_enabled"
+    }
+  ],
+  "ingredients": [
+    "minecraft:book",
+    "minecraft:compass"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:written_book",
+    "components": {
+      "minecraft:custom_name": {
+        "translate": "item.instant_structure.guide_book"
+      },
+      "guide_lib:guide_access": {
+        "kind": "manual",
+        "book": "instant_structure:instant_structure",
+        "theme": "guide_lib:book"
+      }
+    }
+  }
+}

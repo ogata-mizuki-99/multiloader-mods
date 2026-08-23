@@ -1,0 +1,23 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "lookalike:crafting_recipe_enabled"
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "P": "minecraft:glass_pane",
+    "A": "minecraft:amethyst_shard"
+  },
+  "pattern": [
+    "GPG",
+    "GAG",
+    "GGG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lookalike:disguise_mirror"
+  }
+}

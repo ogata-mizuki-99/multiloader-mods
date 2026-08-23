@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "instant_structure:crafting_recipe_enabled"
+    }
+  ],
+  "pattern": [
+    " R ",
+    "IBI",
+    " R "
+  ],
+  "key": {
+    "R": "minecraft:redstone_torch",
+    "I": "minecraft:iron_ingot",
+    "B": "minecraft:book"
+  },
+  "result": {
+    "count": 1,
+    "id": "instant_structure:instant_builder"
+  }
+}

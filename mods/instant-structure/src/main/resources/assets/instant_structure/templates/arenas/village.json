@@ -1,0 +1,13 @@
+{
+  "name": "village",
+  "description": "Bundled arena template from a Minecraft superflat village (vanilla-generated structures).",
+  "author": "Bundled (vanilla superflat export)",
+  "offset": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "special_positions": {
+    "spawn_position": { "x": 0, "y": 1, "z": 0 }
+  }
+}

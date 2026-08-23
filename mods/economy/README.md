@@ -51,7 +51,7 @@ Those remain private and are not required to play with this mod.
 .\gradlew :economy:test
 ```
 
-JAR: `mods/economy/build/libs/economy-26.1.2-<version>.jar` (current: `1.0.0-beta.1`)
+JAR: `mods/economy/build/libs/economy-26.1.2-<version>.jar` (current: `1.0.0`)
 
 Automated tests: `mods/economy/run-automated-tests.ps1`
 

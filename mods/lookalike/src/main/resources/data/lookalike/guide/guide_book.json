@@ -1,0 +1,77 @@
+{
+  "name": "guide_lib.book.lookalike",
+  "description": "guide_lib.book.lookalike.desc",
+  "icon": "lookalike:disguise_mirror",
+  "sort_priority": 30,
+  "list_columns": 1,
+  "categories": [
+    {
+      "id": "main",
+      "name": "guide_lib.category.lookalike.main",
+      "entries": [
+        "overview",
+        "guide_items",
+        "mirror",
+        "commands"
+      ]
+    }
+  ],
+  "entries": {
+    "overview": {
+      "name": "guide_lib.entry.lookalike.overview",
+      "icon": "lookalike:disguise_mirror",
+      "pages": [
+        {
+          "type": "text",
+          "text": "guide_lib.lookalike.page.overview.text1"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.lookalike.page.overview.text2"
+        }
+      ]
+    },
+    "guide_items": {
+      "name": "guide_lib.entry.lookalike.guide_items",
+      "icon": "minecraft:book",
+      "pages": [
+        {
+          "type": "text",
+          "text": "guide_lib.lookalike.page.guide_items.text1"
+        },
+        {
+          "type": "crafting",
+          "recipe": "lookalike:manual"
+        }
+      ]
+    },
+    "mirror": {
+      "name": "guide_lib.entry.lookalike.mirror",
+      "icon": "lookalike:disguise_mirror",
+      "pages": [
+        {
+          "type": "text",
+          "text": "guide_lib.lookalike.page.mirror.text1"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.lookalike.page.mirror.text2"
+        },
+        {
+          "type": "crafting",
+          "recipe": "lookalike:disguise_mirror"
+        }
+      ]
+    },
+    "commands": {
+      "name": "guide_lib.entry.lookalike.commands",
+      "icon": "minecraft:paper",
+      "pages": [
+        {
+          "type": "text",
+          "text": "guide_lib.lookalike.page.commands.text1"
+        }
+      ]
+    }
+  }
+}

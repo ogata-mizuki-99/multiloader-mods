@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 
 /**
@@ -213,8 +214,7 @@ public class ClientAccess {
         if (!EconomyMod.isEconomyReady()) {
             Minecraft mc = Minecraft.getInstance();
             if (mc.player != null) {
-                mc.player.sendSystemMessage(net.minecraft.network.chat.Component.literal(
-                        "§c[ランキング] 経済データの同期が完了していないため、閲覧できません。"));
+                mc.player.sendSystemMessage(Component.translatable("economy.chat.ranking_not_ready"));
             }
             return;
         }
@@ -226,23 +226,20 @@ public class ClientAccess {
                     return;
                 }
                 if (res == null) {
-                    mc.player.sendSystemMessage(net.minecraft.network.chat.Component.literal(
-                            "§c[ランキング] 集計データが存在しないか、ワールドから取得できませんでした。"));
+                    mc.player.sendSystemMessage(Component.translatable("economy.chat.ranking_no_data"));
                     return;
                 }
                 try {
                     com.google.gson.JsonObject json = com.google.gson.JsonParser.parseString(res).getAsJsonObject();
                     com.google.gson.JsonArray records = json.getAsJsonArray("records");
                     if (records == null || records.isEmpty()) {
-                        mc.player.sendSystemMessage(net.minecraft.network.chat.Component.literal(
-                                "§c[ランキング] スナップショットはありますが、記録されたデータが空です。"));
+                        mc.player.sendSystemMessage(Component.translatable("economy.chat.ranking_empty"));
                         return;
                     }
                     mc.setScreen(new RankingScreen(null, json));
                 } catch (Exception e) {
                     EconomyMod.LOGGER.error("Failed to open ranking viewer: ", e);
-                    mc.player.sendSystemMessage(net.minecraft.network.chat.Component.literal(
-                            "§c[エラー] ランキング表示中にエラーが発生しました。"));
+                    mc.player.sendSystemMessage(Component.translatable("economy.chat.ranking_view_error"));
                 }
             });
         });

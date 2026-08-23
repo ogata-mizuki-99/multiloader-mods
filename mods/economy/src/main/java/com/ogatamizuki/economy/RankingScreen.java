@@ -9,10 +9,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class RankingScreen extends Screen {
     private final Screen parentScreen;
@@ -24,24 +22,16 @@ public class RankingScreen extends Screen {
         "mobKills", "harvests", "potionsBrewed", "fishCaught",
         "etfBuyAmount", "etfShortAmount", "etfProfitAmount", "totalTradeCount"
     };
-
-    private static final String[] METRIC_LABELS = {
-        "総資産", "手持ち現金", "銀行残高", "累計獲得金額", "累計ロスト金額", "総借金金額",
-        "参加時間", "移動距離", "ブロック破壊数", "死亡回数", "プレイヤーキル数",
-        "モブキル数", "収穫数", "ポーション生産量", "釣った魚の数",
-        "ETF累計購入額", "ETF累計空売り額", "ETF利益額", "ETF総取引回数"
-    };
     
     private int selectedMetricIndex = 0;
     private final List<JsonObject> sortedRecords = new ArrayList<>();
-    private static final NumberFormat FMT = NumberFormat.getNumberInstance(Locale.JAPAN);
 
     public RankingScreen(Screen parentScreen, JsonObject rankingData) {
         this(parentScreen, rankingData, null);
     }
 
     public RankingScreen(Screen parentScreen, JsonObject rankingData, String initialSortField) {
-        super(Component.literal("ランキング一覧"));
+        super(Component.translatable("economy.ranking.title"));
         this.parentScreen = parentScreen;
 
         if (rankingData != null && rankingData.has("records")) {
@@ -119,7 +109,9 @@ public class RankingScreen extends Screen {
 
         // カテゴリー表示
         drawBevel(guiGraphics, centerX - 85, centerY - 62, centerX + 85, centerY - 42, true);
-        guiGraphics.centeredText(this.font, METRIC_LABELS[selectedMetricIndex], centerX, centerY - 56, 0xFFFBBF24);
+        guiGraphics.centeredText(this.font, Component.translatable(
+                RankingMetric.labelKeyForSortField(METRICS[selectedMetricIndex])).getString(),
+                centerX, centerY - 56, 0xFFFBBF24);
 
         // ランキングリストの枠
         int listTop = centerY - 38;
@@ -131,8 +123,10 @@ public class RankingScreen extends Screen {
         String field = METRICS[selectedMetricIndex];
         
         if (this.sortedRecords.isEmpty()) {
-            guiGraphics.centeredText(this.font, "データがありません", centerX, centerY + 10, 0xFF64748B);
+            guiGraphics.centeredText(this.font, Component.translatable("economy.ranking.empty").getString(),
+                    centerX, centerY + 10, 0xFF64748B);
         } else {
+            RankingMetric metric = RankingMetric.forSortField(field);
             for (int i = 0; i < Math.min(10, this.sortedRecords.size()); i++) {
                 JsonObject record = this.sortedRecords.get(i);
                 int rowY = listTop + 2 + i * rowH;
@@ -143,20 +137,7 @@ public class RankingScreen extends Screen {
 
                 String name = record.has("username") ? record.get("username").getAsString() : "Unknown";
                 double val = record.has(field) ? record.get(field).getAsDouble() : 0.0;
-
-                String valStr;
-                if (field.equals("travelDistance")) {
-                    valStr = FMT.format((long) val) + "m";
-                } else if (field.equals("playTime")) {
-                    long sec = (long) val;
-                    long h = sec / 3600;
-                    long m = (sec % 3600) / 60;
-                    valStr = h + "時間" + m + "分";
-                } else if (field.contains("Money") || field.contains("Amount") || field.contains("Profit") || field.contains("Debt") || field.contains("Earnings") || field.contains("Lost") || field.contains("Balance")) {
-                    valStr = "¥" + FMT.format((long) val);
-                } else {
-                    valStr = FMT.format((long) val);
-                }
+                String valStr = metric.formatValue(val);
 
                 // 順位の色
                 int rankColor = 0xFFE2E8F0;

@@ -183,12 +183,13 @@ public class EconomyModClient {
         event.register(EconomyAdminResultPayload.TYPE, (payload, context) -> {
             Minecraft mc = Minecraft.getInstance();
             mc.execute(() -> {
+                Component message = EconomyMasterI18n.chatMessage(payload.message());
                 if (mc.player != null) {
-                    mc.player.sendSystemMessage(Component.literal(payload.message()));
+                    mc.player.sendSystemMessage(message);
                 }
                 Screen currentScreen = mc.screen;
                 if (currentScreen instanceof EconomyAdminScreen adminScreen) {
-                    adminScreen.onActionResult(payload.success(), payload.message());
+                    adminScreen.onActionResult(payload.success(), message.getString());
                 }
             });
         });

@@ -104,6 +104,17 @@ public final class EconomyMasterI18n {
         return Component.translatable(key, args);
     }
 
+    public static Component chatMessage(String messageOrKey) {
+        if (messageOrKey != null && messageOrKey.startsWith("economy.")) {
+            return Component.translatable(messageOrKey);
+        }
+        return Component.literal(messageOrKey == null ? "" : messageOrKey);
+    }
+
+    public static String chatMessageString(String messageOrKey) {
+        return chatMessage(messageOrKey).getString();
+    }
+
     private static String safeFallback(String fallback) {
         return fallback == null || fallback.isBlank() ? "" : fallback;
     }

@@ -1,81 +1,116 @@
 package com.ogatamizuki.economy;
 
+import net.minecraft.network.chat.Component;
+
+import java.text.NumberFormat;
+import java.util.Locale;
+
 /**
- * ランキング表示用のソート項目（コマンド・GUI 共通）
+ * ランキング表示用のソート項目（コマンド・GUI 共通）。
+ * 表示名は lang キー（{@code economy.ranking.metric.*}）で解決する。
  */
-public record RankingMetric(String sortField, String label, boolean isDistance, boolean isTime) {
+public record RankingMetric(String sortField, String labelKey, boolean isDistance, boolean isTime) {
+
+    public static RankingMetric forSortField(String sortField) {
+        if (sortField == null || sortField.isBlank()) {
+            return resolve(null);
+        }
+        boolean isDistance = "travelDistance".equals(sortField);
+        boolean isTime = "playTime".equals(sortField);
+        return new RankingMetric(sortField, labelKeyForSortField(sortField), isDistance, isTime);
+    }
 
     public static RankingMetric resolve(String metric) {
+        if (metric != null) {
+            for (String field : RankingScreen.METRICS) {
+                if (field.equalsIgnoreCase(metric)) {
+                    return forSortField(field);
+                }
+            }
+        }
         String sortField = "totalMoney";
-        String label = "総資産";
+        String labelKey = "economy.ranking.metric.totalMoney";
         boolean isDistance = false;
         boolean isTime = false;
 
         if (metric != null) {
-            String m = metric.toLowerCase();
+            String m = metric.toLowerCase(Locale.ROOT);
             if (m.equals("total") || m.equals("総資産") || m.equals("資産")) {
                 sortField = "totalMoney";
-                label = "総資産";
+                labelKey = "economy.ranking.metric.totalMoney";
             } else if (m.equals("balance") || m.equals("手持ち") || m.equals("所持金") || m.equals("現金")) {
                 sortField = "balance";
-                label = "手持ち現金";
+                labelKey = "economy.ranking.metric.balance";
             } else if (m.equals("bank") || m.equals("銀行") || m.equals("預金")) {
                 sortField = "bankBalance";
-                label = "銀行残高";
+                labelKey = "economy.ranking.metric.bankBalance";
             } else if (m.equals("earnings") || m.equals("獲得額") || m.equals("累計獲得")) {
                 sortField = "totalEarnings";
-                label = "累計獲得金額";
+                labelKey = "economy.ranking.metric.totalEarnings";
             } else if (m.equals("lost") || m.equals("ロスト") || m.equals("ロスト額")) {
                 sortField = "totalLost";
-                label = "累計ロスト金額";
+                labelKey = "economy.ranking.metric.totalLost";
             } else if (m.equals("debt") || m.equals("借金") || m.equals("借金額")) {
                 sortField = "totalDebt";
-                label = "総借金金額";
+                labelKey = "economy.ranking.metric.totalDebt";
             } else if (m.equals("time") || m.equals("時間") || m.equals("参加時間")) {
                 sortField = "playTime";
-                label = "参加時間";
+                labelKey = "economy.ranking.metric.playTime";
                 isTime = true;
             } else if (m.equals("distance") || m.equals("距離") || m.equals("移動距離")) {
                 sortField = "travelDistance";
-                label = "移動距離";
+                labelKey = "economy.ranking.metric.travelDistance";
                 isDistance = true;
             } else if (m.equals("broken") || m.equals("破壊") || m.equals("ブロック破壊")) {
                 sortField = "blocksBroken";
-                label = "ブロック破壊数";
+                labelKey = "economy.ranking.metric.blocksBroken";
             } else if (m.equals("deaths") || m.equals("死亡")) {
                 sortField = "deaths";
-                label = "死亡回数";
+                labelKey = "economy.ranking.metric.deaths";
             } else if (m.equals("player_kills") || m.equals("プレイヤーキル") || m.equals("pvp")) {
                 sortField = "playerKills";
-                label = "プレイヤーキル数";
+                labelKey = "economy.ranking.metric.playerKills";
             } else if (m.equals("kills") || m.equals("キル") || m.equals("モブキル")) {
                 sortField = "mobKills";
-                label = "モブキル数";
+                labelKey = "economy.ranking.metric.mobKills";
             } else if (m.equals("harvest") || m.equals("収穫") || m.equals("収穫数")) {
                 sortField = "harvests";
-                label = "収穫数";
+                labelKey = "economy.ranking.metric.harvests";
             } else if (m.equals("potion") || m.equals("ポーション")) {
                 sortField = "potionsBrewed";
-                label = "ポーション生産量";
+                labelKey = "economy.ranking.metric.potionsBrewed";
             } else if (m.equals("fish") || m.equals("釣り") || m.equals("魚")) {
                 sortField = "fishCaught";
-                label = "釣った魚の数";
+                labelKey = "economy.ranking.metric.fishCaught";
             } else if (m.equals("etf_buy") || m.equals("etf購入")) {
                 sortField = "etfBuyAmount";
-                label = "ETF累計購入額";
+                labelKey = "economy.ranking.metric.etfBuyAmount";
             } else if (m.equals("etf_short") || m.equals("etf空売り")) {
                 sortField = "etfShortAmount";
-                label = "ETF累計空売り額";
+                labelKey = "economy.ranking.metric.etfShortAmount";
             } else if (m.equals("etf_profit") || m.equals("利益") || m.equals("etf利益")) {
                 sortField = "etfProfitAmount";
-                label = "ETF利益額";
+                labelKey = "economy.ranking.metric.etfProfitAmount";
             } else if (m.equals("etf_trades") || m.equals("etf取引数")) {
                 sortField = "totalTradeCount";
-                label = "ETF総取引回数";
+                labelKey = "economy.ranking.metric.totalTradeCount";
             }
         }
 
-        return new RankingMetric(sortField, label, isDistance, isTime);
+        return new RankingMetric(sortField, labelKey, isDistance, isTime);
+    }
+
+    public static String labelKeyForSortField(String sortField) {
+        return "economy.ranking.metric." + sortField;
+    }
+
+    public Component labelComponent() {
+        return Component.translatable(labelKey);
+    }
+
+    /** クライアント言語で解決した表示名（GUI 用）。 */
+    public String label() {
+        return labelComponent().getString();
     }
 
     public static int indexOfSortField(String sortField) {
@@ -87,21 +122,26 @@ public record RankingMetric(String sortField, String label, boolean isDistance, 
         return 0;
     }
 
-    public String formatValue(double val) {
-        java.text.NumberFormat fmt = java.text.NumberFormat.getNumberInstance(java.util.Locale.JAPAN);
+    public Component formatValueComponent(double val) {
+        NumberFormat fmt = NumberFormat.getNumberInstance(Locale.ROOT);
         if (isDistance) {
-            return fmt.format((long) val) + "m";
+            return Component.literal(fmt.format((long) val) + "m");
         }
         if (isTime) {
             long sec = (long) val;
             long h = sec / 3600;
             long m = (sec % 3600) / 60;
-            return h + "時間" + m + "分";
+            return Component.translatable("economy.ranking.format_time", h, m);
         }
         if (sortField.contains("Money") || sortField.contains("Amount") || sortField.contains("Earnings")
-                || sortField.contains("Lost") || sortField.contains("Debt") || sortField.contains("Balance")) {
-            return "¥" + fmt.format((long) val);
+                || sortField.contains("Lost") || sortField.contains("Debt") || sortField.contains("Balance")
+                || sortField.contains("Profit")) {
+            return Component.literal("¥" + fmt.format((long) val));
         }
-        return fmt.format((long) val);
+        return Component.literal(fmt.format((long) val));
+    }
+
+    public String formatValue(double val) {
+        return formatValueComponent(val).getString();
     }
 }

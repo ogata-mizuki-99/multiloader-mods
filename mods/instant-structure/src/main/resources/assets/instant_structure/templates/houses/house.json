@@ -1,0 +1,36 @@
+{
+  "name": "house",
+  "description": "Bundled cottage template from a Minecraft superflat world (vanilla-generated blocks).",
+  "author": "Bundled (vanilla superflat export)",
+  "offset": {
+    "x": 0,
+    "y": 0,
+    "z": 0
+  },
+  "special_positions": {
+    "door_position": {
+      "x": 3,
+      "y": 2,
+      "z": 5
+    },
+    "head_sign_position": {
+      "x": 3,
+      "y": 4,
+      "z": 5
+    },
+    "outside_position": {
+      "x": 3,
+      "y": 2,
+      "z": 4
+    },
+    "inside_position": {
+      "x": 3,
+      "y": 2,
+      "z": 6
+    }
+  },
+  "game_integration": {
+    "werewolf_house": true,
+    "auto_detected": true
+  }
+}

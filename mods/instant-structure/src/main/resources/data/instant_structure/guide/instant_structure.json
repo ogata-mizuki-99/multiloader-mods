@@ -1,0 +1,86 @@
+{
+  "name": "guide_lib.book.instant_structure",
+  "description": "guide_lib.book.instant_structure.desc",
+  "icon": "instant_structure:instant_builder",
+  "sort_priority": 30,
+  "list_columns": 1,
+  "categories": [
+    {
+      "id": "main",
+      "name": "guide_lib.category.instant_structure.main",
+      "entries": ["overview", "marker", "builder", "guide_book", "bundled_templates"]
+    }
+  ],
+  "entries": {
+    "overview": {
+      "name": "guide_lib.entry.instant_structure.overview",
+      "icon": "instant_structure:instant_builder",
+      "pages": [
+        {
+          "type": "text",
+          "text": "guide_lib.instant_structure.page.overview.text"
+        }
+      ]
+    },
+    "marker": {
+      "name": "guide_lib.entry.instant_structure.marker",
+      "icon": "instant_structure:structure_marker",
+      "pages": [
+        {
+          "type": "text",
+          "text": "guide_lib.instant_structure.page.marker.text1"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.instant_structure.page.marker.config"
+        },
+        {
+          "type": "crafting",
+          "recipe": "instant_structure:marker"
+        }
+      ]
+    },
+    "builder": {
+      "name": "guide_lib.entry.instant_structure.builder",
+      "icon": "instant_structure:instant_builder",
+      "pages": [
+        {
+          "type": "text",
+          "text": "guide_lib.instant_structure.page.builder.text1"
+        },
+        {
+          "type": "text",
+          "text": "guide_lib.instant_structure.page.builder.config"
+        },
+        {
+          "type": "crafting",
+          "recipe": "instant_structure:builder"
+        }
+      ]
+    },
+    "guide_book": {
+      "name": "guide_lib.entry.instant_structure.guide_book",
+      "icon": "minecraft:written_book",
+      "pages": [
+        {
+          "type": "text",
+          "text": "guide_lib.instant_structure.page.guide_book.text"
+        },
+        {
+          "type": "crafting",
+          "recipe": "instant_structure:manual"
+        }
+      ]
+    },
+    "bundled_templates": {
+      "name": "guide_lib.entry.instant_structure.bundled_templates",
+      "icon": "minecraft:grass_block",
+      "pages": [
+        {
+          "type": "text",
+          "text": "guide_lib.instant_structure.page.bundled_templates.text"
+        }
+      ]
+    }
+  }
+}

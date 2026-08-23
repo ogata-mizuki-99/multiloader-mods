@@ -1,0 +1,41 @@
+license="MIT"
+
+[[mods]]
+modId="lookalike"
+version="1.0.0"
+displayName="Lookalike"
+authors="OgataMizuki@Vtuber"
+description='''
+プレイヤーの見た目（スキン・頭上ネームタグ）を動的に偽装するMOD。
+'''
+
+[[dependencies.lookalike]]
+    modId="neoforge"
+    type="required"
+    versionRange="[26.1.2.76,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.lookalike]]
+    modId="minecraft"
+    type="required"
+    versionRange="[26.1.2,26.2)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.lookalike]]
+    modId="guide_lib"
+    type="optional"
+    versionRange="[1.0.0-beta.1,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.lookalike]]
+    modId="werewolf"
+    type="optional"
+    versionRange="[1.0.0-beta.1,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[mixins]]
+config="lookalike.mixins.json"

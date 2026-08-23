@@ -536,7 +536,7 @@ public class EconomyMod {
             compileRanking(serverPlayer.createCommandSourceStack());
             PacketDistributor.sendToPlayer(
                     serverPlayer,
-                    new EconomyAdminResultPayload(true, "§a[経済] ランキング集計を開始しました。チャットで進捗を確認してください。")
+                    new EconomyAdminResultPayload(true, "economy.chat.ranking_compile_started")
             );
             return;
         }
@@ -1694,12 +1694,16 @@ public class EconomyMod {
 
     @SubscribeEvent
     public void onEntityJoinLevel(EntityJoinLevelEvent event) {
-        if (event.loadedFromDisk() || event.getLevel().isClientSide()) {
+        if (event.getLevel().isClientSide()) {
             return;
         }
 
         Entity entity = event.getEntity();
-        if (!isEconomyRelatedNpc(entity)) {
+        // 既存ワールドの日本語リテラル名も、shop_id から翻訳 Component へ差し替える
+        parseEconomyNpcInfo(entity, true).ifPresent(info ->
+                EconomyNpcSpawnService.applyLocalizedDisplayName(entity, info.shopId()));
+
+        if (event.loadedFromDisk() || !isEconomyRelatedNpc(entity)) {
             return;
         }
 
@@ -1738,7 +1742,7 @@ public class EconomyMod {
     }
 
     public static void compileRanking(CommandSourceStack source) {
-        source.sendSuccess(() -> Component.literal("§e[経済] ランキング集計処理を非同期で開始します..."), true);
+        source.sendSuccess(() -> Component.translatable("economy.chat.ranking_compile_start"), true);
 
         // サーバースレッド上でオンラインプレイヤーの情報を取得＆保存
         var server = source.getServer();
@@ -1766,7 +1770,7 @@ public class EconomyMod {
                 .toAbsolutePath().normalize();
             LOGGER.info("Stats directory path (normalized): {}", statsPath);
         } catch (Exception e) {
-            source.sendFailure(Component.literal("§c[エラー] 統計ディレクトリのパス取得に失敗しました: " + e.getMessage()));
+            source.sendFailure(Component.translatable("economy.chat.ranking_stats_path_fail", e.getMessage()));
             return;
         }
 
@@ -1870,7 +1874,7 @@ public class EconomyMod {
 
                 // 集計対象が全くいない場合はエラー
                 if (playerStatsMap.isEmpty()) {
-                    source.sendFailure(Component.literal("§c[エラー] 集計対象となるプレイヤー情報がありません。"));
+                    source.sendFailure(Component.translatable("economy.chat.ranking_compile_no_players"));
                     return;
                 }
 
@@ -1885,16 +1889,16 @@ public class EconomyMod {
                 EconomyService.syncRanking(payload.toString()).thenAccept(res ->
                     runOnServerThread(() -> {
                         if (res != null) {
-                            source.sendSuccess(() -> Component.literal("§a[経済] ランキング集計と同期が正常に完了しました！"), true);
+                            source.sendSuccess(() -> Component.translatable("economy.chat.ranking_compile_done"), true);
                         } else {
-                            source.sendFailure(Component.literal("§c[エラー] ランキングサーバーへの同期に失敗しました。"));
+                            source.sendFailure(Component.translatable("economy.chat.ranking_compile_sync_fail"));
                         }
                     })
                 );
 
             } catch (Exception e) {
                 LOGGER.error("Failed to compile ranking: ", e);
-                source.sendFailure(Component.literal("§c[エラー] ランキング集計中にエラーが発生しました: " + e.getMessage()));
+                source.sendFailure(Component.translatable("economy.chat.ranking_compile_error", String.valueOf(e.getMessage())));
             }
         });
     }
@@ -1905,20 +1909,20 @@ public class EconomyMod {
             if (mcServer != null) {
                 mcServer.execute(() -> {
                     if (res == null) {
-                        source.sendSuccess(() -> Component.literal("§c[ランキング] 集計データが存在しないか、サーバーから取得できませんでした。"), true);
+                        source.sendSuccess(() -> Component.translatable("economy.chat.ranking_no_data"), true);
                         return;
                     }
                     try {
                         com.google.gson.JsonObject json = com.google.gson.JsonParser.parseString(res).getAsJsonObject();
                         com.google.gson.JsonArray records = json.getAsJsonArray("records");
                         if (records == null || records.size() == 0) {
-                            source.sendSuccess(() -> Component.literal("§c[ランキング] スナップショットはありますが、記録されたデータが空です。"), true);
+                            source.sendSuccess(() -> Component.translatable("economy.chat.ranking_empty"), true);
                             return;
                         }
 
                         RankingMetric rankingMetric = RankingMetric.resolve(metric);
                         String sortField = rankingMetric.sortField();
-                        String label = rankingMetric.label();
+                        Component metricLabel = rankingMetric.labelComponent();
 
                         java.util.List<com.google.gson.JsonObject> list = new java.util.ArrayList<>();
                         for (int i = 0; i < records.size(); i++) {
@@ -1931,39 +1935,38 @@ public class EconomyMod {
                             return Double.compare(valB, valA);
                         });
 
-                        String announcer = resolveRankingAnnouncer(source);
-                        final String finalLabel = label;
+                        Component announcer = resolveRankingAnnouncer(source);
 
                         mcServer.getPlayerList().broadcastSystemMessage(
-                                Component.literal("§7[" + announcer + " が §6" + finalLabel + "ランキング §7を公開]"), false);
+                                Component.translatable("economy.chat.ranking_announce", announcer, metricLabel), false);
                         mcServer.getPlayerList().broadcastSystemMessage(
-                                Component.literal("§6=== [" + finalLabel + "ランキング] ==="), false);
+                                Component.translatable("economy.chat.ranking_header", metricLabel), false);
 
                         int rank = 1;
                         for (com.google.gson.JsonObject record : list) {
                             if (rank > 10) break;
                             String username = record.get("username").getAsString();
                             double val = record.has(sortField) ? record.get(sortField).getAsDouble() : 0.0;
-                            String valStr = rankingMetric.formatValue(val);
+                            Component valComp = rankingMetric.formatValueComponent(val);
 
                             final int finalRank = rank;
                             mcServer.getPlayerList().broadcastSystemMessage(
-                                    Component.literal("§e" + finalRank + "位: §f" + username + " §a- §e" + valStr), false);
+                                    Component.translatable("economy.chat.ranking_entry", finalRank, username, valComp), false);
                             rank++;
                         }
                     } catch (Exception e) {
                         LOGGER.error("Failed to render ranking view: ", e);
-                        source.sendFailure(Component.literal("§c[エラー] ランキング表示中にエラーが発生しました。"));
+                        source.sendFailure(Component.translatable("economy.chat.ranking_view_error"));
                     }
                 });
             }
         });
     }
 
-    private static String resolveRankingAnnouncer(CommandSourceStack source) {
+    private static Component resolveRankingAnnouncer(CommandSourceStack source) {
         if (source.getEntity() instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
-            return EconomyNicknameBridge.resolvePlayerName(serverPlayer);
+            return Component.literal(EconomyNicknameBridge.resolvePlayerName(serverPlayer));
         }
-        return "サーバー";
+        return Component.translatable("economy.ranking.announcer_server");
     }
 }

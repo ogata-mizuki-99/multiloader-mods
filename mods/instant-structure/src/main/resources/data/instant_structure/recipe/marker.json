@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "neoforge:conditions": [
+    {
+      "type": "instant_structure:crafting_recipe_enabled"
+    }
+  ],
+  "pattern": [
+    " G ",
+    "FCF",
+    " G "
+  ],
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "F": "minecraft:oak_fence",
+    "C": "minecraft:compass"
+  },
+  "result": {
+    "count": 1,
+    "id": "instant_structure:structure_marker"
+  }
+}

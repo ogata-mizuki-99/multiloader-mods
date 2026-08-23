@@ -381,7 +381,7 @@ public class StockTradeScreen extends Screen {
                 this.addRenderableWidget(compBtn);
 
                 // ランキングボタン
-                this.rankingButton = Button.builder(Component.literal("ランキング"), button -> {
+                this.rankingButton = Button.builder(EconomyMasterI18n.tr("economy.ranking.button"), button -> {
                     if (this.hasRankingData && this.rankingData != null) {
                         Minecraft.getInstance().setScreen(new RankingScreen(this, this.rankingData));
                     }

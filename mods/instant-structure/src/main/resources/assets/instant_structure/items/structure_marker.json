@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "instant_structure:item/structure_marker"
+  }
+}

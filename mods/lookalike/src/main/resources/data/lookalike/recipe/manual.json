@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "minecraft:book",
+    "minecraft:amethyst_shard"
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:written_book",
+    "components": {
+      "minecraft:custom_name": {
+        "translate": "item.lookalike.guide_book"
+      },
+      "guide_lib:guide_access": {
+        "kind": "manual",
+        "book": "lookalike:guide_book",
+        "theme": "guide_lib:book"
+      }
+    }
+  }
+}
