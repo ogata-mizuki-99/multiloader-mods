@@ -48,7 +48,7 @@ public class StructureExportScreen extends Screen {
     public static void open(BlockPos pos1, BlockPos pos2) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player != null) {
-            mc.setScreen(new StructureExportScreen(pos1, pos2));
+            mc.gui.setScreen(new StructureExportScreen(pos1, pos2));
         }
     }
 
@@ -68,7 +68,12 @@ public class StructureExportScreen extends Screen {
                 NAME_BOX_WIDTH, 20, Component.empty());
         this.nameBox.setMaxLength(64);
         this.nameBox.setHint(Component.translatable("instant_structure.screen.export.name"));
-        this.nameBox.setFilter(value -> !value.contains("/") && !value.contains("\\") && !value.contains(":"));
+        this.nameBox.setResponder(value -> {
+            String filtered = value.replace("/", "").replace("\\", "").replace(":", "");
+            if (!filtered.equals(value)) {
+                this.nameBox.setValue(filtered);
+            }
+        });
         this.addRenderableWidget(this.nameBox);
         this.setInitialFocus(this.nameBox);
 

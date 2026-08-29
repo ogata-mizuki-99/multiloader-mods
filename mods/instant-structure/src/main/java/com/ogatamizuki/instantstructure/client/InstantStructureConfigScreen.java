@@ -82,7 +82,7 @@ public class InstantStructureConfigScreen extends Screen {
                 .bounds(centerX - 110, centerY + 42, 220, 20)
                 .build());
 
-        addRenderableWidget(Button.builder(Component.translatable("gui.back"), btn -> this.minecraft.setScreen(parent))
+        addRenderableWidget(Button.builder(Component.translatable("gui.back"), btn -> this.minecraft.gui.setScreen(parent))
                 .bounds(centerX - 50, centerY + 72, 100, 20)
                 .build());
     }
@@ -112,6 +112,6 @@ public class InstantStructureConfigScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(parent);
+        this.minecraft.gui.setScreen(parent);
     }
 }

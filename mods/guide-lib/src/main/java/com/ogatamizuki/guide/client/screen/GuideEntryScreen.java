@@ -155,9 +155,9 @@ public class GuideEntryScreen extends Screen {
 
     private void goBack() {
         if (parentScreen != null) {
-            Minecraft.getInstance().setScreen(parentScreen);
+            Minecraft.getInstance().gui.setScreen(parentScreen);
         } else {
-            Minecraft.getInstance().setScreen(new GuideBookScreen(null, bookId, theme, closeOnBack));
+            Minecraft.getInstance().gui.setScreen(new GuideBookScreen(null, bookId, theme, closeOnBack));
         }
     }
 

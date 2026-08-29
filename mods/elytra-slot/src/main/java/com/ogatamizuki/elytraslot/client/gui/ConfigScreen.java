@@ -21,15 +21,15 @@ public class ConfigScreen extends Screen {
         int centerY = this.height / 2;
 
         addRenderableWidget(Button.builder(Component.translatable("elytra_slot.screen.config.edit_slots"), btn -> {
-            this.minecraft.setScreen(new SlotConfigScreen(this));
+            this.minecraft.gui.setScreen(new SlotConfigScreen(this));
         }).bounds(centerX - 110, centerY - 30, 220, 20).build());
 
         addRenderableWidget(Button.builder(Component.translatable("elytra_slot.screen.config.edit_hud"), btn -> {
-            this.minecraft.setScreen(new HudConfigScreen(this));
+            this.minecraft.gui.setScreen(new HudConfigScreen(this));
         }).bounds(centerX - 110, centerY, 220, 20).build());
 
         addRenderableWidget(Button.builder(Component.translatable("gui.back"), btn -> {
-            this.minecraft.setScreen(parent);
+            this.minecraft.gui.setScreen(parent);
         }).bounds(centerX - 50, centerY + 40, 100, 20).build());
     }
 
@@ -42,6 +42,6 @@ public class ConfigScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(parent);
+        this.minecraft.gui.setScreen(parent);
     }
 }

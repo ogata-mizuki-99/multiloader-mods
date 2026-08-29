@@ -173,7 +173,7 @@ public final class EconomyLocalPlayerService {
         data.putPlayer(uuid, updated);
         EconomyBalanceSync.applyBalanceAndSync(player, updated.balance(), updated.bankBalance(), updated.debt());
         player.sendSystemMessage(Component.literal(
-                "§c[経済] §fデスペナルティにより §e¥" + actualLost + "§f を失いました！ (残高: §e¥" + updated.balance() + "§f)"));
+                "economy.chat.player.death_penalty|" + actualLost + "|" + updated.balance()));
     }
 
     public static JsonObject playerJson(UUID playerUuid) {

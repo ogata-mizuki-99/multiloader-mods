@@ -3,10 +3,12 @@
   "minVersion": "0.8",
   "package": "com.ogatamizuki.elytraslot.mixin",
   "compatibilityLevel": "JAVA_25",
+  "refmap": "elytra_slot.refmap.json",
   "mixins": [
     "InventoryMenuMixin",
     "InventoryScreenMixin",
     "LivingEntityMixin",
+    "PlayerMixin",
     "WingsLayerMixin",
     "HumanoidRenderStateMixin",
     "HumanoidMobRendererMixin",

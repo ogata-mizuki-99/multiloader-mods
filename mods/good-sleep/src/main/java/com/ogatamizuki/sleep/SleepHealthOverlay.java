@@ -27,14 +27,14 @@ public final class SleepHealthOverlay {
 
     private static void render(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker, GuiLayer original) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.options.hideGui) {
+        if (mc.player == null || mc.gui.hud.isHidden()) {
             return;
         }
 
         if (mc.player.isSleeping() && SleepClientFlags.healWhileSleeping()) {
             int width = guiGraphics.guiWidth();
             int height = guiGraphics.guiHeight();
-            int defaultBaseY = height - mc.gui.leftHeight;
+            int defaultBaseY = height - mc.gui.hud.leftHeight;
             float screenCenterX = width / 2f;
             float targetCenterY = height / 2f + TARGET_CENTER_Y_OFFSET;
             float heartRowCenterY = defaultBaseY + HEART_ROW_CENTER_OFFSET;

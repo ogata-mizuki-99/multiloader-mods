@@ -1,10 +1,14 @@
 package com.ogatamizuki.elytraslot;
 
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
@@ -21,6 +25,10 @@ import org.apache.logging.log4j.Logger;
 public class ElytraSlotMod {
     public static final String MODID = "elytra_slot";
     public static final Logger LOGGER = LogManager.getLogger(ElytraSlotMod.class);
+
+    /** Identifier used as the ID of the GLIDING_FLIGHT attribute modifier added when elytra is in the dedicated slot. */
+    public static final Identifier ELYTRA_GLIDE_MODIFIER_ID =
+            Identifier.fromNamespaceAndPath(MODID, "custom_elytra_glide");
 
     // Attachment type registration
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES =
@@ -232,12 +240,44 @@ public class ElytraSlotMod {
         }
     }
 
+    // -------------------------------------------------------------------------
+    // GLIDING_FLIGHT attribute management
+    // -------------------------------------------------------------------------
+
+    /**
+     * Add the GLIDING_FLIGHT attribute modifier to the player so that
+     * {@code LivingEntity#canGlide(isNeoForge=true)} returns {@code true}.
+     * Must be called whenever an elytra is placed into the dedicated slot.
+     */
+    public static void applyGlidingAttribute(ServerPlayer player) {
+        AttributeInstance attr = player.getAttribute(NeoForgeMod.GLIDING_FLIGHT);
+        if (attr != null && attr.getModifier(ELYTRA_GLIDE_MODIFIER_ID) == null) {
+            attr.addPermanentModifier(new AttributeModifier(
+                    ELYTRA_GLIDE_MODIFIER_ID, 1.0, AttributeModifier.Operation.ADD_VALUE
+            ));
+        }
+    }
+
+    /**
+     * Remove the GLIDING_FLIGHT attribute modifier from the player.
+     * Must be called whenever the dedicated slot elytra is removed.
+     */
+    public static void removeGlidingAttribute(ServerPlayer player) {
+        AttributeInstance attr = player.getAttribute(NeoForgeMod.GLIDING_FLIGHT);
+        if (attr != null) {
+            attr.removeModifier(ELYTRA_GLIDE_MODIFIER_ID);
+        }
+    }
+
+    // -------------------------------------------------------------------------
+
     /** Move dedicated-slot elytra into inventory/hotbar; drop remainder if full. */
     private static void unequipElytraToInventory(ServerPlayer player, ItemStack elytraInSlot) {
         ItemStack toReturn = elytraInSlot.copy();
         player.setData(ELYTRA_SLOT, ItemStack.EMPTY);
         syncSlot(player, ItemStack.EMPTY);
         player.getInventory().placeItemBackInInventory(toReturn);
+        removeGlidingAttribute(player);
     }
 
     /**
@@ -253,6 +293,7 @@ public class ElytraSlotMod {
                 inventory.setItem(i, ItemStack.EMPTY);
                 player.setData(ELYTRA_SLOT, found);
                 syncSlot(player, found);
+                applyGlidingAttribute(player);
                 return;
             }
         }
@@ -262,6 +303,7 @@ public class ElytraSlotMod {
             player.setItemInHand(net.minecraft.world.InteractionHand.OFF_HAND, ItemStack.EMPTY);
             player.setData(ELYTRA_SLOT, found);
             syncSlot(player, found);
+            applyGlidingAttribute(player);
         }
     }
 
@@ -275,14 +317,13 @@ public class ElytraSlotMod {
             event.setCanceled(true);
             event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);
 
-            if (!player.level().isClientSide()) {
-                ItemStack currentInSlot = player.getData(ELYTRA_SLOT);
-                player.setItemInHand(event.getHand(), currentInSlot.copy());
-                player.setData(ELYTRA_SLOT, held.copy());
-
-                if (player instanceof ServerPlayer serverPlayer) {
-                    syncSlot(serverPlayer, held);
-                }
+            if (!player.level().isClientSide() && player instanceof ServerPlayer serverPlayer) {
+                ItemStack currentInSlot = serverPlayer.getData(ELYTRA_SLOT);
+                serverPlayer.setItemInHand(event.getHand(), currentInSlot.copy());
+                serverPlayer.setData(ELYTRA_SLOT, held.copy());
+                syncSlot(serverPlayer, held);
+                // Elytra placed in dedicated slot — grant gliding flight attribute
+                applyGlidingAttribute(serverPlayer);
             }
         }
     }
@@ -298,6 +339,7 @@ public class ElytraSlotMod {
                     player.drop(elytraStack.copy(), true, false);
                     player.setData(ELYTRA_SLOT, ItemStack.EMPTY);
                     syncSlot(player, ItemStack.EMPTY);
+                    removeGlidingAttribute(player);
                 }
                 // Drop firework
                 ItemStack fireworkStack = player.getData(FIREWORK_SLOT);
@@ -320,6 +362,11 @@ public class ElytraSlotMod {
 
                 ItemStack fireworkStack = oldPlayer.getData(FIREWORK_SLOT);
                 newPlayer.setData(FIREWORK_SLOT, fireworkStack.copy());
+
+                // Re-apply gliding attribute if elytra is in the dedicated slot
+                if (!elytraStack.isEmpty()) {
+                    applyGlidingAttribute(newPlayer);
+                }
             }
             // Always clone slot positions so player doesn't lose custom layout on death/dimension change
             SlotPositions pos = oldPlayer.getData(SLOT_POSITIONS);
@@ -332,6 +379,10 @@ public class ElytraSlotMod {
     public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             syncAttachmentSlotsToPlayer(player);
+            // Re-apply gliding attribute if elytra was already in the dedicated slot
+            if (!player.getData(ELYTRA_SLOT).isEmpty()) {
+                applyGlidingAttribute(player);
+            }
         }
     }
 

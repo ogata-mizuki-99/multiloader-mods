@@ -12,21 +12,18 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.entity.player.Player;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class ShopScreen extends Screen {
     private final int shopId;
     private String npcType;
     private String shopName = "";
-    
+
     private final List<ShopItemData> items = new ArrayList<>();
     private int currentPage = 0;
     private static final int ITEMS_PER_PAGE = 5;
-    private static final NumberFormat YEN_FORMAT = NumberFormat.getNumberInstance(Locale.JAPAN);
-    
+
     private boolean isLoading = true;
     private boolean isProcessing = false; // 購入/売却リクエスト処理中フラグ（連打防止）
     private long processingStartedAtMs = 0L;
@@ -53,25 +50,37 @@ public class ShopScreen extends Screen {
         public Integer remainingDailyLimit;
 
         public ShopItemData(JsonObject obj) {
-            this.shopItemId = obj.has("shop_item_id") && !obj.get("shop_item_id").isJsonNull() ? obj.get("shop_item_id").getAsInt() : null;
+            this.shopItemId = obj.has("shop_item_id") && !obj.get("shop_item_id").isJsonNull()
+                    ? obj.get("shop_item_id").getAsInt()
+                    : null;
             this.itemId = obj.has("item_id") && !obj.get("item_id").isJsonNull()
                     ? obj.get("item_id").getAsInt()
-                    : (obj.has("order_no") && !obj.get("order_no").isJsonNull() ? obj.get("order_no").getAsInt() : null);
+                    : (obj.has("order_no") && !obj.get("order_no").isJsonNull() ? obj.get("order_no").getAsInt()
+                            : null);
             this.name = obj.get("item_name").getAsString();
             this.itemKey = obj.get("item_key").getAsString();
             this.matchPotion = optionalString(obj, "match_potion");
             this.matchEnchantment = optionalString(obj, "match_enchantment");
-            this.matchEnchantmentLevel = obj.has("match_enchantment_level") && !obj.get("match_enchantment_level").isJsonNull()
-                    ? obj.get("match_enchantment_level").getAsInt()
-                    : null;
+            this.matchEnchantmentLevel = obj.has("match_enchantment_level")
+                    && !obj.get("match_enchantment_level").isJsonNull()
+                            ? obj.get("match_enchantment_level").getAsInt()
+                            : null;
             this.buyPrice = jsonIntOrZero(obj, "buy_price");
             this.sellPrice = jsonIntOrZero(obj, "sell_price");
-            
-            this.userLimit = obj.has("user_limit") && !obj.get("user_limit").isJsonNull() ? obj.get("user_limit").getAsInt() : null;
-            this.dailyLimit = obj.has("daily_limit") && !obj.get("daily_limit").isJsonNull() ? obj.get("daily_limit").getAsInt() : null;
-            
-            this.remainingUserLimit = obj.has("remaining_user_limit") && !obj.get("remaining_user_limit").isJsonNull() ? obj.get("remaining_user_limit").getAsInt() : null;
-            this.remainingDailyLimit = obj.has("remaining_daily_limit") && !obj.get("remaining_daily_limit").isJsonNull() ? obj.get("remaining_daily_limit").getAsInt() : null;
+
+            this.userLimit = obj.has("user_limit") && !obj.get("user_limit").isJsonNull()
+                    ? obj.get("user_limit").getAsInt()
+                    : null;
+            this.dailyLimit = obj.has("daily_limit") && !obj.get("daily_limit").isJsonNull()
+                    ? obj.get("daily_limit").getAsInt()
+                    : null;
+
+            this.remainingUserLimit = obj.has("remaining_user_limit") && !obj.get("remaining_user_limit").isJsonNull()
+                    ? obj.get("remaining_user_limit").getAsInt()
+                    : null;
+            this.remainingDailyLimit = obj.has("remaining_daily_limit")
+                    && !obj.get("remaining_daily_limit").isJsonNull() ? obj.get("remaining_daily_limit").getAsInt()
+                            : null;
         }
 
         String displayName() {
@@ -119,7 +128,8 @@ public class ShopScreen extends Screen {
         }
 
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null) return;
+        if (mc.player == null)
+            return;
         String playerUuid = mc.player.getUUID().toString();
 
         EconomyService.fetchShopDetails(this.shopId, playerUuid).thenAccept(response -> {
@@ -186,15 +196,20 @@ public class ShopScreen extends Screen {
     }
 
     private boolean canBuy(ShopItemData item, int quantity) {
-        if (isProcessing || item.shopItemId == null || item.buyPrice <= 0) return false;
-        if (EconomyMod.getCurrentBalance() < item.buyPrice * (long) quantity) return false;
-        if (item.remainingUserLimit != null && item.remainingUserLimit < quantity) return false;
-        if (item.remainingDailyLimit != null && item.remainingDailyLimit < quantity) return false;
+        if (isProcessing || item.shopItemId == null || item.buyPrice <= 0)
+            return false;
+        if (EconomyMod.getCurrentBalance() < item.buyPrice * (long) quantity)
+            return false;
+        if (item.remainingUserLimit != null && item.remainingUserLimit < quantity)
+            return false;
+        if (item.remainingDailyLimit != null && item.remainingDailyLimit < quantity)
+            return false;
         return true;
     }
 
     private boolean canSell(ShopItemData item, int quantity) {
-        if (isProcessing || item.sellPrice <= 0 || item.itemId == null) return false;
+        if (isProcessing || item.sellPrice <= 0 || item.itemId == null)
+            return false;
         return getMatchingItemCount(item) >= quantity;
     }
 
@@ -224,7 +239,8 @@ public class ShopScreen extends Screen {
     }
 
     private void refreshTradeButtonStates() {
-        if (this.isLoading) return;
+        if (this.isLoading)
+            return;
         rebuildWidgets();
     }
 
@@ -243,7 +259,8 @@ public class ShopScreen extends Screen {
             refreshTradeButtonStates();
             return;
         }
-        if (this.isLoading || this.isProcessing) return;
+        if (this.isLoading || this.isProcessing)
+            return;
         int sig = computeTradeStateSignature();
         if (sig != this.cachedTradeStateSignature) {
             refreshTradeButtonStates();
@@ -253,10 +270,10 @@ public class ShopScreen extends Screen {
     @Override
     protected void rebuildWidgets() {
         this.clearWidgets();
-        
+
         int centerX = this.width / 2;
         int centerY = this.height / 2;
-        
+
         if (this.isLoading) {
             setupNavigationButtons();
             return;
@@ -265,7 +282,8 @@ public class ShopScreen extends Screen {
         // ページ範囲チェック
         List<ShopItemData> visible = displayedItems();
         int maxPage = Math.max(0, (visible.size() - 1) / ITEMS_PER_PAGE);
-        if (this.currentPage > maxPage) this.currentPage = maxPage;
+        if (this.currentPage > maxPage)
+            this.currentPage = maxPage;
 
         int startIdx = this.currentPage * ITEMS_PER_PAGE;
         int endIdx = Math.min(startIdx + ITEMS_PER_PAGE, visible.size());
@@ -277,9 +295,11 @@ public class ShopScreen extends Screen {
             if ("BUYER".equals(this.npcType)) {
                 // 買取所（質屋）：売却ボタンを配置 (X座標を右寄せに調整)
                 if (item.sellPrice > 0) {
-                    Button sell1Btn = Button.builder(EconomyMasterI18n.tr("economy.ui.sell_1"), button -> handleSell(item, 1))
+                    Button sell1Btn = Button
+                            .builder(EconomyMasterI18n.tr("economy.ui.sell_1"), button -> handleSell(item, 1))
                             .bounds(centerX + 65, rowY - 1, 42, 16).build();
-                    Button sell16Btn = Button.builder(EconomyMasterI18n.tr("economy.ui.sell_16"), button -> handleSell(item, 16))
+                    Button sell16Btn = Button
+                            .builder(EconomyMasterI18n.tr("economy.ui.sell_16"), button -> handleSell(item, 16))
                             .bounds(centerX + 112, rowY - 1, 45, 16).build();
 
                     sell1Btn.active = canSell(item, 1);
@@ -291,9 +311,11 @@ public class ShopScreen extends Screen {
             } else {
                 // 販売所（SELLER）：購入ボタンを配置 (X座標を右寄せに調整)
                 if (item.buyPrice > 0) {
-                    Button buy1Btn = Button.builder(EconomyMasterI18n.tr("economy.ui.buy_1"), button -> handleBuy(item, 1))
+                    Button buy1Btn = Button
+                            .builder(EconomyMasterI18n.tr("economy.ui.buy_1"), button -> handleBuy(item, 1))
                             .bounds(centerX + 65, rowY - 1, 42, 16).build();
-                    Button buy16Btn = Button.builder(EconomyMasterI18n.tr("economy.ui.buy_16"), button -> handleBuy(item, 16))
+                    Button buy16Btn = Button
+                            .builder(EconomyMasterI18n.tr("economy.ui.buy_16"), button -> handleBuy(item, 16))
                             .bounds(centerX + 112, rowY - 1, 45, 16).build();
 
                     buy1Btn.active = canBuy(item, 1);
@@ -356,10 +378,13 @@ public class ShopScreen extends Screen {
     }
 
     private void handleBuy(ShopItemData item, int quantity) {
-        if (!canBuy(item, quantity)) return;
+        if (!canBuy(item, quantity))
+            return;
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || item.shopItemId == null) return;
-        if (mc.getConnection() == null) return;
+        if (mc.player == null || item.shopItemId == null)
+            return;
+        if (mc.getConnection() == null)
+            return;
 
         // 通信中ロック
         isProcessing = true;
@@ -371,9 +396,11 @@ public class ShopScreen extends Screen {
     }
 
     private void handleSell(ShopItemData item, int quantity) {
-        if (!canSell(item, quantity)) return;
+        if (!canSell(item, quantity))
+            return;
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || item.itemId == null || mc.getConnection() == null) return;
+        if (mc.player == null || item.itemId == null || mc.getConnection() == null)
+            return;
 
         // 通信中ロック
         isProcessing = true;
@@ -408,14 +435,14 @@ public class ShopScreen extends Screen {
         int topLeftColor, bottomRightColor, bgColor;
         if (sunken) {
             // 凹んだスロット（シャープで高級感のあるダークインセット）
-            topLeftColor = 0xFF1F1F1F;      // 暗い影
-            bottomRightColor = 0xFF4A4A4A;  // 明るいエッジ
-            bgColor = 0xFF161616;           // 深い背景色
+            topLeftColor = 0xFF1F1F1F; // 暗い影
+            bottomRightColor = 0xFF4A4A4A; // 明るいエッジ
+            bgColor = 0xFF161616; // 深い背景色
         } else {
             // パネル外枠（マイクラ風ダークテーマのベース）
-            topLeftColor = 0xFF5F5F5F;      // 上・左のハイライト
-            bottomRightColor = 0xFF1F1F1F;  // 下・右のシャドウ
-            bgColor = 0xFF2A2A2A;           // メインのダークグレー背景
+            topLeftColor = 0xFF5F5F5F; // 上・左のハイライト
+            bottomRightColor = 0xFF1F1F1F; // 下・右のシャドウ
+            bgColor = 0xFF2A2A2A; // メインのダークグレー背景
         }
 
         // 背景
@@ -444,8 +471,9 @@ public class ShopScreen extends Screen {
         guiGraphics.fill(centerX - 134, centerY - 91, centerX + 164, centerY - 90, 0xFFDFB323);
 
         // 所持金情報
-        String playerMoneyText = EconomyMasterI18n.tr("economy.ui.balance", YEN_FORMAT.format(EconomyMod.getCurrentBalance())).getString();
-        
+        String playerMoneyText = EconomyMasterI18n
+                .tr("economy.ui.balance", EconomyMasterI18n.formatCurrency(EconomyMod.getCurrentBalance())).getString();
+
         // ヘッダータイトル（凹んだテキストスロット風）
         drawMinecraftBevel(guiGraphics, centerX - 130, centerY - 87, centerX + 160, centerY - 69, true);
         // ヘッダー上部に金色のアクセントライン
@@ -466,7 +494,8 @@ public class ShopScreen extends Screen {
         }
 
         if (this.items.isEmpty()) {
-            guiGraphics.centeredText(this.font, EconomyMasterI18n.trs("economy.ui.no_products"), centerX + 15, centerY, 0xFF888888);
+            guiGraphics.centeredText(this.font, EconomyMasterI18n.trs("economy.ui.no_products"), centerX + 15, centerY,
+                    0xFF888888);
             // ウィジェットを最前面に描画するために super は最後に呼び出す
             super.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
             return;
@@ -515,11 +544,13 @@ public class ShopScreen extends Screen {
             // 3. 価格表示 (2行目: 左下)
             if ("BUYER".equals(this.npcType)) {
                 guiGraphics.text(this.font,
-                        EconomyMasterI18n.tr("economy.ui.price_sell", YEN_FORMAT.format(item.sellPrice)).getString(),
+                        EconomyMasterI18n.tr("economy.ui.price_sell", EconomyMasterI18n.formatCurrency(item.sellPrice))
+                                .getString(),
                         centerX - 104, rowY + 9, 0xFFFF5555, true);
             } else {
                 guiGraphics.text(this.font,
-                        EconomyMasterI18n.tr("economy.ui.price_buy", YEN_FORMAT.format(item.buyPrice)).getString(),
+                        EconomyMasterI18n.tr("economy.ui.price_buy", EconomyMasterI18n.formatCurrency(item.buyPrice))
+                                .getString(),
                         centerX - 104, rowY + 9, 0xFF55FF55, true);
             }
 
@@ -559,16 +590,15 @@ public class ShopScreen extends Screen {
 
     private int getMatchingItemCount(ShopItemData item) {
         Player player = Minecraft.getInstance().player;
-        if (player == null) return 0;
+        if (player == null)
+            return 0;
         return EconomyItemMatcher.countMatching(
                 player,
                 item.itemKey,
                 item.matchPotion,
                 item.matchEnchantment,
-                item.matchEnchantmentLevel
-        );
+                item.matchEnchantmentLevel);
     }
-
 
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {

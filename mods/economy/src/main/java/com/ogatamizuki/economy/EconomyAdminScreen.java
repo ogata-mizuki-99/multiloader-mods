@@ -12,7 +12,6 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -23,7 +22,6 @@ import java.util.function.Consumer;
 
 /** 経済管理ブロックGUI（参加ユーザー残高閲覧 + マスタ設定 + 管理操作）。 */
 public class EconomyAdminScreen extends Screen {
-    private static final NumberFormat YEN_FORMAT = NumberFormat.getNumberInstance(Locale.JAPAN);
     private static final int PLAYERS_PER_PAGE = 3;
     private static final int PANEL_WIDTH = 360;
     private static final int COL_GAP = 8;
@@ -108,11 +106,11 @@ public class EconomyAdminScreen extends Screen {
             String matchEnchantment,
             Integer matchEnchantmentLevel,
             Integer buyPrice,
-            Integer sellPrice
-    ) {
+            Integer sellPrice) {
     }
 
-    private record ShopItemRow(int id, int shopId, int itemId, int orderNo, String itemName, String itemKey, Integer dailyLimit, Integer userLimit) {
+    private record ShopItemRow(int id, int shopId, int itemId, int orderNo, String itemName, String itemKey,
+            Integer dailyLimit, Integer userLimit) {
     }
 
     private record EtfItemRow(String etfCode, String itemKey, String itemName, double influenceWeight) {
@@ -243,8 +241,7 @@ public class EconomyAdminScreen extends Screen {
                                         player.get("balance").getAsInt(),
                                         player.get("bankBalance").getAsInt(),
                                         player.get("debt").getAsInt(),
-                                        player.has("active") && player.get("active").getAsBoolean()
-                                ));
+                                        player.has("active") && player.get("active").getAsBoolean()));
                             }
                         }
                         statusMessage = playerBalances.isEmpty()
@@ -337,7 +334,7 @@ public class EconomyAdminScreen extends Screen {
                 itemBuyTexts.clear();
                 itemSellTexts.clear();
                 shopIdTexts.clear();
-        shopDailyLimitTexts.clear();
+                shopDailyLimitTexts.clear();
                 shopUserLimitTexts.clear();
                 etfWeightTexts.clear();
                 String resolvedJson = switch (masterSection) {
@@ -362,17 +359,19 @@ public class EconomyAdminScreen extends Screen {
                                     rewardRows.add(new RewardRow(
                                             row.get("actionType").getAsString(),
                                             row.get("displayName").getAsString(),
-                                            amount
-                                    ));
+                                            amount));
                                     rewardAmountTexts.add(String.valueOf(amount));
                                 } else if (masterSection == MasterSection.ITEMS) {
                                     Integer buy = row.has("buyPrice") && !row.get("buyPrice").isJsonNull()
-                                            ? row.get("buyPrice").getAsInt() : null;
+                                            ? row.get("buyPrice").getAsInt()
+                                            : null;
                                     Integer sell = row.has("sellPrice") && !row.get("sellPrice").isJsonNull()
-                                            ? row.get("sellPrice").getAsInt() : null;
+                                            ? row.get("sellPrice").getAsInt()
+                                            : null;
                                     Integer matchLevel = row.has("matchEnchantmentLevel")
                                             && !row.get("matchEnchantmentLevel").isJsonNull()
-                                            ? row.get("matchEnchantmentLevel").getAsInt() : null;
+                                                    ? row.get("matchEnchantmentLevel").getAsInt()
+                                                    : null;
                                     itemRows.add(new ItemPriceRow(
                                             row.get("id").getAsInt(),
                                             row.get("name").getAsString(),
@@ -381,15 +380,16 @@ public class EconomyAdminScreen extends Screen {
                                             optionalJsonString(row, "matchEnchantment"),
                                             matchLevel,
                                             buy,
-                                            sell
-                                    ));
+                                            sell));
                                     itemBuyTexts.add(buy != null ? String.valueOf(buy) : "");
                                     itemSellTexts.add(sell != null ? String.valueOf(sell) : "");
                                 } else if (masterSection == MasterSection.SHOP_ITEMS) {
                                     Integer daily = row.has("dailyLimit") && !row.get("dailyLimit").isJsonNull()
-                                            ? row.get("dailyLimit").getAsInt() : null;
+                                            ? row.get("dailyLimit").getAsInt()
+                                            : null;
                                     Integer user = row.has("userLimit") && !row.get("userLimit").isJsonNull()
-                                            ? row.get("userLimit").getAsInt() : null;
+                                            ? row.get("userLimit").getAsInt()
+                                            : null;
                                     int shopId = row.get("shopId").getAsInt();
                                     int itemId = row.get("itemId").getAsInt();
                                     String itemName = row.has("itemName")
@@ -404,8 +404,7 @@ public class EconomyAdminScreen extends Screen {
                                             itemName,
                                             itemKey,
                                             daily,
-                                            user
-                                    ));
+                                            user));
                                     shopIdTexts.add(String.valueOf(shopId));
                                     shopDailyLimitTexts.add(daily != null ? String.valueOf(daily) : "");
                                     shopUserLimitTexts.add(user != null ? String.valueOf(user) : "");
@@ -419,8 +418,7 @@ public class EconomyAdminScreen extends Screen {
                                             row.get("etfCode").getAsString(),
                                             itemKey,
                                             itemName,
-                                            weight
-                                    ));
+                                            weight));
                                     etfWeightTexts.add(String.format(Locale.ROOT, "%.4f", weight));
                                 }
                             }
@@ -466,8 +464,7 @@ public class EconomyAdminScreen extends Screen {
                                         row.get("id").getAsInt(),
                                         row.get("shopName").getAsString(),
                                         row.get("npcType").getAsString(),
-                                        row.get("npcModel").getAsString()
-                                ));
+                                        row.get("npcModel").getAsString()));
                             }
                         }
                         statusMessage = "";
@@ -487,9 +484,12 @@ public class EconomyAdminScreen extends Screen {
     private void applyMasterConfigToFields(JsonObject root) {
         deathPenaltyText = formatRate(root, "deathPenaltyRate");
         shortSellText = formatRate(root, "shortSellLimitRate");
-        etfIntervalText = root.has("etfIntervalMinutes") ? String.valueOf(root.get("etfIntervalMinutes").getAsInt()) : "";
+        etfIntervalText = root.has("etfIntervalMinutes") ? String.valueOf(root.get("etfIntervalMinutes").getAsInt())
+                : "";
         loanMaxText = root.has("loanMaxAmount") ? String.valueOf(root.get("loanMaxAmount").getAsInt()) : "";
-        loanMultiplierText = root.has("loanAssetMultiplier") ? String.valueOf(root.get("loanAssetMultiplier").getAsDouble()) : "";
+        loanMultiplierText = root.has("loanAssetMultiplier")
+                ? String.valueOf(root.get("loanAssetMultiplier").getAsDouble())
+                : "";
     }
 
     private static String formatRate(JsonObject root, String key) {
@@ -654,8 +654,8 @@ public class EconomyAdminScreen extends Screen {
         return (masterSection == MasterSection.ITEMS
                 || masterSection == MasterSection.SHOP_ITEMS
                 || masterSection == MasterSection.ETF_ITEMS)
-                ? masterContentTop() + MASTER_LIST_HEADER_HEIGHT
-                : masterContentTop();
+                        ? masterContentTop() + MASTER_LIST_HEADER_HEIGHT
+                        : masterContentTop();
     }
 
     private int masterFieldsTop() {
@@ -857,7 +857,6 @@ public class EconomyAdminScreen extends Screen {
         }
     }
 
-
     private int masterListSize() {
         return switch (masterSection) {
             case REWARDS -> rewardRows.size();
@@ -964,7 +963,8 @@ public class EconomyAdminScreen extends Screen {
         int draftRowBlock = FOOTER_ROW_GAP + FOOTER_ACTION_HEIGHT;
         int headerBlock = MASTER_CONTENT_TOP_OFFSET + 8;
         int balanceContent = MASTER_BALANCE_VISIBLE_ROWS * MASTER_ROW_HEIGHT + 12;
-        int listContent = MASTER_LIST_HEADER_HEIGHT + MASTER_LIST_VISIBLE_ROWS * MASTER_LIST_ROW_HEIGHT + 8 + draftRowBlock;
+        int listContent = MASTER_LIST_HEADER_HEIGHT + MASTER_LIST_VISIBLE_ROWS * MASTER_LIST_ROW_HEIGHT + 8
+                + draftRowBlock;
         return Math.max(headerBlock + balanceContent + footerBlock, headerBlock + listContent + footerBlock);
     }
 
@@ -976,7 +976,9 @@ public class EconomyAdminScreen extends Screen {
                 yield MAIN_TAB_TOP_OFFSET + 22 + visibleRows * 20 + 54 + 28;
             }
             case MASTER -> canAdmin() ? masterRequiredPanelHeight() : 34 + 40 + 28;
-            case SPAWN -> canAdmin() ? MAIN_TAB_TOP_OFFSET + 22 + SPAWN_HEADER_HEIGHT + SPAWN_VISIBLE_ROWS * SPAWN_ROW_HEIGHT + 54 + 28 : 34 + 40 + 28;
+            case SPAWN -> canAdmin()
+                    ? MAIN_TAB_TOP_OFFSET + 22 + SPAWN_HEADER_HEIGHT + SPAWN_VISIBLE_ROWS * SPAWN_ROW_HEIGHT + 54 + 28
+                    : 34 + 40 + 28;
             case ADMIN -> canAdmin()
                     ? MAIN_TAB_TOP_OFFSET + 22 + ADMIN_VISIBLE_ROWS * ROW_HEIGHT + 8
                             + FOOTER_ACTION_HEIGHT + FOOTER_ROW_GAP + FOOTER_CLOSE_HEIGHT + FOOTER_BOTTOM_MARGIN
@@ -1015,7 +1017,7 @@ public class EconomyAdminScreen extends Screen {
             return;
         }
         int start = masterScrollOffset;
-        String[] values = {deathPenaltyText, shortSellText, etfIntervalText, loanMaxText, loanMultiplierText};
+        String[] values = { deathPenaltyText, shortSellText, etfIntervalText, loanMaxText, loanMultiplierText };
         for (int i = 0; i < balanceBoxes.size(); i++) {
             int index = start + i;
             if (index >= 0 && index < values.length) {
@@ -1264,8 +1266,7 @@ public class EconomyAdminScreen extends Screen {
                                         row.get("id").getAsInt(),
                                         row.get("shopName").getAsString(),
                                         row.get("npcType").getAsString(),
-                                        row.get("npcModel").getAsString()
-                                ));
+                                        row.get("npcModel").getAsString()));
                             }
                         }
                     } catch (Exception e) {
@@ -1322,12 +1323,12 @@ public class EconomyAdminScreen extends Screen {
             int rowY = spawnListRowY(i - start);
             int finalShopId = shop.id();
             addRenderableWidget(Button.builder(Component.literal(admin("btn.give")), b -> sendGiveSpawnEgg(finalShopId))
-                    .bounds(buttonX, rowY + 2, SPAWN_GIVE_BUTTON_WIDTH, 18).build())
-                    .active = !isProcessing && !isLoadingShops;
+                    .bounds(buttonX, rowY + 2, SPAWN_GIVE_BUTTON_WIDTH, 18).build()).active = !isProcessing
+                            && !isLoadingShops;
         }
         addRenderableWidget(Button.builder(Component.literal(admin("btn.give_all")), b -> sendGiveAllSpawnEggs())
-                .bounds(leftX, footerTop(), PANEL_WIDTH - 32, 18).build())
-                .active = !isProcessing && !isLoadingShops && !shopRows.isEmpty();
+                .bounds(leftX, footerTop(), PANEL_WIDTH - 32, 18).build()).active = !isProcessing && !isLoadingShops
+                        && !shopRows.isEmpty();
     }
 
     private void scrollSpawnList(int delta) {
@@ -1357,13 +1358,17 @@ public class EconomyAdminScreen extends Screen {
         addRenderableWidget(Button.builder(Component.literal(masterSectionLabel(MasterSection.BALANCE)),
                 b -> switchMasterSection(MasterSection.BALANCE)).bounds(subTabStart, subY, subTabWidth, 18).build());
         addRenderableWidget(Button.builder(Component.literal(masterSectionLabel(MasterSection.REWARDS)),
-                b -> switchMasterSection(MasterSection.REWARDS)).bounds(subTabStart + subTabWidth + subTabGap, subY, subTabWidth, 18).build());
+                b -> switchMasterSection(MasterSection.REWARDS))
+                .bounds(subTabStart + subTabWidth + subTabGap, subY, subTabWidth, 18).build());
         addRenderableWidget(Button.builder(Component.literal(masterSectionLabel(MasterSection.ITEMS)),
-                b -> switchMasterSection(MasterSection.ITEMS)).bounds(subTabStart + (subTabWidth + subTabGap) * 2, subY, subTabWidth, 18).build());
+                b -> switchMasterSection(MasterSection.ITEMS))
+                .bounds(subTabStart + (subTabWidth + subTabGap) * 2, subY, subTabWidth, 18).build());
         addRenderableWidget(Button.builder(Component.literal(masterSectionLabel(MasterSection.SHOP_ITEMS)),
-                b -> switchMasterSection(MasterSection.SHOP_ITEMS)).bounds(subTabStart + (subTabWidth + subTabGap) * 3, subY, subTabWidth, 18).build());
+                b -> switchMasterSection(MasterSection.SHOP_ITEMS))
+                .bounds(subTabStart + (subTabWidth + subTabGap) * 3, subY, subTabWidth, 18).build());
         addRenderableWidget(Button.builder(Component.literal(masterSectionLabel(MasterSection.ETF_ITEMS)),
-                b -> switchMasterSection(MasterSection.ETF_ITEMS)).bounds(subTabStart + (subTabWidth + subTabGap) * 4, subY, subTabWidth, 18).build());
+                b -> switchMasterSection(MasterSection.ETF_ITEMS))
+                .bounds(subTabStart + (subTabWidth + subTabGap) * 4, subY, subTabWidth, 18).build());
 
         switch (masterSection) {
             case BALANCE -> buildMasterBalanceSection(leftX);
@@ -1397,7 +1402,7 @@ public class EconomyAdminScreen extends Screen {
     private void buildMasterBalanceSection(int leftX) {
         int boxWidth = masterFieldBoxWidth();
         int boxX = leftX + MASTER_LABEL_WIDTH + 4;
-        String[] values = {deathPenaltyText, shortSellText, etfIntervalText, loanMaxText, loanMultiplierText};
+        String[] values = { deathPenaltyText, shortSellText, etfIntervalText, loanMaxText, loanMultiplierText };
         int start = masterScrollOffset;
         int end = Math.min(MASTER_FIELD_COUNT, start + masterVisibleBalanceRows());
         for (int i = start; i < end; i++) {
@@ -1420,8 +1425,10 @@ public class EconomyAdminScreen extends Screen {
             int visibleRow = i - start;
             int rowY = masterListRowY(visibleRow) + MASTER_LIST_FIELD_Y_INSET;
             if (isMasterDraftRow(i)) {
-                rewardActionBoxes.add(addMasterField(actionX, rowY, actionWidth, draftTextAt(rewardActionTexts, i), 32));
-                rewardDisplayBoxes.add(addMasterField(displayX, rowY, displayWidth, draftTextAt(rewardDisplayTexts, i), 24));
+                rewardActionBoxes
+                        .add(addMasterField(actionX, rowY, actionWidth, draftTextAt(rewardActionTexts, i), 32));
+                rewardDisplayBoxes
+                        .add(addMasterField(displayX, rowY, displayWidth, draftTextAt(rewardDisplayTexts, i), 24));
             }
             rewardAmountBoxes.add(addMasterField(amountX, rowY, amountWidth, rewardAmountTextAt(i)));
         }
@@ -1470,7 +1477,9 @@ public class EconomyAdminScreen extends Screen {
                 addRenderableWidget(Button.builder(Component.literal("◀"), b -> cycleShopAssignment(rowIndex, -1))
                         .bounds(shopControlX, rowY, SHOP_NPC_ARROW_WIDTH, 18).build()).active = canEdit;
                 addRenderableWidget(Button.builder(Component.literal("▶"), b -> cycleShopAssignment(rowIndex, 1))
-                        .bounds(shopControlX + SHOP_NPC_ARROW_WIDTH + SHOP_NPC_INNER_WIDTH, rowY, SHOP_NPC_ARROW_WIDTH, 18).build()).active = canEdit;
+                        .bounds(shopControlX + SHOP_NPC_ARROW_WIDTH + SHOP_NPC_INNER_WIDTH, rowY, SHOP_NPC_ARROW_WIDTH,
+                                18)
+                        .build()).active = canEdit;
             } else {
                 shopIdBoxes.add(addMasterField(shopControlX, rowY, 28, shopIdTextAt(i)));
             }
@@ -1509,16 +1518,17 @@ public class EconomyAdminScreen extends Screen {
             int draftY = masterDraftActionTop();
             addRenderableWidget(Button.builder(Component.literal(admin("btn.add_row")), b -> addMasterDraftRow())
                     .bounds(leftX, draftY, halfWidth, FOOTER_ACTION_HEIGHT).build()).active = canEdit;
-            addRenderableWidget(Button.builder(Component.literal(admin("btn.remove_draft")), b -> removeMasterDraftRows())
-                    .bounds(leftX + halfWidth + COL_GAP, draftY, halfWidth, FOOTER_ACTION_HEIGHT).build())
-                    .active = canEdit && !masterDraftRows.isEmpty();
+            addRenderableWidget(
+                    Button.builder(Component.literal(admin("btn.remove_draft")), b -> removeMasterDraftRows())
+                            .bounds(leftX + halfWidth + COL_GAP, draftY, halfWidth, FOOTER_ACTION_HEIGHT)
+                            .build()).active = canEdit && !masterDraftRows.isEmpty();
         }
 
         addRenderableWidget(Button.builder(Component.literal(admin("btn.save")), b -> sendSaveMaster())
                 .bounds(leftX, actionY, halfWidth, FOOTER_ACTION_HEIGHT).build()).active = canEdit;
         addRenderableWidget(Button.builder(Component.literal(admin("btn.reset_bundled")), b -> sendResetMasterConfig())
-                .bounds(leftX + halfWidth + COL_GAP, actionY, halfWidth, FOOTER_ACTION_HEIGHT).build())
-                .active = canEdit;
+                .bounds(leftX + halfWidth + COL_GAP, actionY, halfWidth, FOOTER_ACTION_HEIGHT)
+                .build()).active = canEdit;
     }
 
     private EditBox addMasterField(int boxX, int y, int boxWidth, String value) {
@@ -1542,22 +1552,24 @@ public class EconomyAdminScreen extends Screen {
 
         List<ToggleOption> options = List.of(
                 new ToggleOption(admin("toggle.balances"), () -> resetBalances, v -> resetBalances = v),
-                new ToggleOption(admin("toggle.ranking_metrics"), () -> resetRankingMetrics, v -> resetRankingMetrics = v),
+                new ToggleOption(admin("toggle.ranking_metrics"), () -> resetRankingMetrics,
+                        v -> resetRankingMetrics = v),
                 new ToggleOption(admin("toggle.portfolios"), () -> resetPortfolios, v -> resetPortfolios = v),
                 new ToggleOption(admin("toggle.shop_limits"), () -> resetShopLimits, v -> resetShopLimits = v),
                 new ToggleOption(admin("toggle.flea_market"), () -> resetFleaMarket, v -> resetFleaMarket = v),
-                new ToggleOption(admin("toggle.ranking_snapshots"), () -> resetRankingSnapshots, v -> resetRankingSnapshots = v),
+                new ToggleOption(admin("toggle.ranking_snapshots"), () -> resetRankingSnapshots,
+                        v -> resetRankingSnapshots = v),
                 new ToggleOption(admin("toggle.etf_prices"), () -> resetEtfPrices, v -> resetEtfPrices = v),
                 new ToggleOption(admin("toggle.play_time"), () -> resetPlayTime, v -> resetPlayTime = v),
-                new ToggleOption(admin("toggle.travel_distance"), () -> resetTravelDistance, v -> resetTravelDistance = v),
+                new ToggleOption(admin("toggle.travel_distance"), () -> resetTravelDistance,
+                        v -> resetTravelDistance = v),
                 new ToggleOption(admin("toggle.blocks_broken"), () -> resetBlocksBroken, v -> resetBlocksBroken = v),
                 new ToggleOption(admin("toggle.deaths"), () -> resetDeaths, v -> resetDeaths = v),
                 new ToggleOption(admin("toggle.player_kills"), () -> resetPlayerKills, v -> resetPlayerKills = v),
                 new ToggleOption(admin("toggle.mob_kills"), () -> resetMobKills, v -> resetMobKills = v),
                 new ToggleOption(admin("toggle.harvests"), () -> resetHarvests, v -> resetHarvests = v),
                 new ToggleOption(admin("toggle.potions_brewed"), () -> resetPotionsBrewed, v -> resetPotionsBrewed = v),
-                new ToggleOption(admin("toggle.fish_caught"), () -> resetFishCaught, v -> resetFishCaught = v)
-        );
+                new ToggleOption(admin("toggle.fish_caught"), () -> resetFishCaught, v -> resetFishCaught = v));
 
         int leftX = contentLeft();
         int rightX = leftX + columnWidth() + COL_GAP;
@@ -1645,8 +1657,7 @@ public class EconomyAdminScreen extends Screen {
                 resetHarvests,
                 resetPotionsBrewed,
                 resetFishCaught,
-                0
-        ));
+                0));
     }
 
     private void sendCompileRanking() {
@@ -1699,7 +1710,8 @@ public class EconomyAdminScreen extends Screen {
         Integer etfInterval = parseInt(etfIntervalText);
         Integer loanMax = parseInt(loanMaxText);
         Double loanMultiplier = parseDouble(loanMultiplierText);
-        if (deathPenalty == null || shortSell == null || etfInterval == null || loanMax == null || loanMultiplier == null) {
+        if (deathPenalty == null || shortSell == null || etfInterval == null || loanMax == null
+                || loanMultiplier == null) {
             statusMessage = admin("status.invalid_number");
             return;
         }
@@ -1713,8 +1725,7 @@ public class EconomyAdminScreen extends Screen {
                 shortSell,
                 etfInterval,
                 loanMax,
-                loanMultiplier
-        ));
+                loanMultiplier));
     }
 
     private void sendSaveMasterRewards() {
@@ -2050,15 +2061,16 @@ public class EconomyAdminScreen extends Screen {
             String name = row.username() == null || row.username().isBlank() ? "-" : row.username();
             graphics.text(font, status + " §f" + name, textLeft, y, 0xFFFFFFFF, true);
             String detail = admin("detail.balance",
-                    YEN_FORMAT.format(row.balance()),
-                    YEN_FORMAT.format(row.bankBalance()),
-                    YEN_FORMAT.format(row.debt()));
+                    EconomyMasterI18n.formatCurrency(row.balance()),
+                    EconomyMasterI18n.formatCurrency(row.bankBalance()),
+                    EconomyMasterI18n.formatCurrency(row.debt()));
             graphics.text(font, "§7  " + detail, textLeft, y + 9, 0xFFCCCCCC, true);
             y += 20;
         }
 
         int maxPage = Math.max(0, (playerBalances.size() - 1) / PLAYERS_PER_PAGE);
-        graphics.centeredText(font, (balancePage + 1) + " / " + (maxPage + 1), panelLeft + PANEL_WIDTH / 2, footerTop() - 10, 0xFFAAAAAA);
+        graphics.centeredText(font, (balancePage + 1) + " / " + (maxPage + 1), panelLeft + PANEL_WIDTH / 2,
+                footerTop() - 10, 0xFFAAAAAA);
     }
 
     private void renderSpawnPanel(GuiGraphicsExtractor graphics, int panelLeft) {
@@ -2089,14 +2101,16 @@ public class EconomyAdminScreen extends Screen {
             ShopRow shop = shopRows.get(i);
             int rowY = spawnListRowY(i - start);
             String localizedShop = EconomyMasterI18n.shopName(shop.id(), shop.shopName());
-            String line = "§f" + truncate(localizedShop, 10) + " §7[" + npcTypeLabel(shop.npcType()) + "] §8#" + shop.id();
+            String line = "§f" + truncate(localizedShop, 10) + " §7[" + npcTypeLabel(shop.npcType()) + "] §8#"
+                    + shop.id();
             graphics.text(font, line, textLeft, rowY + 6, 0xFFFFFFFF, true);
         }
         if (maxSpawnScrollOffset() > 0) {
             graphics.centeredText(font, "§8" + (start + 1) + "-" + end + " / " + shopRows.size(),
                     panelLeft + PANEL_WIDTH / 2, spawnScrollIndicatorY(), 0xFFAAAAAA);
         } else if (!isProcessing && statusMessage.startsWith("§a")) {
-            graphics.centeredText(font, statusMessage, panelLeft + PANEL_WIDTH / 2, spawnScrollIndicatorY(), 0xFFAAAAAA);
+            graphics.centeredText(font, statusMessage, panelLeft + PANEL_WIDTH / 2, spawnScrollIndicatorY(),
+                    0xFFAAAAAA);
         }
     }
 
@@ -2106,10 +2120,10 @@ public class EconomyAdminScreen extends Screen {
         String hintText = !statusMessage.isEmpty()
                 ? statusMessage
                 : isLoadingMasterConfig || isLoadingMasterList
-                ? admin("status.reading")
-                : !masterSourceHint.isEmpty()
-                ? "§7" + masterSourceHint
-                : "§7config/economy/economy_master.json";
+                        ? admin("status.reading")
+                        : !masterSourceHint.isEmpty()
+                                ? "§7" + masterSourceHint
+                                : "§7config/economy/economy_master.json";
         graphics.text(font, hintText, textLeft, masterHintTop(), 0xFFAAAAAA, true);
 
         switch (masterSection) {
@@ -2189,7 +2203,8 @@ public class EconomyAdminScreen extends Screen {
             } else {
                 graphics.text(font, "§f" + truncate(
                         EconomyMasterI18n.itemName(
-                                row.itemKey(), row.name(), row.matchPotion(), row.matchEnchantment()), 18),
+                                row.itemKey(), row.name(), row.matchPotion(), row.matchEnchantment()),
+                        18),
                         textLeft, rowY, 0xFFFFFFFF, true);
             }
         }

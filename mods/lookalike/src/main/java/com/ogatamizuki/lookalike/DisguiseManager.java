@@ -246,11 +246,12 @@ public class DisguiseManager {
 
     public synchronized boolean undisguise(ServerPlayer player) {
         UUID playerUuid = player.getUUID();
+        boolean wasShadow = false;
         if (ShadowAppearanceManager.getInstance().isShadow(playerUuid)) {
-            return ShadowAppearanceManager.getInstance().disableShadow(player);
+            wasShadow = ShadowAppearanceManager.getInstance().disableShadow(player);
         }
         if (!activeProfiles.containsKey(playerUuid)) {
-            return false;
+            return wasShadow;
         }
 
         activeProfiles.remove(playerUuid);

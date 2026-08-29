@@ -30,7 +30,7 @@ public class MaterialListScreen extends Screen {
         int centerX = this.width / 2;
         int centerY = this.height / 2;
 
-        addRenderableWidget(Button.builder(Component.translatable("gui.back"), btn -> this.minecraft.setScreen(parent))
+        addRenderableWidget(Button.builder(Component.translatable("gui.back"), btn -> this.minecraft.gui.setScreen(parent))
                 .bounds(centerX - 50, centerY + 95, 100, 20)
                 .build());
     }
@@ -87,6 +87,6 @@ public class MaterialListScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(parent);
+        this.minecraft.gui.setScreen(parent);
     }
 }

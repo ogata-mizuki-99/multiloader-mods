@@ -5,7 +5,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
 import com.google.gson.JsonObject;
-import com.ogatamizuki.economy.EconomyItemDisplayNames;
 import com.ogatamizuki.economy.EconomyMod;
 import com.ogatamizuki.economy.backend.local.EconomyLocalEtfService;
 import com.ogatamizuki.economy.backend.local.EconomyLocalFleaMarketService;
@@ -81,8 +80,8 @@ public final class EconomyLocalBackend implements EconomyBackend {
         if (server == null) {
             return CompletableFuture.completedFuture(null);
         }
-        return supplyOnServer(() ->
-                EconomyLocalShopService.fetchShopDetails(shopId, UUID.fromString(playerUuid)), server);
+        return supplyOnServer(() -> EconomyLocalShopService.fetchShopDetails(shopId, UUID.fromString(playerUuid)),
+                server);
     }
 
     @Override
@@ -109,9 +108,11 @@ public final class EconomyLocalBackend implements EconomyBackend {
     }
 
     @Override
-    public CompletableFuture<JsonObject> tradeStock(String playerUuid, String stockCategoryId, String tradeType, int quantity) {
+    public CompletableFuture<JsonObject> tradeStock(String playerUuid, String stockCategoryId, String tradeType,
+            int quantity) {
         return supplyOnServer(() -> {
-            JsonObject result = EconomyLocalEtfService.trade(UUID.fromString(playerUuid), stockCategoryId, tradeType, quantity);
+            JsonObject result = EconomyLocalEtfService.trade(UUID.fromString(playerUuid), stockCategoryId, tradeType,
+                    quantity);
             syncPlayerBalance(UUID.fromString(playerUuid), result);
             return result;
         });
@@ -198,8 +199,7 @@ public final class EconomyLocalBackend implements EconomyBackend {
                         buyerUuid,
                         sellerUuid,
                         result.has("totalPrice") ? result.get("totalPrice").getAsInt() : -1,
-                        sellerBalance
-                );
+                        sellerBalance);
             }
             return result;
         });
@@ -273,17 +273,12 @@ public final class EconomyLocalBackend implements EconomyBackend {
             return;
         }
         String itemKey = result.has("itemKey") ? result.get("itemKey").getAsString() : null;
-        String stackNbt = result.has("itemStackNbt") ? result.get("itemStackNbt").getAsString() : "";
         String fallbackName = result.has("itemName") ? result.get("itemName").getAsString() : "アイテム";
         int totalPrice = result.has("totalPrice") ? result.get("totalPrice").getAsInt() : 0;
         int sellerBalance = result.get("sellerNewBalance").getAsInt();
-        net.minecraft.network.chat.Component itemName = EconomyItemDisplayNames.resolve(
-                seller.registryAccess(), stackNbt, itemKey, fallbackName);
-        seller.sendSystemMessage(net.minecraft.network.chat.Component.literal("§a[フリマ] §e")
-                .append(itemName)
-                .append(net.minecraft.network.chat.Component.literal(
-                        "§f が売れました（+" + totalPrice + "）。所持金: ¥" + sellerBalance
-                )));
+        String valKey = (itemKey != null && !itemKey.isEmpty()) ? itemKey : fallbackName;
+        seller.sendSystemMessage(net.minecraft.network.chat.Component.literal(
+                "economy.chat.flea.sold_notification|" + valKey + "|" + totalPrice + "|" + sellerBalance));
     }
 
     private static void syncPlayerBalanceAndDebt(UUID playerUuid, JsonObject result) {

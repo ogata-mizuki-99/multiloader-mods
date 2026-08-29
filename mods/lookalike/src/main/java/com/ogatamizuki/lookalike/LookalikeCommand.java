@@ -75,6 +75,10 @@ public class LookalikeCommand {
                                 )
                         )
                         .then(Commands.literal("clear")
+                                .executes(context -> clear(
+                                        context.getSource(),
+                                        context.getSource().getPlayerOrException()
+                                ))
                                 .then(Commands.argument("player", EntityArgument.player())
                                         .suggests((context, builder) -> net.minecraft.commands.SharedSuggestionProvider.suggest(
                                                 context.getSource().getOnlinePlayerNames(),

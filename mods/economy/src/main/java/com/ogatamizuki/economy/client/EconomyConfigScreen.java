@@ -31,7 +31,7 @@ public final class EconomyConfigScreen extends Screen {
 
         this.addRenderableWidget(Button.builder(
                 Component.translatable("economy.configuration.open_editor"),
-                button -> this.minecraft.setScreen(new ConfigurationScreen(container, this))
+                button -> this.minecraft.gui.setScreen(new ConfigurationScreen(container, this))
         ).bounds(centerX - 110, centerY - 24, 220, 20).build());
 
         this.addRenderableWidget(Button.builder(
@@ -41,7 +41,7 @@ public final class EconomyConfigScreen extends Screen {
 
         this.addRenderableWidget(Button.builder(
                 Component.translatable("gui.done"),
-                button -> this.minecraft.setScreen(parent)
+                button -> this.minecraft.gui.setScreen(parent)
         ).bounds(centerX - 50, centerY + 36, 100, 20).build());
     }
 
@@ -76,6 +76,6 @@ public final class EconomyConfigScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(parent);
+        this.minecraft.gui.setScreen(parent);
     }
 }

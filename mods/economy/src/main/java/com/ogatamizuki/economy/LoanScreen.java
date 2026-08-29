@@ -7,12 +7,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 
-import java.text.NumberFormat;
-import java.util.Locale;
-
 public class LoanScreen extends Screen {
     private EditBox amountBox;
-    private static final NumberFormat YEN_FORMAT = NumberFormat.getNumberInstance(Locale.JAPAN);
     private int currentAmount = 0;
     private boolean isUpdating = false;
     private boolean isProcessing = false;
@@ -47,7 +43,7 @@ public class LoanScreen extends Screen {
     private static final int CLOSE_Y = 88;
 
     protected LoanScreen() {
-        super(Component.literal("LOAN NPC"));
+        super(EconomyMasterI18n.tr("economy.ui.loan.title"));
     }
 
     @Override
@@ -65,13 +61,14 @@ public class LoanScreen extends Screen {
             }
         }).bounds(centerX - 105, centerY + ALL_Y, allWidth, allHeight).build());
 
-        this.addRenderableWidget(Button.builder(Component.literal("ALL"), button -> {
+        this.addRenderableWidget(Button.builder(EconomyMasterI18n.tr("economy.ui.loan.repay_all"), button -> {
             int debt = EconomyMod.getCurrentDebt();
             int balance = EconomyMod.getCurrentBalance();
             setAmountValue(Math.min(debt, balance));
         }).bounds(centerX - 40, centerY + ALL_Y, allWidth, allHeight).build());
 
-        this.amountBox = new EditBox(this.font, centerX - 120, centerY + INPUT_Y, 130, 20, Component.literal("金額"));
+        this.amountBox = new EditBox(this.font, centerX - 120, centerY + INPUT_Y, 130, 20,
+                EconomyMasterI18n.tr("economy.ui.amount"));
         this.amountBox.setMaxLength(15);
         this.amountBox.setValue("");
         this.amountBox.setResponder(this::onAmountBoxChanged);
@@ -103,17 +100,17 @@ public class LoanScreen extends Screen {
 
         int actBtnWidth = 55;
         int actBtnHeight = 20;
-        this.borrowButton = Button.builder(Component.literal("借り入れる"), button -> handleBorrow())
+        this.borrowButton = Button.builder(EconomyMasterI18n.tr("economy.ui.loan.borrow"), button -> handleBorrow())
                 .bounds(centerX - 115, centerY + ACT_Y, actBtnWidth, actBtnHeight)
                 .build();
-        this.repayButton = Button.builder(Component.literal("返済する"), button -> handleRepay())
+        this.repayButton = Button.builder(EconomyMasterI18n.tr("economy.ui.loan.repay"), button -> handleRepay())
                 .bounds(centerX - 50, centerY + ACT_Y, actBtnWidth, actBtnHeight)
                 .build();
 
         this.addRenderableWidget(this.borrowButton);
         this.addRenderableWidget(this.repayButton);
 
-        this.addRenderableWidget(Button.builder(Component.literal("閉じる"), button -> this.onClose())
+        this.addRenderableWidget(Button.builder(EconomyMasterI18n.tr("economy.ui.close"), button -> this.onClose())
                 .bounds(centerX - 40, centerY + CLOSE_Y, 80, 20)
                 .build());
 
@@ -150,22 +147,38 @@ public class LoanScreen extends Screen {
     }
 
     private void onAmountBoxChanged(String text) {
-        if (isUpdating) return;
+        if (isUpdating)
+            return;
         isUpdating = true;
 
-        String clean = text.replaceAll("[^0-9]", "");
+        String clean = text.replaceAll(EconomyMasterI18n.useCents() ? "[^0-9.]" : "[^0-9]", "");
+        if (EconomyMasterI18n.useCents()) {
+            int firstDot = clean.indexOf('.');
+            if (firstDot != -1) {
+                String before = clean.substring(0, firstDot + 1);
+                String after = clean.substring(firstDot + 1).replace(".", "");
+                if (after.length() > 2) {
+                    after = after.substring(0, 2);
+                }
+                clean = before + after;
+            }
+        }
+
         if (clean.isEmpty()) {
             this.currentAmount = 0;
             this.amountBox.setValue("");
         } else {
             try {
-                long val = Long.parseLong(clean);
-                if (val > 999999999) {
-                    val = 999999999;
+                long val = EconomyMasterI18n.parseInputToRawValue(clean);
+                if (val > 99999999999L) {
+                    val = 99999999999L;
+                    clean = EconomyMasterI18n.formatRawValueForInput(val);
                 }
                 this.currentAmount = (int) val;
-                this.amountBox.setValue(YEN_FORMAT.format(val));
-            } catch (NumberFormatException e) {
+                if (!text.equals(clean)) {
+                    this.amountBox.setValue(clean);
+                }
+            } catch (Exception e) {
                 this.currentAmount = 0;
                 this.amountBox.setValue("");
             }
@@ -183,7 +196,7 @@ public class LoanScreen extends Screen {
                 amount = 999999999;
             }
             this.currentAmount = amount;
-            this.amountBox.setValue(YEN_FORMAT.format(amount));
+            this.amountBox.setValue(EconomyMasterI18n.formatRawValueForInput(amount));
         }
         updateButtonStates();
     }
@@ -216,8 +229,10 @@ public class LoanScreen extends Screen {
     }
 
     private void handleBorrow() {
-        if (this.currentAmount <= 0 || isProcessing) return;
-        if (isLimitLoaded && this.currentAmount > maxBorrowAmount) return;
+        if (this.currentAmount <= 0 || isProcessing)
+            return;
+        if (isLimitLoaded && this.currentAmount > maxBorrowAmount)
+            return;
 
         Minecraft mc = Minecraft.getInstance();
         if (mc.player != null) {
@@ -228,7 +243,8 @@ public class LoanScreen extends Screen {
     }
 
     private void handleRepay() {
-        if (this.currentAmount <= 0 || isProcessing) return;
+        if (this.currentAmount <= 0 || isProcessing)
+            return;
 
         Minecraft mc = Minecraft.getInstance();
         if (mc.player != null) {
@@ -290,20 +306,27 @@ public class LoanScreen extends Screen {
                 centerX - PANEL_INNER_HALF_W, centerY + INFO_TOP,
                 centerX + PANEL_INNER_HALF_W, centerY + INFO_BOTTOM, true);
 
-        String balanceText = "所持金: ¥" + YEN_FORMAT.format(EconomyMod.getCurrentBalance());
-        String debtText = "借入額: ¥" + YEN_FORMAT.format(EconomyMod.getCurrentDebt());
+        String balanceText = EconomyMasterI18n
+                .tr("economy.ui.loan.balance", EconomyMasterI18n.formatCurrency(EconomyMod.getCurrentBalance()))
+                .getString();
+        String debtText = EconomyMasterI18n
+                .tr("economy.ui.loan.debt", EconomyMasterI18n.formatCurrency(EconomyMod.getCurrentDebt())).getString();
         int balanceWidth = this.font.width(balanceText);
-        guiGraphics.text(this.font, balanceText, (centerX - 10) - balanceWidth, centerY + INFO_LINE1_Y, 0xFF55FF55, true);
+        guiGraphics.text(this.font, balanceText, (centerX - 10) - balanceWidth, centerY + INFO_LINE1_Y, 0xFF55FF55,
+                true);
         guiGraphics.text(this.font, debtText, centerX + 10, centerY + INFO_LINE1_Y, 0xFFFF5555, true);
 
         if (isLimitLoading) {
-            guiGraphics.centeredText(this.font, "借入上限を取得中...", centerX, centerY + INFO_LINE2_Y, 0xFFAAAAAA);
+            guiGraphics.centeredText(this.font, EconomyMasterI18n.trs("economy.ui.loan.loading"), centerX,
+                    centerY + INFO_LINE2_Y, 0xFFAAAAAA);
         } else if (isLimitLoaded) {
-            String limitText = "借入上限: ¥" + YEN_FORMAT.format(maxAllowedDebt)
-                    + " / 借入可能: ¥" + YEN_FORMAT.format(maxBorrowAmount);
+            String limitText = EconomyMasterI18n.tr("economy.ui.loan.limit",
+                    EconomyMasterI18n.formatCurrency(maxAllowedDebt), EconomyMasterI18n.formatCurrency(maxBorrowAmount))
+                    .getString();
             guiGraphics.centeredText(this.font, limitText, centerX, centerY + INFO_LINE2_Y, 0xFFCCCCCC);
         } else {
-            guiGraphics.centeredText(this.font, "借入上限の取得に失敗しました", centerX, centerY + INFO_LINE2_Y, 0xFFFF5555);
+            guiGraphics.centeredText(this.font, EconomyMasterI18n.trs("economy.ui.loan.load_fail"), centerX,
+                    centerY + INFO_LINE2_Y, 0xFFFF5555);
         }
 
         drawMinecraftBevel(guiGraphics,
@@ -311,14 +334,16 @@ public class LoanScreen extends Screen {
                 centerX + PANEL_INNER_HALF_W, centerY + FOOTER_BOTTOM, true);
         if (this.currentAmount > 0) {
             long repayPreview = Math.round(this.currentAmount * 1.1);
-            String previewText = "返済予定額 (+10%): ¥" + YEN_FORMAT.format(repayPreview);
+            String previewText = EconomyMasterI18n
+                    .tr("economy.ui.loan.preview", EconomyMasterI18n.formatCurrency(repayPreview)).getString();
             int previewColor = isLimitLoaded
                     && Math.round(this.currentAmount * 1.1) + EconomyMod.getCurrentDebt() > maxAllowedDebt
-                    ? 0xFFFF5555
-                    : 0xFFFFBB33;
+                            ? 0xFFFF5555
+                            : 0xFFFFBB33;
             guiGraphics.centeredText(this.font, previewText, centerX, centerY + FOOTER_TEXT_Y, previewColor);
         } else {
-            guiGraphics.centeredText(this.font, "※借り入れには即時 +10% の金利が適用されます", centerX, centerY + FOOTER_TEXT_Y, 0xFF777777);
+            guiGraphics.centeredText(this.font, EconomyMasterI18n.trs("economy.ui.loan.disclaimer"), centerX,
+                    centerY + FOOTER_TEXT_Y, 0xFF777777);
         }
 
         super.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);

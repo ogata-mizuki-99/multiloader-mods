@@ -288,7 +288,7 @@ public class StockTradeScreen extends Screen {
                 this.addRenderableWidget(scrollDownBtn);
 
                 // チャートへ戻るボタン (閉じるの1段上)
-                Button backBtn = Button.builder(Component.literal("◀ チャートへ"), b -> {
+                Button backBtn = Button.builder(EconomyMasterI18n.tr("economy.ui.etf.back_chart"), b -> {
                     this.showPriceList = false;
                     this.priceListScroll = 0;
                     rebuildWidgets();
@@ -317,7 +317,7 @@ public class StockTradeScreen extends Screen {
                 this.addRenderableWidget(scrollDownBtn);
 
                 // チャートへ戻るボタン (閉じるの1段上)
-                Button backBtn = Button.builder(Component.literal("◀ チャートへ"), b -> {
+                Button backBtn = Button.builder(EconomyMasterI18n.tr("economy.ui.etf.back_chart"), b -> {
                     this.showComponentList = false;
                     this.componentListScroll = 0;
                     rebuildWidgets();
@@ -338,7 +338,7 @@ public class StockTradeScreen extends Screen {
                 }).bounds(centerX + 90, centerY - 34, 30, 20).build());
 
                 // 価格一覧ボタン
-                Button listBtn = Button.builder(Component.literal("価格一覧"), b -> {
+                Button listBtn = Button.builder(EconomyMasterI18n.tr("economy.ui.etf.price_list"), b -> {
                     this.showPriceList = true;
                     this.priceListScroll = 0;
                     rebuildWidgets();
@@ -346,7 +346,7 @@ public class StockTradeScreen extends Screen {
                 this.addRenderableWidget(listBtn);
 
                 // 構成アイテムボタン
-                Button compBtn = Button.builder(Component.literal("構成アイテム"), b -> {
+                Button compBtn = Button.builder(EconomyMasterI18n.tr("economy.ui.etf.components"), b -> {
                     this.showComponentList = true;
                     this.componentListScroll = 0;
                     this.isComponentsLoading = true;
@@ -383,7 +383,7 @@ public class StockTradeScreen extends Screen {
                 // ランキングボタン
                 this.rankingButton = Button.builder(EconomyMasterI18n.tr("economy.ranking.button"), button -> {
                     if (this.hasRankingData && this.rankingData != null) {
-                        Minecraft.getInstance().setScreen(new RankingScreen(this, this.rankingData));
+                        Minecraft.getInstance().gui.setScreen(new RankingScreen(this, this.rankingData));
                     }
                 }).bounds(centerX + 45, centerY + ROW_EXECUTE, 80, 20).build();
                 this.rankingButton.active = this.hasRankingData;
@@ -514,10 +514,10 @@ public class StockTradeScreen extends Screen {
         int right = centerX + 120;
         int bottom = centerY + ROW_CHART_BOTTOM;
         drawBevel(gui, left, top, right, bottom, true);
-        gui.text(this.font, "株価推移", left + 6, top + 4, 0xFF94A3B8, false);
+        gui.text(this.font, EconomyMasterI18n.trs("economy.ui.etf.history"), left + 6, top + 4, 0xFF94A3B8, false);
 
         if (this.priceHistory.size() < 2) {
-            gui.centeredText(this.font, "履歴収集中...", centerX, top + 20, 0xFF64748B);
+            gui.centeredText(this.font, EconomyMasterI18n.trs("economy.ui.etf.history_loading"), centerX, top + 20, 0xFF64748B);
             return;
         }
 
@@ -607,7 +607,7 @@ public class StockTradeScreen extends Screen {
         }
 
         if (this.stocks.isEmpty()) {
-            guiGraphics.centeredText(this.font, "取引可能なETFがありません。", centerX, centerY, 0xFF94A3B8);
+            guiGraphics.centeredText(this.font, EconomyMasterI18n.trs("economy.ui.etf.none"), centerX, centerY, 0xFF94A3B8);
             super.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
             return;
         }
@@ -648,11 +648,11 @@ public class StockTradeScreen extends Screen {
                     guiGraphics.fill(LIST_LEFT + 1, rowY, LIST_RIGHT - 1, rowY + ROW_H - 1, rowBg);
 
                     // 銘柄名・コード
-                    String nameLabel = s.localizedName() + " (" + s.code + ")";
+                    String nameLabel = s.localizedName() + " (" + EconomyMasterI18n.tr("economy.etf.code." + s.code).getString() + ")";
                     guiGraphics.text(this.font, nameLabel, centerX - 120, rowY + 2, 0xFFE2E8F0, false);
 
                     // 現在価格 (エメラルドグリーンやオレンジで見やすく)
-                    String priceLabel = "\u00a5" + YEN_FORMAT.format(s.currentPrice);
+                    String priceLabel = EconomyMasterI18n.formatCurrency(s.currentPrice);
                     int priceW = this.font.width(priceLabel);
                     guiGraphics.text(this.font, priceLabel, centerX + 55 - priceW, rowY + 2, 0xFFFBBF24, false);
 
@@ -753,18 +753,18 @@ public class StockTradeScreen extends Screen {
                 // 【市場情報チャートの描画】
                 drawBevel(guiGraphics, centerX - 125, centerY - 58, centerX + 125, centerY - 38, true);
                 guiGraphics.centeredText(this.font,
-                        EconomyMasterI18n.tr("economy.ui.etf_price", stock.localizedName(), stock.code,
-                                YEN_FORMAT.format(stock.currentPrice)).getString(),
+                        EconomyMasterI18n.tr("economy.ui.etf_price", stock.localizedName(), EconomyMasterI18n.tr("economy.etf.code." + stock.code).getString(),
+                                EconomyMasterI18n.formatCurrency(stock.currentPrice)).getString(),
                         centerX, centerY - 48, 0xFFFBBF24);
 
                 // ポジション情報
                 String positionText;
                 if (stock.portfolioQuantity > 0) {
-                    positionText = "保有: " + stock.portfolioQuantity + " 口";
+                    positionText = EconomyMasterI18n.tr("economy.ui.etf.position_own", stock.portfolioQuantity).getString();
                 } else if (stock.portfolioQuantity < 0) {
-                    positionText = "空売: " + Math.abs(stock.portfolioQuantity) + " 口";
+                    positionText = EconomyMasterI18n.tr("economy.ui.etf.position_short", Math.abs(stock.portfolioQuantity)).getString();
                 } else {
-                    positionText = "ポジション: なし";
+                    positionText = EconomyMasterI18n.trs("economy.ui.etf.position_none");
                 }
                 guiGraphics.centeredText(this.font, positionText, centerX, centerY - 28, 0xFFE2E8F0);
 
@@ -775,8 +775,8 @@ public class StockTradeScreen extends Screen {
             // 【通常取引 (Tab 1) / 空売り取引 (Tab 2) タブの描画】
             drawBevel(guiGraphics, centerX - 125, centerY - 58, centerX + 125, centerY - 38, true);
             guiGraphics.centeredText(this.font,
-                    EconomyMasterI18n.tr("economy.ui.etf_spot", stock.localizedName(), stock.code,
-                            YEN_FORMAT.format(stock.currentPrice)).getString(),
+                    EconomyMasterI18n.tr("economy.ui.etf_spot", stock.localizedName(), EconomyMasterI18n.tr("economy.etf.code." + stock.code).getString(),
+                            EconomyMasterI18n.formatCurrency(stock.currentPrice)).getString(),
                     centerX, centerY - 48, 0xFFFBBF24);
 
             // 簡単な説明文の追加 (§7を外して見やすいグレーに変更)

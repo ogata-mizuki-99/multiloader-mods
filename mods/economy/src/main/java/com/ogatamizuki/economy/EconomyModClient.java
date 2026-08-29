@@ -16,6 +16,7 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.client.event.ClientChatReceivedEvent;
 import com.ogatamizuki.economy.client.EconomyConfigScreen;
 
 // This class will not load on dedicated servers. Accessing client side code from here is safe.
@@ -32,6 +33,7 @@ public class EconomyModClient {
         modEventBus.addListener(EconomyModClient::onRegisterClientPayloads);
 
         NeoForge.EVENT_BUS.addListener(EconomyModClient::onClientLoggingOut);
+        NeoForge.EVENT_BUS.addListener(EconomyModClient::onClientChatReceived);
 
         // タイトル画面オーバーレイ（TitleScreenOverlay.ENABLED=true かつ資産配置後に解除）
         // NeoForge.EVENT_BUS.addListener(TitleScreenOverlay::onScreenOpening);
@@ -102,11 +104,11 @@ public class EconomyModClient {
 
                         // チャットにメッセージ表示
                         if (mc.player != null) {
-                            mc.player.sendSystemMessage(Component.literal(payload.message()));
+                            mc.player.sendSystemMessage(EconomyMasterI18n.parseChatMessage(payload.message()));
                         }
 
                         // 現在のScreenがShopScreenであればリフレッシュ or ロック解除
-                        Screen currentScreen = mc.screen;
+                        Screen currentScreen = mc.gui.screen();
                         if (currentScreen instanceof ShopScreen shopScreen) {
                             if (payload.success()) {
                                 shopScreen.onTransactionSuccess();
@@ -129,10 +131,10 @@ public class EconomyModClient {
                         }
 
                         if (mc.player != null) {
-                            mc.player.sendSystemMessage(Component.literal(payload.message()));
+                            mc.player.sendSystemMessage(EconomyMasterI18n.parseChatMessage(payload.message()));
                         }
 
-                        Screen currentScreen = mc.screen;
+                        Screen currentScreen = mc.gui.screen();
                         if (currentScreen instanceof LoanScreen loanScreen) {
                             loanScreen.onTransactionResult(payload.success());
                         }
@@ -148,10 +150,10 @@ public class EconomyModClient {
                         }
 
                         if (mc.player != null) {
-                            mc.player.sendSystemMessage(Component.literal(payload.message()));
+                            mc.player.sendSystemMessage(EconomyMasterI18n.parseChatMessage(payload.message()));
                         }
 
-                        Screen currentScreen = mc.screen;
+                        Screen currentScreen = mc.gui.screen();
                         if (currentScreen instanceof StockTradeScreen stockScreen) {
                             if (payload.success()) {
                                 stockScreen.onTransactionSuccess(
@@ -187,7 +189,7 @@ public class EconomyModClient {
                 if (mc.player != null) {
                     mc.player.sendSystemMessage(message);
                 }
-                Screen currentScreen = mc.screen;
+                Screen currentScreen = mc.gui.screen();
                 if (currentScreen instanceof EconomyAdminScreen adminScreen) {
                     adminScreen.onActionResult(payload.success(), message.getString());
                 }
@@ -207,10 +209,10 @@ public class EconomyModClient {
                         }
 
                         if (mc.player != null && payload.message() != null && !payload.message().isBlank()) {
-                            mc.player.sendSystemMessage(Component.literal(payload.message()));
+                            mc.player.sendSystemMessage(EconomyMasterI18n.parseChatMessage(payload.message()));
                         }
 
-                        Screen currentScreen = mc.screen;
+                        Screen currentScreen = mc.gui.screen();
                         if (currentScreen instanceof FleaMarketScreen fleaScreen) {
                             if (payload.success()) {
                                 fleaScreen.onTransactionSuccess();
@@ -220,5 +222,15 @@ public class EconomyModClient {
                         }
                     });
                 });
+    }
+
+    private static void onClientChatReceived(ClientChatReceivedEvent event) {
+        Component original = event.getMessage();
+        if (original != null) {
+            String text = original.getString();
+            if (text.startsWith("economy.chat.")) {
+                event.setMessage(EconomyMasterI18n.parseChatMessage(text));
+            }
+        }
     }
 }

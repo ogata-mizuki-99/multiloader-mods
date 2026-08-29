@@ -53,10 +53,10 @@ public final class GuideLibClient {
         playOpenSound(theme);
         Minecraft mc = Minecraft.getInstance();
         if (bookId != null) {
-            mc.setScreen(new GuideBookScreen(parent, bookId, theme));
+            mc.gui.setScreen(new GuideBookScreen(parent, bookId, theme));
             return;
         }
-        mc.setScreen(new CodexScreen(parent, theme));
+        mc.gui.setScreen(new CodexScreen(parent, theme));
     }
 
     public static void openBook(Screen parent, Identifier bookId) {
@@ -71,7 +71,7 @@ public final class GuideLibClient {
         ensureDataLoaded();
         GuideTheme theme = GuideThemeRegistry.resolve(themeId);
         playOpenSound(theme);
-        Minecraft.getInstance().setScreen(new GuideBookScreen(parent, bookId, theme, closeOnBack));
+        Minecraft.getInstance().gui.setScreen(new GuideBookScreen(parent, bookId, theme, closeOnBack));
     }
 
     public static void ensureDataLoaded() {

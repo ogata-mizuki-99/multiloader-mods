@@ -44,7 +44,7 @@ public class ScanHistoryEditScreen extends Screen {
         LookalikeModClient.onScanScreenOpened();
         ScanHistoryEditScreen screen = new ScanHistoryEditScreen();
         screen.entries = new ArrayList<>(LookalikeModClient.getScanHistory());
-        mc.setScreen(screen);
+        mc.gui.setScreen(screen);
     }
 
     public void updateEntries(List<ScanEntry> nextEntries) {

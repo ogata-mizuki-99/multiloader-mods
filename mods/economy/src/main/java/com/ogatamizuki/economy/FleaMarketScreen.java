@@ -17,15 +17,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.core.registries.BuiltInRegistries;
 import com.ogatamizuki.economy.data.FleaMarketStackCodec;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.function.IntConsumer;
 
 public class FleaMarketScreen extends Screen {
-    private static final NumberFormat YEN_FORMAT = NumberFormat.getNumberInstance(Locale.JAPAN);
-    private static final String[] TAB_LABELS = { "市場一覧", "自分の出品", "新規出品" };
+    private static final String[] TAB_LABEL_KEYS = { "economy.ui.flea.tab.market", "economy.ui.flea.tab.mine",
+            "economy.ui.flea.tab.new" };
 
     private int activeTab = 0; // 0: 市場一覧, 1: 自分の出品, 2: 新規出品
     private boolean isLoading = true;
@@ -74,9 +72,10 @@ public class FleaMarketScreen extends Screen {
             this.remainingQuantity = obj.get("remainingQuantity").getAsInt();
             String stackNbt = obj.has("itemStackNbt") ? obj.get("itemStackNbt").getAsString() : "";
             Minecraft mc = Minecraft.getInstance();
-            var registries = mc.level != null ? mc.level.registryAccess() : mc.player != null
-                    ? mc.player.registryAccess()
-                    : null;
+            var registries = mc.level != null ? mc.level.registryAccess()
+                    : mc.player != null
+                            ? mc.player.registryAccess()
+                            : null;
             if (registries != null) {
                 this.displayStack = com.ogatamizuki.economy.data.FleaMarketStackCodec.decode(
                         registries, stackNbt, this.itemKey, 1);
@@ -102,7 +101,7 @@ public class FleaMarketScreen extends Screen {
     }
 
     public FleaMarketScreen() {
-        super(Component.literal("フリーマーケット"));
+        super(EconomyMasterI18n.tr("economy.ui.flea.title"));
     }
 
     @Override
@@ -114,14 +113,14 @@ public class FleaMarketScreen extends Screen {
     private void refreshFleaMarketData(boolean showLoading) {
         if (showLoading) {
             this.isLoading = true;
-            this.statusMessage = "データを読み込んでいます...";
+            this.statusMessage = EconomyMasterI18n.trs("economy.ui.flea.status.loading");
             this.clearWidgets();
         }
 
         EconomyService.fetchFleaMarketListings().thenAccept(response -> {
             if (response == null) {
                 Minecraft.getInstance().execute(() -> {
-                    this.statusMessage = "フリマデータの取得に失敗しました。";
+                    this.statusMessage = EconomyMasterI18n.trs("economy.ui.flea.status.load_fail");
                     this.isLoading = false;
                     this.rebuildWidgets();
                 });
@@ -143,7 +142,7 @@ public class FleaMarketScreen extends Screen {
             } catch (Exception e) {
                 EconomyMod.LOGGER.error("Failed to parse flea market listings: ", e);
                 Minecraft.getInstance().execute(() -> {
-                    this.statusMessage = "データの解析に失敗しました。";
+                    this.statusMessage = EconomyMasterI18n.trs("economy.ui.flea.status.parse_fail");
                     this.isLoading = false;
                     this.rebuildWidgets();
                 });
@@ -158,7 +157,7 @@ public class FleaMarketScreen extends Screen {
         int centerY = this.height / 2;
 
         if (this.isLoading) {
-            this.addRenderableWidget(Button.builder(Component.literal("閉じる"), b -> this.onClose())
+            this.addRenderableWidget(Button.builder(EconomyMasterI18n.tr("economy.ui.close"), b -> this.onClose())
                     .bounds(centerX - 40, centerY + 96, 80, 20).build());
             return;
         }
@@ -168,9 +167,9 @@ public class FleaMarketScreen extends Screen {
         int tabSpacing = 4;
         int totalTabsWidth = (tabWidth * 3) + (tabSpacing * 2);
         int startX = centerX - (totalTabsWidth / 2);
-        for (int i = 0; i < TAB_LABELS.length; i++) {
+        for (int i = 0; i < TAB_LABEL_KEYS.length; i++) {
             final int tabIndex = i;
-            Button tabBtn = Button.builder(Component.literal(TAB_LABELS[i]), b -> {
+            Button tabBtn = Button.builder(EconomyMasterI18n.tr(TAB_LABEL_KEYS[i]), b -> {
                 this.activeTab = tabIndex;
                 this.selectedInventoryItem = null;
                 rebuildWidgets();
@@ -194,11 +193,12 @@ public class FleaMarketScreen extends Screen {
                 boolean ownListing = isOwnListing(l);
 
                 // 購入ボタン
-                Button buy1Btn = Button.builder(Component.literal("1個買"), b -> handleBuy(l, 1))
+                Button buy1Btn = Button.builder(EconomyMasterI18n.tr("economy.ui.buy_1"), b -> handleBuy(l, 1))
                         .bounds(centerX + 35, rowY, 38, 18).build();
-                Button buy16Btn = Button.builder(Component.literal("16個買"), b -> handleBuy(l, 16))
+                Button buy16Btn = Button.builder(EconomyMasterI18n.tr("economy.ui.buy_16"), b -> handleBuy(l, 16))
                         .bounds(centerX + 76, rowY, 44, 18).build();
-                Button buyAllBtn = Button.builder(Component.literal("全買"), b -> handleBuy(l, l.remainingQuantity))
+                Button buyAllBtn = Button
+                        .builder(EconomyMasterI18n.tr("economy.ui.buy_all"), b -> handleBuy(l, l.remainingQuantity))
                         .bounds(centerX + 123, rowY, 32, 18).build();
 
                 buy1Btn.active = !ownListing && !this.isProcessing && l.remainingQuantity >= 1
@@ -254,7 +254,7 @@ public class FleaMarketScreen extends Screen {
                 int rowY = centerY + ROW_START_Y_OFFSET + i * ROW_HEIGHT;
 
                 // 回収ボタン
-                Button cancelBtn = Button.builder(Component.literal("回収/取消"), b -> handleCancel(l))
+                Button cancelBtn = Button.builder(EconomyMasterI18n.tr("economy.ui.flea.cancel"), b -> handleCancel(l))
                         .bounds(centerX + 80, rowY, 70, 18).build();
                 cancelBtn.active = !this.isProcessing;
                 this.addRenderableWidget(cancelBtn);
@@ -295,7 +295,7 @@ public class FleaMarketScreen extends Screen {
                     int rowY = centerY + ROW_START_Y_OFFSET + i * ROW_HEIGHT;
 
                     // 選択ボタン
-                    Button selectBtn = Button.builder(Component.literal("出品する"), b -> {
+                    Button selectBtn = Button.builder(EconomyMasterI18n.tr("economy.ui.flea.list_item"), b -> {
                         this.selectedInventoryItem = item;
                         rebuildWidgets();
                     }).bounds(centerX + 80, rowY, 70, 18).build();
@@ -327,24 +327,25 @@ public class FleaMarketScreen extends Screen {
                 // 出品設定ダイアログ風フォーム
                 // 単価EditBox
                 this.priceInputBox = new EditBox(this.font, centerX - 40, centerY - 15, 100, 20,
-                        Component.literal("単価"));
+                        EconomyMasterI18n.tr("economy.ui.amount"));
                 this.priceInputBox.setValue("100");
                 this.addRenderableWidget(this.priceInputBox);
 
                 // 数量EditBox
                 this.quantityInputBox = new EditBox(this.font, centerX - 40, centerY + 15, 100, 20,
-                        Component.literal("数量"));
+                        EconomyMasterI18n.tr("economy.ui.quantity"));
                 this.quantityInputBox.setValue("1");
                 this.addRenderableWidget(this.quantityInputBox);
 
                 // 出品登録実行ボタン
-                Button confirmBtn = Button.builder(Component.literal("出品確定"), b -> handleListConfirm())
+                Button confirmBtn = Button
+                        .builder(EconomyMasterI18n.tr("economy.ui.flea.confirm"), b -> handleListConfirm())
                         .bounds(centerX - 95, centerY + 45, 90, 20).build();
                 confirmBtn.active = !this.isProcessing;
                 this.addRenderableWidget(confirmBtn);
 
                 // キャンセルボタン
-                Button backBtn = Button.builder(Component.literal("戻る"), b -> {
+                Button backBtn = Button.builder(EconomyMasterI18n.tr("economy.ui.flea.back"), b -> {
                     this.selectedInventoryItem = null;
                     rebuildWidgets();
                 }).bounds(centerX + 5, centerY + 45, 90, 20).build();
@@ -518,7 +519,7 @@ public class FleaMarketScreen extends Screen {
         // ヘッダータイトル
         drawBevel(guiGraphics, centerX - 185, centerY - 87, centerX + 185, centerY - 69, true);
         guiGraphics.fill(centerX - 185, centerY - 87, centerX + 185, centerY - 86, 0xFFDFB323);
-        guiGraphics.centeredText(this.font, "§e§lフリーマーケット", centerX, centerY - 82, 0xFFFFFFFF);
+        guiGraphics.centeredText(this.font, this.title.getString(), centerX, centerY - 82, 0xFFFFFFFF);
 
         // タブ行背景（タイトルと被らない位置）
         drawBevel(guiGraphics, centerX - 185, centerY - 67, centerX + 185, centerY - 45, true);
@@ -532,8 +533,12 @@ public class FleaMarketScreen extends Screen {
         int balanceY = centerY + 76;
         drawBevel(guiGraphics, centerX - 185, balanceY, centerX + 185, balanceY + 14, true);
         guiGraphics.fill(centerX - 185, balanceY + 13, centerX + 185, balanceY + 14, 0xFF55FF55);
-        guiGraphics.centeredText(this.font, "所持金: ¥" + YEN_FORMAT.format(EconomyMod.getCurrentBalance()), centerX,
-                balanceY + 3, 0xFF55FF55);
+        guiGraphics
+                .centeredText(this.font,
+                        EconomyMasterI18n.tr("economy.ui.flea.balance",
+                                EconomyMasterI18n.formatCurrency(EconomyMod.getCurrentBalance())).getString(),
+                        centerX,
+                        balanceY + 3, 0xFF55FF55);
 
         if (this.isLoading) {
             guiGraphics.centeredText(this.font, this.statusMessage, centerX, centerY, 0xFFAAAAAA);
@@ -547,7 +552,8 @@ public class FleaMarketScreen extends Screen {
             List<ListingData> marketList = this.listings;
 
             if (marketList.isEmpty()) {
-                guiGraphics.centeredText(this.font, "出品されている商品はありません。", centerX, centerY, 0xFF888888);
+                guiGraphics.centeredText(this.font, EconomyMasterI18n.trs("economy.ui.flea.empty.market"), centerX,
+                        centerY, 0xFF888888);
             } else {
                 int visibleRows = Math.min(ROWS_VISIBLE, marketList.size() - this.marketScroll);
                 for (int i = 0; i < visibleRows; i++) {
@@ -571,11 +577,15 @@ public class FleaMarketScreen extends Screen {
 
                     // テキスト情報
                     String displayName = resolveListingDisplayName(l);
-                    String sellerLabel = ownListing ? "自分 出品" : l.sellerName + " 出品";
+                    String sellerLabel = ownListing
+                            ? EconomyMasterI18n.trs("economy.ui.flea.seller.own")
+                            : EconomyMasterI18n.tr("economy.ui.flea.seller.other", l.sellerName).getString();
                     String titleText = truncateText(displayName + " (" + sellerLabel + ")", LIST_TEXT_MAX_WIDTH);
                     guiGraphics.text(this.font, titleText, centerX - 158, rowY, 0xFFFFFFFF, true);
                     guiGraphics.text(this.font,
-                            "単価: ¥" + YEN_FORMAT.format(l.price) + " / 在庫: " + l.remainingQuantity + "個", centerX - 158,
+                            EconomyMasterI18n.tr("economy.ui.flea.price_unit",
+                                    EconomyMasterI18n.formatCurrency(l.price), l.remainingQuantity).getString(),
+                            centerX - 158,
                             rowY + 9, 0xFFFFAA00, true);
                 }
             }
@@ -591,7 +601,8 @@ public class FleaMarketScreen extends Screen {
             }
 
             if (myList.isEmpty()) {
-                guiGraphics.centeredText(this.font, "出品している商品はありません。", centerX, centerY, 0xFF888888);
+                guiGraphics.centeredText(this.font, EconomyMasterI18n.trs("economy.ui.flea.empty.mine"), centerX,
+                        centerY, 0xFF888888);
             } else {
                 int visibleRows = Math.min(ROWS_VISIBLE, myList.size() - this.myScroll);
                 for (int i = 0; i < visibleRows; i++) {
@@ -616,7 +627,9 @@ public class FleaMarketScreen extends Screen {
                     guiGraphics.text(this.font, truncateText(displayName, LIST_TEXT_MAX_WIDTH), centerX - 158, rowY,
                             0xFFFFFFFF, true);
                     guiGraphics.text(this.font,
-                            "単価: ¥" + YEN_FORMAT.format(l.price) + " / 残数: " + l.remainingQuantity + "個", centerX - 158,
+                            EconomyMasterI18n.tr("economy.ui.flea.price_unit_remain",
+                                    EconomyMasterI18n.formatCurrency(l.price), l.remainingQuantity).getString(),
+                            centerX - 158,
                             rowY + 9, 0xFFFFAA00, true);
                 }
             }
@@ -625,7 +638,8 @@ public class FleaMarketScreen extends Screen {
             if (this.selectedInventoryItem == null) {
                 List<InventoryItemData> invList = getPlayerInventoryItems();
                 if (invList.isEmpty()) {
-                    guiGraphics.centeredText(this.font, "インベントリにアイテムがありません。", centerX, centerY, 0xFF888888);
+                    guiGraphics.centeredText(this.font, EconomyMasterI18n.trs("economy.ui.flea.empty.inventory"),
+                            centerX, centerY, 0xFF888888);
                 } else {
                     int visibleRows = Math.min(ROWS_VISIBLE, invList.size() - this.inventoryScroll);
                     for (int i = 0; i < visibleRows; i++) {
@@ -648,21 +662,28 @@ public class FleaMarketScreen extends Screen {
 
                         guiGraphics.text(this.font, truncateText(item.name, LIST_TEXT_MAX_WIDTH), centerX - 158, rowY,
                                 0xFFFFFFFF, true);
-                        guiGraphics.text(this.font, "所持数: " + item.count + "個", centerX - 158, rowY + 9, 0xFFFFAA00,
+                        guiGraphics.text(this.font, EconomyMasterI18n.tr("economy.ui.owned", item.count).getString(),
+                                centerX - 158, rowY + 9, 0xFFFFAA00,
                                 true);
                     }
                 }
             } else {
                 // 出品設定ダイアログ描画
-                guiGraphics.centeredText(this.font, "§e出品するアイテム: " + this.selectedInventoryItem.name, centerX,
+                guiGraphics.centeredText(this.font,
+                        EconomyMasterI18n.tr("economy.ui.flea.item_title", this.selectedInventoryItem.name).getString(),
+                        centerX,
                         centerY - 40, 0xFFFFFFFF);
-                guiGraphics.text(this.font, "1個あたりの価格 (¥):", centerX - 145, centerY - 9, 0xFFCCCCCC, true);
-                guiGraphics.text(this.font, "出品する数量:", centerX - 145, centerY + 21, 0xFFCCCCCC, true);
+                String symbol = EconomyMasterI18n.trs("economy.currency.format").replace("%s", "").trim();
+                guiGraphics.text(this.font, EconomyMasterI18n.tr("economy.ui.flea.price_label", symbol).getString(),
+                        centerX - 145, centerY - 9, 0xFFCCCCCC, true);
+                guiGraphics.text(this.font, EconomyMasterI18n.trs("economy.ui.flea.quantity_label"), centerX - 145,
+                        centerY + 21, 0xFFCCCCCC, true);
             }
         }
 
         if (this.isProcessing) {
-            guiGraphics.centeredText(this.font, "処理中...", centerX, centerY + 90, 0xFFF43F5E);
+            guiGraphics.centeredText(this.font, EconomyMasterI18n.trs("economy.ui.processing"), centerX, centerY + 90,
+                    0xFFF43F5E);
         }
 
         super.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);

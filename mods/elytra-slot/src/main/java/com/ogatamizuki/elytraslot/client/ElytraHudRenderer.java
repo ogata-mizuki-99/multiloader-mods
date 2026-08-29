@@ -18,7 +18,7 @@ public class ElytraHudRenderer {
 
         Minecraft mc = Minecraft.getInstance();
         Player player = mc.player;
-        if (player == null || mc.options.hideGui) {
+        if (player == null || mc.gui.hud.isHidden()) {
             return;
         }
 

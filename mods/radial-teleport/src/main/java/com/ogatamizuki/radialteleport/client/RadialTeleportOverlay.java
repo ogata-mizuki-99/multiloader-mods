@@ -19,7 +19,7 @@ public final class RadialTeleportOverlay {
         }
 
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.options.hideGui) {
+        if (mc.player == null || mc.gui.hud.isHidden()) {
             return;
         }
 

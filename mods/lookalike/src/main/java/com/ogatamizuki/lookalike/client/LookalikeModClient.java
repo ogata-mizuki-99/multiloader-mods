@@ -73,7 +73,7 @@ public class LookalikeModClient {
             mc.execute(() -> {
                 scanHistory.clear();
                 scanHistory.addAll(payload.entries());
-                if (mc.screen instanceof ScanHistoryEditScreen screen) {
+                if (mc.gui.screen() instanceof ScanHistoryEditScreen screen) {
                     screen.updateEntries(payload.entries());
                 }
             });
@@ -112,13 +112,13 @@ public class LookalikeModClient {
             return;
         }
 
-        if (mc.screen instanceof ScanHistoryEditScreen) {
+        if (mc.gui.screen() instanceof ScanHistoryEditScreen) {
             wasUsingMirror = player.isUsingItem()
                     && player.getUseItem().is(LookalikeMod.DISGUISE_MIRROR.get());
             return;
         }
 
-        if (mc.screen != null) {
+        if (mc.gui.screen() != null) {
             if (LookalikeRadialSession.isActive()) {
                 LookalikeRadialSession.cancel(mc);
             }
@@ -170,7 +170,7 @@ public class LookalikeModClient {
         }
 
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.screen != null) {
+        if (mc.player == null || mc.gui.screen() != null) {
             return;
         }
 
@@ -196,7 +196,7 @@ public class LookalikeModClient {
         }
 
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.screen != null) {
+        if (mc.player == null || mc.gui.screen() != null) {
             return;
         }
 
@@ -209,7 +209,7 @@ public class LookalikeModClient {
             // Dedicated ではサーバー同期値を優先（ローカル toml だけでは他プレイヤーに効かない）
             if (LookalikeClientFlags.hideAllNametags()) {
                 Minecraft mc = Minecraft.getInstance();
-                if (mc.getConnection() != null && !mc.isSingleplayer()) {
+                if (mc.getConnection() != null && !mc.hasSingleplayerServer()) {
                     event.setCanRender(net.minecraft.util.TriState.FALSE);
                 }
             }

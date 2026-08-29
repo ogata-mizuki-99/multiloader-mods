@@ -133,21 +133,13 @@ public final class RewardChatAggregator {
             int newBalance,
             int count
     ) {
-        Component rewardName = EconomyMasterI18n.rewardNameComponent(actionType, fallbackDisplayName);
         if (count <= 1) {
-            player.sendSystemMessage(Component.translatable(
-                    "economy.chat.reward",
-                    rewardName,
-                    String.valueOf(totalAmount),
-                    String.valueOf(newBalance)
+            player.sendSystemMessage(Component.literal(
+                    "economy.chat.reward.gain|economy.reward." + actionType + "|" + totalAmount + "|" + newBalance
             ));
         } else {
-            player.sendSystemMessage(Component.translatable(
-                    "economy.chat.reward_multi",
-                    rewardName,
-                    String.valueOf(totalAmount),
-                    String.valueOf(count),
-                    String.valueOf(newBalance)
+            player.sendSystemMessage(Component.literal(
+                    "economy.chat.reward.gain_multiple|economy.reward." + actionType + "|" + totalAmount + "|" + count + "|" + newBalance
             ));
         }
     }

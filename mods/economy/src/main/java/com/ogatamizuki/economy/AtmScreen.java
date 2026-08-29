@@ -7,14 +7,11 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
 
-import java.text.NumberFormat;
-import java.util.Locale;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AtmScreen extends Screen {
     private EditBox amountBox;
-    private static final NumberFormat YEN_FORMAT = NumberFormat.getNumberInstance(Locale.JAPAN);
 
     // 長押しオートリピート用の管理フィールド
     private int currentAmount = 0;
@@ -38,7 +35,7 @@ public class AtmScreen extends Screen {
     private int cachedBankBalance = -1;
 
     protected AtmScreen() {
-        super(Component.literal("ATM"));
+        super(EconomyMasterI18n.tr("economy.ui.atm.title"));
     }
 
     @Override
@@ -65,7 +62,8 @@ public class AtmScreen extends Screen {
         }).bounds(centerX - 40, centerY - 32, allWidth, allHeight).build());
 
         // 2. 入力ボックス (中央)
-        this.amountBox = new EditBox(this.font, centerX - 120, centerY - 10, 130, 20, Component.literal("金額"));
+        this.amountBox = new EditBox(this.font, centerX - 120, centerY - 10, 130, 20,
+                EconomyMasterI18n.tr("economy.ui.amount"));
         this.amountBox.setMaxLength(15);
         this.amountBox.setValue("");
         this.amountBox.setResponder(this::onAmountBoxChanged);
@@ -117,16 +115,18 @@ public class AtmScreen extends Screen {
         // 4. アクションボタン（「預け入れ」「引き出し」）
         int actBtnWidth = 55;
         int actBtnHeight = 20;
-        this.addRenderableWidget(Button.builder(Component.literal("預け入れ"), button -> handleDeposit())
-                .bounds(centerX - 115, centerY + 25, actBtnWidth, actBtnHeight)
-                .build());
+        this.addRenderableWidget(
+                Button.builder(EconomyMasterI18n.tr("economy.ui.atm.deposit"), button -> handleDeposit())
+                        .bounds(centerX - 115, centerY + 25, actBtnWidth, actBtnHeight)
+                        .build());
 
-        this.addRenderableWidget(Button.builder(Component.literal("引き出し"), button -> handleWithdraw())
-                .bounds(centerX - 50, centerY + 25, actBtnWidth, actBtnHeight)
-                .build());
+        this.addRenderableWidget(
+                Button.builder(EconomyMasterI18n.tr("economy.ui.atm.withdraw"), button -> handleWithdraw())
+                        .bounds(centerX - 50, centerY + 25, actBtnWidth, actBtnHeight)
+                        .build());
 
         // 5. 閉じるボタン (画面中央に配置)
-        this.addRenderableWidget(Button.builder(Component.literal("閉じる"), button -> this.onClose())
+        this.addRenderableWidget(Button.builder(EconomyMasterI18n.tr("economy.ui.close"), button -> this.onClose())
                 .bounds(centerX - 40, centerY + 55, 80, 20)
                 .build());
     }
@@ -138,25 +138,39 @@ public class AtmScreen extends Screen {
             return;
         isUpdating = true;
 
-        // 数字以外の文字をすべて削除
-        String clean = text.replaceAll("[^0-9]", "");
+        String clean = text.replaceAll(EconomyMasterI18n.useCents() ? "[^0-9.]" : "[^0-9]", "");
+        if (EconomyMasterI18n.useCents()) {
+            int firstDot = clean.indexOf('.');
+            if (firstDot != -1) {
+                String before = clean.substring(0, firstDot + 1);
+                String after = clean.substring(firstDot + 1).replace(".", "");
+                if (after.length() > 2) {
+                    after = after.substring(0, 2);
+                }
+                clean = before + after;
+            }
+        }
+
         if (clean.isEmpty()) {
             this.currentAmount = 0;
             this.amountBox.setValue("");
         } else {
             try {
-                long val = Long.parseLong(clean);
+                long val = EconomyMasterI18n.parseInputToRawValue(clean);
                 int limit = Math.max(EconomyMod.getCurrentBalance(), EconomyMod.getCurrentBankBalance());
                 if (val > limit) {
                     val = limit;
+                    clean = EconomyMasterI18n.formatRawValueForInput(val);
                 }
-                if (val > 999999999) {
-                    val = 999999999;
+                if (val > 99999999999L) { // Supports larger cents bounds
+                    val = 99999999999L;
+                    clean = EconomyMasterI18n.formatRawValueForInput(val);
                 }
                 this.currentAmount = (int) val;
-                String formatted = YEN_FORMAT.format(val);
-                this.amountBox.setValue(formatted);
-            } catch (NumberFormatException e) {
+                if (!text.equals(clean)) {
+                    this.amountBox.setValue(clean);
+                }
+            } catch (Exception e) {
                 this.currentAmount = 0;
                 this.amountBox.setValue("");
             }
@@ -174,7 +188,7 @@ public class AtmScreen extends Screen {
             this.amountBox.setValue("");
         } else {
             this.currentAmount = amount;
-            this.amountBox.setValue(YEN_FORMAT.format(amount));
+            this.amountBox.setValue(EconomyMasterI18n.formatRawValueForInput(amount));
         }
     }
 
@@ -198,37 +212,34 @@ public class AtmScreen extends Screen {
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor guiGraphics, int mouseX, int mouseY, float partialTick) {
-        // 背景を描画 (ダークオーバーレイ)
         this.extractTransparentBackground(guiGraphics);
 
         int centerX = this.width / 2;
         int centerY = this.height / 2;
 
-        // メインパネル外枠（幅 270px, 左右対称）
         drawMinecraftBevel(guiGraphics, centerX - 135, centerY - 88, centerX + 135, centerY + 85, false);
-        // メインパネル上部のゴールドエッジライン
         guiGraphics.fill(centerX - 134, centerY - 87, centerX + 134, centerY - 86, 0xFFDFB323);
 
-        // タイトル枠
         drawMinecraftBevel(guiGraphics, centerX - 130, centerY - 83, centerX + 130, centerY - 65, true);
         guiGraphics.fill(centerX - 130, centerY - 83, centerX + 130, centerY - 82, 0xFFDFB323);
-        guiGraphics.centeredText(this.font, "§e§lBANK ATM", centerX, centerY - 78, 0xFFFFFFFF); // 中央補正なし（centerX）
+        guiGraphics.centeredText(this.font, "§e§lBANK ATM", centerX, centerY - 78, 0xFFFFFFFF);
 
-        // 残高情報表示の背景枠 (1つの凹み枠に統合)
         drawMinecraftBevel(guiGraphics, centerX - 130, centerY - 60, centerX + 130, centerY - 40, true);
-        
-        String balanceText = "所持金: ¥" + YEN_FORMAT.format(EconomyMod.getCurrentBalance());
-        String bankText = "銀行残高: ¥" + YEN_FORMAT.format(EconomyMod.getCurrentBankBalance());
+
+        String balanceText = EconomyMasterI18n
+                .tr("economy.ui.atm.balance", EconomyMasterI18n.formatCurrency(EconomyMod.getCurrentBalance()))
+                .getString();
+        String bankText = EconomyMasterI18n
+                .tr("economy.ui.atm.bank_balance", EconomyMasterI18n.formatCurrency(EconomyMod.getCurrentBankBalance()))
+                .getString();
 
         int balanceWidth = this.font.width(balanceText);
-        // 残高表示位置の調整（枠内での位置調整, centerXから左右対称にマージン10px）
         int balanceX = (centerX - 10) - balanceWidth;
         int bankX = centerX + 10;
 
         guiGraphics.text(this.font, balanceText, balanceX, centerY - 54, 0xFF55FF55, true);
         guiGraphics.text(this.font, bankText, bankX, centerY - 54, 0xFF55FFFF, true);
 
-        // ウィジェット等の描画（最前面に配置）
         super.extractRenderState(guiGraphics, mouseX, mouseY, partialTick);
     }
 

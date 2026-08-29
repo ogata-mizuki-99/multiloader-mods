@@ -189,25 +189,25 @@ public class ClientAccess {
     }
 
     public static void openAtmScreen() {
-        Minecraft.getInstance().setScreen(new AtmScreen());
+        Minecraft.getInstance().gui.setScreen(new AtmScreen());
     }
 
     public static void openAdminScreen() {
-        Minecraft.getInstance().setScreen(new EconomyAdminScreen());
+        Minecraft.getInstance().gui.setScreen(new EconomyAdminScreen());
     }
 
     public static void openShopGui(int shopId, String npcType) {
         if ("STOCK_TRADER".equalsIgnoreCase(npcType)) {
             openStockTradeScreen();
         } else if ("FLEA_MARKET".equalsIgnoreCase(npcType)) {
-            Minecraft.getInstance().setScreen(new FleaMarketScreen());
+            Minecraft.getInstance().gui.setScreen(new FleaMarketScreen());
         } else {
-            Minecraft.getInstance().setScreen(new ShopScreen(shopId, npcType));
+            Minecraft.getInstance().gui.setScreen(new ShopScreen(shopId, npcType));
         }
     }
 
     public static void openStockTradeScreen() {
-        Minecraft.getInstance().setScreen(new StockTradeScreen());
+        Minecraft.getInstance().gui.setScreen(new StockTradeScreen());
     }
 
     public static void openRankingScreen() {
@@ -236,7 +236,7 @@ public class ClientAccess {
                         mc.player.sendSystemMessage(Component.translatable("economy.chat.ranking_empty"));
                         return;
                     }
-                    mc.setScreen(new RankingScreen(null, json));
+                    mc.gui.setScreen(new RankingScreen(null, json));
                 } catch (Exception e) {
                     EconomyMod.LOGGER.error("Failed to open ranking viewer: ", e);
                     mc.player.sendSystemMessage(Component.translatable("economy.chat.ranking_view_error"));
@@ -246,7 +246,7 @@ public class ClientAccess {
     }
 
     public static void openLoanScreen() {
-        Minecraft.getInstance().setScreen(new LoanScreen());
+        Minecraft.getInstance().gui.setScreen(new LoanScreen());
     }
 
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {

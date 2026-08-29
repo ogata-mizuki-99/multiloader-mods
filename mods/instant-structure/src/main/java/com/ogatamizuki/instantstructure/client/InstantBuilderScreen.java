@@ -168,7 +168,7 @@ public class InstantBuilderScreen extends Screen {
                 ClientPlacementRegistry.lockedAnchor = null;
                 ClientPlacementRegistry.lockedPlacementOrigin = null;
                 ClientPlacementRegistry.previewBlocks = List.of();
-                Minecraft.getInstance().setScreen(null);
+                Minecraft.getInstance().gui.setScreen(null);
                 if (Minecraft.getInstance().getConnection() != null) {
                     Minecraft.getInstance().getConnection().send(new RequestPreviewPayload(selected.category(), selected.name()));
                 }
@@ -178,7 +178,7 @@ public class InstantBuilderScreen extends Screen {
         x += SELECT_BUTTON_WIDTH + FOOTER_BUTTON_GAP;
 
         addRenderableWidget(Button.builder(Component.translatable("instant_structure.screen.builder.cancel"), btn ->
-                Minecraft.getInstance().setScreen(null)
+                Minecraft.getInstance().gui.setScreen(null)
         ).bounds(x, buttonY, CANCEL_BUTTON_WIDTH, FOOTER_BUTTON_HEIGHT).build());
         x += CANCEL_BUTTON_WIDTH + FOOTER_BUTTON_GAP;
 
@@ -240,20 +240,20 @@ public class InstantBuilderScreen extends Screen {
             
             // 素材確認ボタンを追加
             addRenderableWidget(Button.builder(Component.translatable("instant_structure.screen.builder.check_materials"), btn -> {
-                Minecraft.getInstance().setScreen(new MaterialListScreen(this, currentCosts));
+                Minecraft.getInstance().gui.setScreen(new MaterialListScreen(this, currentCosts));
             }).bounds(listX, selectedTemplateY() + 24, 115, 20).build());
 
             boolean isOp = Minecraft.getInstance().player != null; // 簡易権限チェック (OP判定の代わり)
             if (isOp) {
                 addRenderableWidget(Button.builder(Component.translatable("instant_structure.screen.builder.delete").withStyle(ChatFormatting.RED), btn -> {
-                    Minecraft.getInstance().setScreen(new net.minecraft.client.gui.screens.ConfirmScreen(
+                    Minecraft.getInstance().gui.setScreen(new net.minecraft.client.gui.screens.ConfirmScreen(
                             confirmed -> {
                                 if (confirmed) {
                                     if (Minecraft.getInstance().getConnection() != null) {
                                         Minecraft.getInstance().getConnection().send(new DeleteTemplatePayload(selected.category(), selected.name()));
                                     }
                                 }
-                                Minecraft.getInstance().setScreen(this);
+                                Minecraft.getInstance().gui.setScreen(this);
                             },
                             Component.translatable("instant_structure.screen.builder.delete_confirm.title"),
                             Component.translatable("instant_structure.screen.builder.delete_confirm.message", selected.name())

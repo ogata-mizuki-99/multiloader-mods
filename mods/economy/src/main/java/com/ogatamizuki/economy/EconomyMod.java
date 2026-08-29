@@ -150,21 +150,33 @@ public class EconomyMod {
     public static MinecraftServer getServer() {
         return minecraftServer;
     }
-    // Create a Deferred Register to hold Blocks which will all be registered under the "economy" namespace
-    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
-    // Create a Deferred Register to hold Items which will all be registered under the "economy" namespace
-    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
-    // Create a Deferred Register to hold CreativeModeTabs which will all be registered under the "economy" namespace
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
-    // Create a Deferred Register to hold EntityTypes which will all be registered under the "economy" namespace
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, MODID);
-    // タイトル演出 SE（TitleScreenOverlay 再有効化時に登録。参照: TitleScreenOverlay.java）
-    // public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(Registries.SOUND_EVENT, MODID);
-    // public static final DeferredHolder<SoundEvent, SoundEvent> TITLE_TRANSITION_SE = SOUND_EVENTS.register(
-    //         "title_transition",
-    //         () -> SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(MODID, "title_transition")));
 
-    public static final DeferredHolder<EntityType<?>, EntityType<EconomyNpc>> ECONOMY_NPC = ENTITY_TYPES.register("economy_npc",
+    // Create a Deferred Register to hold Blocks which will all be registered under
+    // the "economy" namespace
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
+    // Create a Deferred Register to hold Items which will all be registered under
+    // the "economy" namespace
+    public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
+    // Create a Deferred Register to hold CreativeModeTabs which will all be
+    // registered under the "economy" namespace
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister
+            .create(Registries.CREATIVE_MODE_TAB, MODID);
+    // Create a Deferred Register to hold EntityTypes which will all be registered
+    // under the "economy" namespace
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE,
+            MODID);
+    // タイトル演出 SE（TitleScreenOverlay 再有効化時に登録。参照: TitleScreenOverlay.java）
+    // public static final DeferredRegister<SoundEvent> SOUND_EVENTS =
+    // DeferredRegister.create(Registries.SOUND_EVENT, MODID);
+    // public static final DeferredHolder<SoundEvent, SoundEvent>
+    // TITLE_TRANSITION_SE = SOUND_EVENTS.register(
+    // "title_transition",
+    // () ->
+    // SoundEvent.createVariableRangeEvent(Identifier.fromNamespaceAndPath(MODID,
+    // "title_transition")));
+
+    public static final DeferredHolder<EntityType<?>, EntityType<EconomyNpc>> ECONOMY_NPC = ENTITY_TYPES.register(
+            "economy_npc",
             () -> EntityType.Builder.of(EconomyNpc::new, MobCategory.MISC)
                     .sized(0.6F, 1.95F)
                     .build(net.minecraft.resources.ResourceKey.create(
@@ -179,7 +191,8 @@ public class EconomyMod {
                             Identifier.fromNamespaceAndPath(MODID, "loan_npc"))));
 
     // ATM Block
-    public static final DeferredBlock<AtmBlock> ATM_BLOCK = BLOCKS.registerBlock("atm", AtmBlock::new, p -> p.mapColor(MapColor.METAL).strength(3.0f));
+    public static final DeferredBlock<AtmBlock> ATM_BLOCK = BLOCKS.registerBlock("atm", AtmBlock::new,
+            p -> p.mapColor(MapColor.METAL).strength(3.0f));
     public static final DeferredItem<BlockItem> ATM_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("atm", ATM_BLOCK);
 
     // Economy Admin Block (GM only)
@@ -190,7 +203,8 @@ public class EconomyMod {
                     .strength(3.0F)
                     .sound(SoundType.WOOD)
                     .noOcclusion());
-    public static final DeferredItem<BlockItem> ECONOMY_ADMIN_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("economy_admin", ECONOMY_ADMIN_BLOCK);
+    public static final DeferredItem<BlockItem> ECONOMY_ADMIN_BLOCK_ITEM = ITEMS
+            .registerSimpleBlockItem("economy_admin", ECONOMY_ADMIN_BLOCK);
 
     // Coin Items
     public static final DeferredItem<Item> GOLD_COIN = ITEMS.registerSimpleItem("gold_coin");
@@ -198,13 +212,16 @@ public class EconomyMod {
     public static final DeferredItem<Item> BRONZE_COIN = ITEMS.registerSimpleItem("bronze_coin");
 
     // Mobile terminal for ETF trading
-    public static final DeferredItem<MobileTerminalItem> MOBILE_TERMINAL = ITEMS.registerItem("mobile_terminal", MobileTerminalItem::new);
+    public static final DeferredItem<MobileTerminalItem> MOBILE_TERMINAL = ITEMS.registerItem("mobile_terminal",
+            MobileTerminalItem::new);
 
     // Ranking Aggregator / Compiler for Admins
-    public static final DeferredItem<RankingCompilerItem> RANKING_COMPILER = ITEMS.registerItem("ranking_compiler", RankingCompilerItem::new);
+    public static final DeferredItem<RankingCompilerItem> RANKING_COMPILER = ITEMS.registerItem("ranking_compiler",
+            RankingCompilerItem::new);
 
     // Ranking viewer for players (opens GUI)
-    public static final DeferredItem<RankingViewerItem> RANKING_VIEWER = ITEMS.registerItem("ranking_viewer", RankingViewerItem::new);
+    public static final DeferredItem<RankingViewerItem> RANKING_VIEWER = ITEMS.registerItem("ranking_viewer",
+            RankingViewerItem::new);
 
     // Spawn Egg Item
     public static final DeferredItem<SpawnEggItem> ECONOMY_NPC_SPAWN_EGG = ITEMS.registerItem("economy_npc_spawn_egg",
@@ -213,26 +230,31 @@ public class EconomyMod {
     public static final DeferredItem<SpawnEggItem> LOAN_NPC_SPAWN_EGG = ITEMS.registerItem("loan_npc_spawn_egg",
             properties -> new SpawnEggItem(properties.spawnEgg(LOAN_NPC.get())));
 
-    // Creates a creative tab with the id "economy:example_tab" for the ATM, that is placed after the combat tab
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
-            .title(Component.translatable("itemGroup.economy")) //The language key for the title of your CreativeModeTab
-            .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> ATM_BLOCK_ITEM.get().getDefaultInstance())
-            .displayItems((parameters, output) -> {
-                output.accept(ATM_BLOCK_ITEM.get());
-                output.accept(GOLD_COIN.get());
-                output.accept(SILVER_COIN.get());
-                output.accept(BRONZE_COIN.get());
-                output.accept(ECONOMY_NPC_SPAWN_EGG.get());
-                output.accept(LOAN_NPC_SPAWN_EGG.get());
-                output.accept(MOBILE_TERMINAL.get());
-                output.accept(RANKING_COMPILER.get());
-                output.accept(RANKING_VIEWER.get());
-                output.accept(ECONOMY_ADMIN_BLOCK_ITEM.get());
-            }).build());
+    // Creates a creative tab with the id "economy:example_tab" for the ATM, that is
+    // placed after the combat tab
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS
+            .register("example_tab", () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.economy")) // The language key for the title of your
+                                                                        // CreativeModeTab
+                    .withTabsBefore(CreativeModeTabs.COMBAT)
+                    .icon(() -> ATM_BLOCK_ITEM.get().getDefaultInstance())
+                    .displayItems((parameters, output) -> {
+                        output.accept(ATM_BLOCK_ITEM.get());
+                        output.accept(GOLD_COIN.get());
+                        output.accept(SILVER_COIN.get());
+                        output.accept(BRONZE_COIN.get());
+                        output.accept(ECONOMY_NPC_SPAWN_EGG.get());
+                        output.accept(LOAN_NPC_SPAWN_EGG.get());
+                        output.accept(MOBILE_TERMINAL.get());
+                        output.accept(RANKING_COMPILER.get());
+                        output.accept(RANKING_VIEWER.get());
+                        output.accept(ECONOMY_ADMIN_BLOCK_ITEM.get());
+                    }).build());
 
-    // The constructor for the mod class is the first code that is run when your mod is loaded.
-    // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
+    // The constructor for the mod class is the first code that is run when your mod
+    // is loaded.
+    // FML will recognize some parameter types like IEventBus or ModContainer and
+    // pass them in automatically.
     public EconomyMod(IEventBus modEventBus, ModContainer modContainer) {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
@@ -243,7 +265,8 @@ public class EconomyMod {
         ITEMS.register(modEventBus);
         // Register the Deferred Register to the mod event bus so tabs get registered
         CREATIVE_MODE_TABS.register(modEventBus);
-        // Register the Deferred Register to the mod event bus so entities get registered
+        // Register the Deferred Register to the mod event bus so entities get
+        // registered
         ENTITY_TYPES.register(modEventBus);
         // SOUND_EVENTS.register(modEventBus); // TitleScreenOverlay 再有効化時
 
@@ -256,11 +279,14 @@ public class EconomyMod {
         }
 
         // Register ourselves for server and other game events we are interested in.
-        // Note that this is necessary if and only if we want *this* class (EconomyMod) to respond directly to events.
-        // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
+        // Note that this is necessary if and only if we want *this* class (EconomyMod)
+        // to respond directly to events.
+        // Do not add this line if there are no @SubscribeEvent-annotated functions in
+        // this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
 
-        // Register our mod's ModConfigSpec so that FML can create and load the config file for us
+        // Register our mod's ModConfigSpec so that FML can create and load the config
+        // file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
     }
 
@@ -286,8 +312,7 @@ public class EconomyMod {
                     Config.ENABLE_BALANCE_HUD.get(),
                     Config.ENABLE_ACTION_REWARDS.get(),
                     Config.ENABLE_ETF_UPDATES.get(),
-                    Config.REWARD_CHAT_AGGREGATE_SECONDS.get()
-            );
+                    Config.REWARD_CHAT_AGGREGATE_SECONDS.get());
         });
     }
 
@@ -426,31 +451,34 @@ public class EconomyMod {
                     Config.ENABLE_BALANCE_HUD.get(),
                     Config.ENABLE_ACTION_REWARDS.get(),
                     Config.ENABLE_ETF_UPDATES.get(),
-                    Config.REWARD_CHAT_AGGREGATE_SECONDS.get()
-            );
+                    Config.REWARD_CHAT_AGGREGATE_SECONDS.get());
             serverPlayer.sendSystemMessage(
                     Component.translatable("economy.configuration.push_ok")
                             .withStyle(net.minecraft.ChatFormatting.GREEN));
         });
     }
 
-    private void handleMasterEdit(EconomyMasterEditPayload payload, net.neoforged.neoforge.network.handling.IPayloadContext context) {
+    private void handleMasterEdit(EconomyMasterEditPayload payload,
+            net.neoforged.neoforge.network.handling.IPayloadContext context) {
         if (!(context.player() instanceof ServerPlayer serverPlayer)) {
             return;
         }
         if (!EconomyAdminAuth.canPerformAdminActions(serverPlayer)) {
             PacketDistributor.sendToPlayer(
                     serverPlayer,
-                    new EconomyAdminResultPayload(false, "§c[経済] 管理操作の権限（管理者権限）がありません。")
-            );
+                    new EconomyAdminResultPayload(false, "§c[経済] 管理操作の権限（管理者権限）がありません。"));
             return;
         }
 
         com.google.gson.JsonObject result = switch (payload.action()) {
-            case "SAVE_REWARDS" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.saveMasterRewardEdits(payload.jsonBody());
-            case "SAVE_ITEMS" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.saveMasterItemEdits(payload.jsonBody());
-            case "SAVE_SHOP_ITEMS" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.saveMasterShopItemEdits(payload.jsonBody());
-            case "SAVE_ETF_ITEMS" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.saveMasterEtfItemEdits(payload.jsonBody());
+            case "SAVE_REWARDS" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService
+                    .saveMasterRewardEdits(payload.jsonBody());
+            case "SAVE_ITEMS" ->
+                com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.saveMasterItemEdits(payload.jsonBody());
+            case "SAVE_SHOP_ITEMS" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService
+                    .saveMasterShopItemEdits(payload.jsonBody());
+            case "SAVE_ETF_ITEMS" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService
+                    .saveMasterEtfItemEdits(payload.jsonBody());
             default -> {
                 com.google.gson.JsonObject err = new com.google.gson.JsonObject();
                 err.addProperty("error", "不明なマスタ編集操作です: " + payload.action());
@@ -467,15 +495,15 @@ public class EconomyMod {
         }
     }
 
-    private void handleMasterConfig(EconomyMasterConfigPayload payload, net.neoforged.neoforge.network.handling.IPayloadContext context) {
+    private void handleMasterConfig(EconomyMasterConfigPayload payload,
+            net.neoforged.neoforge.network.handling.IPayloadContext context) {
         if (!(context.player() instanceof ServerPlayer serverPlayer)) {
             return;
         }
         if (!EconomyAdminAuth.canPerformAdminActions(serverPlayer)) {
             PacketDistributor.sendToPlayer(
                     serverPlayer,
-                    new EconomyAdminResultPayload(false, "§c[経済] 管理操作の権限（管理者権限）がありません。")
-            );
+                    new EconomyAdminResultPayload(false, "§c[経済] 管理操作の権限（管理者権限）がありません。"));
             return;
         }
 
@@ -488,14 +516,12 @@ public class EconomyMod {
                     clamp(payload.shortSellLimitRate(), 0.0, 10.0),
                     Math.max(1, Math.min(payload.etfIntervalMinutes(), 1440)),
                     Math.max(0, payload.loanMaxAmount()),
-                    clamp(payload.loanAssetMultiplier(), 0.0, 100.0)
-            );
+                    clamp(payload.loanAssetMultiplier(), 0.0, 100.0));
             result = com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.saveMasterConfig(values);
         } else {
             PacketDistributor.sendToPlayer(
                     serverPlayer,
-                    new EconomyAdminResultPayload(false, "§c[経済] 不明なマスタ操作です: " + payload.action())
-            );
+                    new EconomyAdminResultPayload(false, "§c[経済] 不明なマスタ操作です: " + payload.action()));
             return;
         }
 
@@ -515,20 +541,21 @@ public class EconomyMod {
     private static boolean isAdminEconomyQuery(String queryType) {
         return switch (queryType) {
             case "PLAYER_BALANCES", "MASTER_CONFIG", "MASTER_REWARDS", "MASTER_ITEMS",
-                    "MASTER_SHOPS", "MASTER_SHOP_ITEMS", "MASTER_ETF_ITEMS" -> true;
+                    "MASTER_SHOPS", "MASTER_SHOP_ITEMS", "MASTER_ETF_ITEMS" ->
+                true;
             default -> false;
         };
     }
 
-    private void handleAdminAction(EconomyAdminActionPayload payload, net.neoforged.neoforge.network.handling.IPayloadContext context) {
+    private void handleAdminAction(EconomyAdminActionPayload payload,
+            net.neoforged.neoforge.network.handling.IPayloadContext context) {
         if (!(context.player() instanceof ServerPlayer serverPlayer)) {
             return;
         }
         if (!EconomyAdminAuth.canPerformAdminActions(serverPlayer)) {
             PacketDistributor.sendToPlayer(
                     serverPlayer,
-                    new EconomyAdminResultPayload(false, "§c[経済] 管理操作の権限（管理者権限）がありません。")
-            );
+                    new EconomyAdminResultPayload(false, "§c[経済] 管理操作の権限（管理者権限）がありません。"));
             return;
         }
 
@@ -536,13 +563,13 @@ public class EconomyMod {
             compileRanking(serverPlayer.createCommandSourceStack());
             PacketDistributor.sendToPlayer(
                     serverPlayer,
-                    new EconomyAdminResultPayload(true, "economy.chat.ranking_compile_started")
-            );
+                    new EconomyAdminResultPayload(true, "economy.chat.ranking_compile_started"));
             return;
         }
 
         if ("RELOAD_MASTER".equalsIgnoreCase(payload.action())) {
-            com.google.gson.JsonObject result = com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.reloadMaster();
+            com.google.gson.JsonObject result = com.ogatamizuki.economy.backend.local.EconomyLocalAdminService
+                    .reloadMaster();
             if (result.has("success") && result.get("success").getAsBoolean()) {
                 String msg = result.has("message") ? result.get("message").getAsString() : "マスタを再読込しました。";
                 PacketDistributor.sendToPlayer(serverPlayer, new EconomyAdminResultPayload(true, "§a[経済] " + msg));
@@ -554,14 +581,16 @@ public class EconomyMod {
         }
 
         if ("GIVE_SPAWN_EGG".equalsIgnoreCase(payload.action())) {
-            com.google.gson.JsonObject result = com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.giveSpawnEgg(
-                    serverPlayer, payload.shopId());
+            com.google.gson.JsonObject result = com.ogatamizuki.economy.backend.local.EconomyLocalAdminService
+                    .giveSpawnEgg(
+                            serverPlayer, payload.shopId());
             sendAdminJsonResult(serverPlayer, result);
             return;
         }
 
         if ("GIVE_ALL_SPAWN_EGGS".equalsIgnoreCase(payload.action())) {
-            com.google.gson.JsonObject result = com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.giveAllSpawnEggs(serverPlayer);
+            com.google.gson.JsonObject result = com.ogatamizuki.economy.backend.local.EconomyLocalAdminService
+                    .giveAllSpawnEggs(serverPlayer);
             sendAdminJsonResult(serverPlayer, result);
             return;
         }
@@ -569,8 +598,7 @@ public class EconomyMod {
         if (!"RESET".equalsIgnoreCase(payload.action())) {
             PacketDistributor.sendToPlayer(
                     serverPlayer,
-                    new EconomyAdminResultPayload(false, "§c[経済] 不明な操作です: " + payload.action())
-            );
+                    new EconomyAdminResultPayload(false, "§c[経済] 不明な操作です: " + payload.action()));
             return;
         }
 
@@ -590,28 +618,27 @@ public class EconomyMod {
                 payload.resetMobKills(),
                 payload.resetHarvests(),
                 payload.resetPotionsBrewed(),
-                payload.resetFishCaught()
-        );
-        com.google.gson.JsonObject result = com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.reset(options);
+                payload.resetFishCaught());
+        com.google.gson.JsonObject result = com.ogatamizuki.economy.backend.local.EconomyLocalAdminService
+                .reset(options);
         if (result.has("success") && result.get("success").getAsBoolean()) {
             if (options.resetBalances()) {
                 var data = com.ogatamizuki.economy.data.EconomyWorldSavedData.get(serverPlayer.level().getServer());
                 for (ServerPlayer online : serverPlayer.level().getServer().getPlayerList().getPlayers()) {
                     var record = data.getOrCreate(online.getUUID(), online.getName().getString());
-                    EconomyBalanceSync.applyBalanceAndSync(online, record.balance(), record.bankBalance(), record.debt());
+                    EconomyBalanceSync.applyBalanceAndSync(online, record.balance(), record.bankBalance(),
+                            record.debt());
                 }
             }
             int updated = result.has("playersUpdated") ? result.get("playersUpdated").getAsInt() : 0;
             PacketDistributor.sendToPlayer(
                     serverPlayer,
-                    new EconomyAdminResultPayload(true, "§a[経済] リセットが完了しました。（プレイヤー " + updated + " 件更新）")
-            );
+                    new EconomyAdminResultPayload(true, "§a[経済] リセットが完了しました。（プレイヤー " + updated + " 件更新）"));
         } else {
             String error = result.has("error") ? result.get("error").getAsString() : "リセットに失敗しました。";
             PacketDistributor.sendToPlayer(
                     serverPlayer,
-                    new EconomyAdminResultPayload(false, "§c[経済] " + error)
-            );
+                    new EconomyAdminResultPayload(false, "§c[経済] " + error));
         }
     }
 
@@ -625,7 +652,8 @@ public class EconomyMod {
         }
     }
 
-    private void handleEconomyQueryRequest(EconomyQueryRequestPayload payload, net.neoforged.neoforge.network.handling.IPayloadContext context) {
+    private void handleEconomyQueryRequest(EconomyQueryRequestPayload payload,
+            net.neoforged.neoforge.network.handling.IPayloadContext context) {
         if (!(context.player() instanceof ServerPlayer serverPlayer)) {
             return;
         }
@@ -633,43 +661,55 @@ public class EconomyMod {
                 && !EconomyAdminAuth.canPerformAdminActions(serverPlayer)) {
             PacketDistributor.sendToPlayer(
                     serverPlayer,
-                    new EconomyQueryResponsePayload(payload.queryType(), payload.arg1(), payload.arg2(), "null")
-            );
+                    new EconomyQueryResponsePayload(payload.queryType(), payload.arg1(), payload.arg2(), "null"));
             return;
         }
         String json = switch (payload.queryType()) {
-            case "STOCKS" -> com.ogatamizuki.economy.backend.local.EconomyLocalEtfService.fetchStocks(serverPlayer.getUUID());
-            case "STOCK_HISTORY" -> com.ogatamizuki.economy.backend.local.EconomyLocalEtfService.fetchHistory(payload.arg1(), payload.arg2());
-            case "STOCK_COMPONENTS" -> com.ogatamizuki.economy.backend.local.EconomyLocalEtfService.fetchComponents(payload.arg1());
+            case "STOCKS" ->
+                com.ogatamizuki.economy.backend.local.EconomyLocalEtfService.fetchStocks(serverPlayer.getUUID());
+            case "STOCK_HISTORY" -> com.ogatamizuki.economy.backend.local.EconomyLocalEtfService
+                    .fetchHistory(payload.arg1(), payload.arg2());
+            case "STOCK_COMPONENTS" ->
+                com.ogatamizuki.economy.backend.local.EconomyLocalEtfService.fetchComponents(payload.arg1());
             case "FLEA_LISTINGS" -> com.ogatamizuki.economy.backend.local.EconomyLocalFleaMarketService.fetchListings();
             case "RANKING_LATEST" -> com.ogatamizuki.economy.backend.local.EconomyLocalRankingService.fetchLatest();
-            case "LOAN_LIMIT" -> com.ogatamizuki.economy.backend.local.EconomyLocalLoanService.fetchLimit(serverPlayer.getUUID()).toString();
-            case "PLAYER_BALANCES" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.fetchPlayerBalances();
-            case "MASTER_CONFIG" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.fetchMasterConfig(serverPlayer.level().getServer());
-            case "MASTER_REWARDS" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.fetchMasterRewards(serverPlayer.level().getServer());
+            case "LOAN_LIMIT" -> com.ogatamizuki.economy.backend.local.EconomyLocalLoanService
+                    .fetchLimit(serverPlayer.getUUID()).toString();
+            case "PLAYER_BALANCES" ->
+                com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.fetchPlayerBalances();
+            case "MASTER_CONFIG" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService
+                    .fetchMasterConfig(serverPlayer.level().getServer());
+            case "MASTER_REWARDS" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService
+                    .fetchMasterRewards(serverPlayer.level().getServer());
             case "MASTER_ITEMS" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.fetchMasterItems(
                     serverPlayer.level().getServer(), payload.arg2());
-            case "MASTER_SHOPS" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.fetchMasterShops(serverPlayer.level().getServer());
-            case "MASTER_SHOP_ITEMS" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.fetchMasterShopItems(serverPlayer.level().getServer());
-            case "MASTER_ETF_ITEMS" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService.fetchMasterEtfItems(serverPlayer.level().getServer());
+            case "MASTER_SHOPS" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService
+                    .fetchMasterShops(serverPlayer.level().getServer());
+            case "MASTER_SHOP_ITEMS" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService
+                    .fetchMasterShopItems(serverPlayer.level().getServer());
+            case "MASTER_ETF_ITEMS" -> com.ogatamizuki.economy.backend.local.EconomyLocalAdminService
+                    .fetchMasterEtfItems(serverPlayer.level().getServer());
             default -> null;
         };
         PacketDistributor.sendToPlayer(
                 serverPlayer,
-                new EconomyQueryResponsePayload(payload.queryType(), payload.arg1(), payload.arg2(), json != null ? json : "null")
-        );
+                new EconomyQueryResponsePayload(payload.queryType(), payload.arg1(), payload.arg2(),
+                        json != null ? json : "null"));
     }
 
-    private void handleBankRequest(BankRequestPayload payload, net.neoforged.neoforge.network.handling.IPayloadContext context) {
+    private void handleBankRequest(BankRequestPayload payload,
+            net.neoforged.neoforge.network.handling.IPayloadContext context) {
         if (!(context.player() instanceof ServerPlayer serverPlayer)) {
             return;
         }
         UUID playerUuid = serverPlayer.getUUID();
         boolean success;
         if ("DEPOSIT".equalsIgnoreCase(payload.action())) {
-            success = com.ogatamizuki.economy.backend.local.EconomyLocalPlayerService.deposit(playerUuid, payload.amount());
+            success = com.ogatamizuki.economy.backend.local.EconomyLocalPlayerService.deposit(playerUuid,
+                    payload.amount());
         } else if ("WITHDRAW".equalsIgnoreCase(payload.action())) {
-            success = com.ogatamizuki.economy.backend.local.EconomyLocalPlayerService.withdraw(playerUuid, payload.amount());
+            success = com.ogatamizuki.economy.backend.local.EconomyLocalPlayerService.withdraw(playerUuid,
+                    payload.amount());
         } else {
             success = false;
         }
@@ -681,11 +721,11 @@ public class EconomyMod {
         }
         PacketDistributor.sendToPlayer(
                 serverPlayer,
-                new BankResultPayload(success, record.balance(), record.bankBalance(), record.debt())
-        );
+                new BankResultPayload(success, record.balance(), record.bankBalance(), record.debt()));
     }
 
-    private void handleShopDetailsRequest(ShopDetailsRequestPayload payload, net.neoforged.neoforge.network.handling.IPayloadContext context) {
+    private void handleShopDetailsRequest(ShopDetailsRequestPayload payload,
+            net.neoforged.neoforge.network.handling.IPayloadContext context) {
         if (!(context.player() instanceof ServerPlayer serverPlayer)) {
             return;
         }
@@ -694,53 +734,49 @@ public class EconomyMod {
         if (chunks.isEmpty()) {
             PacketDistributor.sendToPlayer(
                     serverPlayer,
-                    new ShopDetailsResponsePayload(payload.shopId(), 0, 1, "{}")
-            );
+                    new ShopDetailsResponsePayload(payload.shopId(), 0, 1, "{}"));
             return;
         }
         int totalChunks = chunks.size();
         for (int i = 0; i < totalChunks; i++) {
             PacketDistributor.sendToPlayer(
                     serverPlayer,
-                    new ShopDetailsResponsePayload(payload.shopId(), i, totalChunks, chunks.get(i))
-            );
+                    new ShopDetailsResponsePayload(payload.shopId(), i, totalChunks, chunks.get(i)));
         }
     }
 
-    private void handleLoanRequest(LoanRequestPayload payload, net.neoforged.neoforge.network.handling.IPayloadContext context) {
-        if (!(context.player() instanceof ServerPlayer serverPlayer)) return;
+    private void handleLoanRequest(LoanRequestPayload payload,
+            net.neoforged.neoforge.network.handling.IPayloadContext context) {
+        if (!(context.player() instanceof ServerPlayer serverPlayer))
+            return;
         String uuid = serverPlayer.getUUID().toString();
         String action = payload.action();
         int amount = payload.amount();
 
         if ("BORROW".equalsIgnoreCase(action)) {
-            EconomyService.borrowLoan(uuid, amount).thenAccept(res ->
-                    runOnServerThread(() -> {
-                        if (res != null && res.has("success") && res.get("success").getAsBoolean()) {
-                            int newBalance = res.has("newBalance") ? res.get("newBalance").getAsInt() : -1;
-                            int newDebt = res.has("newDebt") ? res.get("newDebt").getAsInt() : -1;
-                            String msg = res.has("message") ? res.get("message").getAsString() : "借入に成功しました。";
-                            notifyLoanTxResult(serverPlayer, true, newBalance, newDebt, "§a[借金] §f" + msg);
-                        } else {
-                            String error = (res != null && res.has("error")) ? res.get("error").getAsString() : "借入に失敗しました。";
-                            notifyLoanTxResult(serverPlayer, false, -1, -1, "§c[エラー] " + error);
-                        }
-                    })
-            );
+            EconomyService.borrowLoan(uuid, amount).thenAccept(res -> runOnServerThread(() -> {
+                if (res != null && res.has("success") && res.get("success").getAsBoolean()) {
+                    int newBalance = res.has("newBalance") ? res.get("newBalance").getAsInt() : -1;
+                    int newDebt = res.has("newDebt") ? res.get("newDebt").getAsInt() : -1;
+                    String msg = res.has("message") ? res.get("message").getAsString() : "借入に成功しました。";
+                    notifyLoanTxResult(serverPlayer, true, newBalance, newDebt, "§a[借金] §f" + msg);
+                } else {
+                    String error = (res != null && res.has("error")) ? res.get("error").getAsString() : "借入に失敗しました。";
+                    notifyLoanTxResult(serverPlayer, false, -1, -1, "§c[エラー] " + error);
+                }
+            }));
         } else if ("REPAY".equalsIgnoreCase(action)) {
-            EconomyService.repayLoan(uuid, amount).thenAccept(res ->
-                    runOnServerThread(() -> {
-                        if (res != null && res.has("success") && res.get("success").getAsBoolean()) {
-                            int newBalance = res.has("newBalance") ? res.get("newBalance").getAsInt() : -1;
-                            int newDebt = res.has("newDebt") ? res.get("newDebt").getAsInt() : -1;
-                            String msg = res.has("message") ? res.get("message").getAsString() : "返済に成功しました。";
-                            notifyLoanTxResult(serverPlayer, true, newBalance, newDebt, "§a[借金] §f" + msg);
-                        } else {
-                            String error = (res != null && res.has("error")) ? res.get("error").getAsString() : "返済に失敗しました。";
-                            notifyLoanTxResult(serverPlayer, false, -1, -1, "§c[エラー] " + error);
-                        }
-                    })
-            );
+            EconomyService.repayLoan(uuid, amount).thenAccept(res -> runOnServerThread(() -> {
+                if (res != null && res.has("success") && res.get("success").getAsBoolean()) {
+                    int newBalance = res.has("newBalance") ? res.get("newBalance").getAsInt() : -1;
+                    int newDebt = res.has("newDebt") ? res.get("newDebt").getAsInt() : -1;
+                    String msg = res.has("message") ? res.get("message").getAsString() : "返済に成功しました。";
+                    notifyLoanTxResult(serverPlayer, true, newBalance, newDebt, "§a[借金] §f" + msg);
+                } else {
+                    String error = (res != null && res.has("error")) ? res.get("error").getAsString() : "返済に失敗しました。";
+                    notifyLoanTxResult(serverPlayer, false, -1, -1, "§c[エラー] " + error);
+                }
+            }));
         }
     }
 
@@ -749,12 +785,10 @@ public class EconomyMod {
             boolean success,
             int newBalance,
             int newDebt,
-            String message
-    ) {
+            String message) {
         PacketDistributor.sendToPlayer(
                 serverPlayer,
-                new LoanTxResultPayload(success, newBalance, newDebt, message)
-        );
+                new LoanTxResultPayload(success, newBalance, newDebt, message));
     }
 
     private static int countInventoryItems(Player player, Identifier itemId) {
@@ -784,12 +818,10 @@ public class EconomyMod {
             int newBalance,
             String message,
             String itemKey,
-            int remainingItemCount
-    ) {
+            int remainingItemCount) {
         PacketDistributor.sendToPlayer(
                 serverPlayer,
-                ShopTxResultPayload.simple(success, newBalance, message, itemKey, remainingItemCount)
-        );
+                ShopTxResultPayload.simple(success, newBalance, message, itemKey, remainingItemCount));
     }
 
     private static void notifyShopTxResult(
@@ -801,8 +833,7 @@ public class EconomyMod {
             String matchPotion,
             String matchEnchantment,
             Integer matchEnchantmentLevel,
-            int remainingItemCount
-    ) {
+            int remainingItemCount) {
         PacketDistributor.sendToPlayer(
                 serverPlayer,
                 ShopTxResultPayload.withMatch(
@@ -813,22 +844,22 @@ public class EconomyMod {
                         matchPotion,
                         matchEnchantment,
                         matchEnchantmentLevel,
-                        remainingItemCount
-                )
-        );
+                        remainingItemCount));
     }
 
     /**
      * サーバー側: 購入リクエスト処理。ローカルショップサービスで検証し、成功したらアイテムを付与する。
      */
-    private void handleBuyRequest(ShopBuyRequestPayload payload, net.neoforged.neoforge.network.handling.IPayloadContext context) {
-        if (!(context.player() instanceof ServerPlayer serverPlayer)) return;
+    private void handleBuyRequest(ShopBuyRequestPayload payload,
+            net.neoforged.neoforge.network.handling.IPayloadContext context) {
+        if (!(context.player() instanceof ServerPlayer serverPlayer))
+            return;
         String uuid = serverPlayer.getUUID().toString();
         LOGGER.info("Shop buy request: player={} shopItemId={} qty={}",
                 serverPlayer.getName().getString(), payload.shopItemId(), payload.quantity());
 
-        EconomyService.buyShopItem(uuid, payload.shopItemId(), payload.quantity()).thenAccept(res ->
-                runOnServerThread(() -> {
+        EconomyService.buyShopItem(uuid, payload.shopItemId(), payload.quantity())
+                .thenAccept(res -> runOnServerThread(() -> {
                     if (res != null && res.has("success") && res.get("success").getAsBoolean()) {
                         int newBalance = res.has("newBalance") ? res.get("newBalance").getAsInt() : -1;
                         String itemKey = res.has("itemKey") ? res.get("itemKey").getAsString() : null;
@@ -854,7 +885,8 @@ public class EconomyMod {
                                     serverPlayer.inventoryMenu.broadcastChanges();
                                     syncItemKey = itemKey;
                                     remainingItemCount = countInventoryItems(serverPlayer, itemId);
-                                    LOGGER.info("Gave {} x{} to player {}", itemKey, quantity, serverPlayer.getName().getString());
+                                    LOGGER.info("Gave {} x{} to player {}", itemKey, quantity,
+                                            serverPlayer.getName().getString());
                                 } else {
                                     LOGGER.warn("Item not found in registry for buy grant: {}", itemKey);
                                 }
@@ -865,25 +897,27 @@ public class EconomyMod {
                         String msg = "§a[ショップ] §e" + itemName + "§f を " + quantity + " 個購入しました！";
                         notifyShopTxResult(serverPlayer, true, newBalance, msg, syncItemKey, remainingItemCount);
                     } else {
-                        String error = (res != null && res.has("error")) ? res.get("error").getAsString() : "購入に失敗しました。";
+                        String error = (res != null && res.has("error")) ? res.get("error").getAsString()
+                                : "購入に失敗しました。";
                         LOGGER.warn("Shop buy rejected: player={} shopItemId={} qty={} reason={}",
                                 serverPlayer.getName().getString(), payload.shopItemId(), payload.quantity(), error);
                         notifyShopTxResult(serverPlayer, false, -1, "§c[エラー] " + error, "", -1);
                     }
-                })
-        ).exceptionally(ex -> {
-            LOGGER.error("Shop buy request failed for {}: ", serverPlayer.getName().getString(), ex);
-            runOnServerThread(() -> notifyShopTxResult(
-                    serverPlayer, false, -1, "§c[エラー] 購入処理中にエラーが発生しました。", "", -1));
-            return null;
-        });
+                })).exceptionally(ex -> {
+                    LOGGER.error("Shop buy request failed for {}: ", serverPlayer.getName().getString(), ex);
+                    runOnServerThread(() -> notifyShopTxResult(
+                            serverPlayer, false, -1, "§c[エラー] 購入処理中にエラーが発生しました。", "", -1));
+                    return null;
+                });
     }
 
     /**
      * サーバー側: 売却リクエスト処理。インベントリ確認後、ローカルショップサービスで処理し、成功したらアイテムを削除する。
      */
-    private void handleSellRequest(ShopSellRequestPayload payload, net.neoforged.neoforge.network.handling.IPayloadContext context) {
-        if (!(context.player() instanceof ServerPlayer serverPlayer)) return;
+    private void handleSellRequest(ShopSellRequestPayload payload,
+            net.neoforged.neoforge.network.handling.IPayloadContext context) {
+        if (!(context.player() instanceof ServerPlayer serverPlayer))
+            return;
         String uuid = serverPlayer.getUUID().toString();
         int itemId = payload.itemId();
         int quantity = payload.quantity();
@@ -896,8 +930,7 @@ public class EconomyMod {
                     -1,
                     "§c[エラー] 売却対象のアイテムが見つかりません。",
                     "",
-                    -1
-            );
+                    -1);
             return;
         }
         var itemDef = itemOpt.get();
@@ -912,46 +945,40 @@ public class EconomyMod {
                         -1,
                         "§c[エラー] 売却に必要なアイテムがインベントリにありません。",
                         "",
-                        -1
-                );
+                        -1);
                 return;
             }
         }
 
-        EconomyService.sellShopItem(uuid, itemId, quantity).thenAccept(res ->
-                runOnServerThread(() -> {
-                    if (res != null && res.has("success") && res.get("success").getAsBoolean()) {
-                        int newBalance = res.has("newBalance") ? res.get("newBalance").getAsInt() : -1;
-                        int totalGain = res.has("totalGain") ? res.get("totalGain").getAsInt() : 0;
-                        String itemName = res.has("itemName") ? res.get("itemName").getAsString() : "アイテム";
+        EconomyService.sellShopItem(uuid, itemId, quantity).thenAccept(res -> runOnServerThread(() -> {
+            if (res != null && res.has("success") && res.get("success").getAsBoolean()) {
+                int newBalance = res.has("newBalance") ? res.get("newBalance").getAsInt() : -1;
+                int totalGain = res.has("totalGain") ? res.get("totalGain").getAsInt() : 0;
 
-                        if (!serverPlayer.isCreative()) {
-                            EconomyItemMatcher.removeMatching(serverPlayer, itemDef, quantity);
-                            serverPlayer.inventoryMenu.broadcastChanges();
-                            LOGGER.info("Removed {} x{} (id={}) from player {} inventory",
-                                    itemDef.itemKey(), quantity, itemId, serverPlayer.getName().getString());
-                        }
+                if (!serverPlayer.isCreative()) {
+                    EconomyItemMatcher.removeMatching(serverPlayer, itemDef, quantity);
+                    serverPlayer.inventoryMenu.broadcastChanges();
+                    LOGGER.info("Removed {} x{} (id={}) from player {} inventory",
+                            itemDef.itemKey(), quantity, itemId, serverPlayer.getName().getString());
+                }
 
-                        int remainingItemCount = EconomyItemMatcher.countMatching(serverPlayer, itemDef);
-                        java.text.NumberFormat fmt = java.text.NumberFormat.getNumberInstance(java.util.Locale.JAPAN);
-                        String msg = "§a[ショップ] §e" + itemName + "§f を " + quantity + " 個売却し、§e¥" + fmt.format(totalGain) + "§f を獲得しました！";
-                        notifyShopTxResult(
-                                serverPlayer,
-                                true,
-                                newBalance,
-                                msg,
-                                itemDef.itemKey(),
-                                itemDef.matchPotion(),
-                                itemDef.matchEnchantment(),
-                                itemDef.matchEnchantmentLevel(),
-                                remainingItemCount
-                        );
-                    } else {
-                        String error = (res != null && res.has("error")) ? res.get("error").getAsString() : "売却に失敗しました。";
-                        notifyShopTxResult(serverPlayer, false, -1, "§c[エラー] " + error, "", -1);
-                    }
-                })
-        ).exceptionally(ex -> {
+                int remainingItemCount = EconomyItemMatcher.countMatching(serverPlayer, itemDef);
+                String msg = "economy.chat.shop.sell_success|" + itemDef.itemKey() + "|" + quantity + "|" + totalGain;
+                notifyShopTxResult(
+                        serverPlayer,
+                        true,
+                        newBalance,
+                        msg,
+                        itemDef.itemKey(),
+                        itemDef.matchPotion(),
+                        itemDef.matchEnchantment(),
+                        itemDef.matchEnchantmentLevel(),
+                        remainingItemCount);
+            } else {
+                String error = (res != null && res.has("error")) ? res.get("error").getAsString() : "売却に失敗しました。";
+                notifyShopTxResult(serverPlayer, false, -1, "§c[エラー] " + error, "", -1);
+            }
+        })).exceptionally(ex -> {
             LOGGER.error("Shop sell request failed for {}: ", serverPlayer.getName().getString(), ex);
             runOnServerThread(() -> notifyShopTxResult(
                     serverPlayer, false, -1, "§c[エラー] 売却処理中にエラーが発生しました。", "", -1));
@@ -962,8 +989,10 @@ public class EconomyMod {
     /**
      * サーバー側: ETF取引リクエスト処理。
      */
-    private void handleStockTradeRequest(StockTradeRequestPayload payload, net.neoforged.neoforge.network.handling.IPayloadContext context) {
-        if (!(context.player() instanceof ServerPlayer serverPlayer)) return;
+    private void handleStockTradeRequest(StockTradeRequestPayload payload,
+            net.neoforged.neoforge.network.handling.IPayloadContext context) {
+        if (!(context.player() instanceof ServerPlayer serverPlayer))
+            return;
         String uuid = serverPlayer.getUUID().toString();
 
         EconomyService.tradeStock(uuid, payload.stockCategoryId(), payload.tradeType(), payload.quantity())
@@ -971,27 +1000,28 @@ public class EconomyMod {
                     if (res != null && res.has("success") && res.get("success").getAsBoolean()) {
                         int newBalance = res.has("newBalance") ? res.get("newBalance").getAsInt() : -1;
                         int currentPrice = res.has("currentPrice") ? res.get("currentPrice").getAsInt() : 0;
-                        int portfolioQuantity = res.has("portfolioQuantity") ? res.get("portfolioQuantity").getAsInt() : 0;
+                        int portfolioQuantity = res.has("portfolioQuantity") ? res.get("portfolioQuantity").getAsInt()
+                                : 0;
 
-                        java.text.NumberFormat fmt = java.text.NumberFormat.getNumberInstance(java.util.Locale.JAPAN);
-                        String msg = "§a[ETF] §f取引が完了しました。(残高: §e¥" + fmt.format(newBalance) + "§f)";
+                        String msg = "economy.chat.etf.trade_success|" + newBalance;
 
                         PacketDistributor.sendToPlayer(
                                 serverPlayer,
-                                new StockTradeResultPayload(true, newBalance, currentPrice, portfolioQuantity, msg)
-                        );
+                                new StockTradeResultPayload(true, newBalance, currentPrice, portfolioQuantity, msg));
                     } else {
-                        String error = (res != null && res.has("error")) ? res.get("error").getAsString() : "取引に失敗しました。";
+                        String error = (res != null && res.has("error")) ? res.get("error").getAsString()
+                                : "取引に失敗しました。";
                         PacketDistributor.sendToPlayer(
                                 serverPlayer,
-                                new StockTradeResultPayload(false, -1, 0, 0, "§c[エラー] " + error)
-                        );
+                                new StockTradeResultPayload(false, -1, 0, 0, "§c[エラー] " + error));
                     }
                 }));
     }
 
-    private void handleFleaMarketListRequest(FleaMarketListRequestPayload payload, net.neoforged.neoforge.network.handling.IPayloadContext context) {
-        if (!(context.player() instanceof ServerPlayer serverPlayer)) return;
+    private void handleFleaMarketListRequest(FleaMarketListRequestPayload payload,
+            net.neoforged.neoforge.network.handling.IPayloadContext context) {
+        if (!(context.player() instanceof ServerPlayer serverPlayer))
+            return;
         String uuid = serverPlayer.getUUID().toString();
         int price = payload.price();
         int quantity = payload.quantity();
@@ -1001,7 +1031,8 @@ public class EconomyMod {
                 payload.itemKey(),
                 1);
         if (requested.isEmpty() || price <= 0 || quantity <= 0) {
-            PacketDistributor.sendToPlayer(serverPlayer, new FleaMarketResultPayload(false, "§c[フリマ] §f出品内容が無効です。", -1));
+            PacketDistributor.sendToPlayer(serverPlayer,
+                    new FleaMarketResultPayload(false, "§c[フリマ] §f出品内容が無効です。", -1));
             return;
         }
 
@@ -1023,7 +1054,8 @@ public class EconomyMod {
                 }
             }
             if (available < quantity) {
-                PacketDistributor.sendToPlayer(serverPlayer, new FleaMarketResultPayload(false, "§c[フリマ] §f出品に必要なアイテムがインベントリにありません。", -1));
+                PacketDistributor.sendToPlayer(serverPlayer,
+                        new FleaMarketResultPayload(false, "§c[フリマ] §f出品に必要なアイテムがインベントリにありません。", -1));
                 return;
             }
         } else {
@@ -1045,8 +1077,8 @@ public class EconomyMod {
         final ItemStack listingStack = storedTemplate.copyWithCount(1);
 
         // 3. API申請
-        EconomyService.listFleaMarketItem(uuid, itemKey, resolvedItemName, price, quantity, listingStack).thenAccept(res ->
-                runOnServerThread(() -> {
+        EconomyService.listFleaMarketItem(uuid, itemKey, resolvedItemName, price, quantity, listingStack)
+                .thenAccept(res -> runOnServerThread(() -> {
                     if (res != null && res.has("success") && res.get("success").getAsBoolean()) {
                         // 成功したら同一 components のアイテムをインベントリから回収
                         if (!serverPlayer.isCreative()) {
@@ -1065,27 +1097,31 @@ public class EconomyMod {
                             }
                             serverPlayer.inventoryMenu.broadcastChanges();
                         }
-                        String msg = "§a[フリマ] §e" + resolvedItemName + "§f を " + quantity + " 個（単価: ¥" + price + "）出品しました。";
+                        String msg = "§a[フリマ] §e" + resolvedItemName + "§f を " + quantity + " 個（単価: ¥" + price
+                                + "）出品しました。";
                         PacketDistributor.sendToPlayer(serverPlayer, new FleaMarketResultPayload(true, msg, -1));
                     } else {
-                        String error = (res != null && res.has("error")) ? res.get("error").getAsString() : "出品に失敗しました。";
-                        PacketDistributor.sendToPlayer(serverPlayer, new FleaMarketResultPayload(false, "§c[エラー] " + error, -1));
+                        String error = (res != null && res.has("error")) ? res.get("error").getAsString()
+                                : "出品に失敗しました。";
+                        PacketDistributor.sendToPlayer(serverPlayer,
+                                new FleaMarketResultPayload(false, "§c[エラー] " + error, -1));
                     }
-                })
-        ).exceptionally(ex -> {
-            LOGGER.error("Flea market list request failed for {}: ", serverPlayer.getName().getString(), ex);
-            runOnServerThread(() -> PacketDistributor.sendToPlayer(
-                    serverPlayer, new FleaMarketResultPayload(false, "§c[エラー] 出品処理中にエラーが発生しました。", -1)));
-            return null;
-        });
+                })).exceptionally(ex -> {
+                    LOGGER.error("Flea market list request failed for {}: ", serverPlayer.getName().getString(), ex);
+                    runOnServerThread(() -> PacketDistributor.sendToPlayer(
+                            serverPlayer, new FleaMarketResultPayload(false, "§c[エラー] 出品処理中にエラーが発生しました。", -1)));
+                    return null;
+                });
     }
 
-    private void handleFleaMarketBuyRequest(FleaMarketBuyRequestPayload payload, net.neoforged.neoforge.network.handling.IPayloadContext context) {
-        if (!(context.player() instanceof ServerPlayer serverPlayer)) return;
+    private void handleFleaMarketBuyRequest(FleaMarketBuyRequestPayload payload,
+            net.neoforged.neoforge.network.handling.IPayloadContext context) {
+        if (!(context.player() instanceof ServerPlayer serverPlayer))
+            return;
         String uuid = serverPlayer.getUUID().toString();
 
-        EconomyService.buyFleaMarketItem(uuid, payload.listingId(), payload.quantity()).thenAccept(res ->
-                runOnServerThread(() -> {
+        EconomyService.buyFleaMarketItem(uuid, payload.listingId(), payload.quantity())
+                .thenAccept(res -> runOnServerThread(() -> {
                     if (res != null && res.has("success") && res.get("success").getAsBoolean()) {
                         int newBalance = res.has("newBalance") ? res.get("newBalance").getAsInt() : -1;
                         String itemKey = res.has("itemKey") ? res.get("itemKey").getAsString() : null;
@@ -1102,41 +1138,43 @@ public class EconomyMod {
                                 .append(Component.literal("§f を " + quantity + " 個購入しました！")));
                         PacketDistributor.sendToPlayer(serverPlayer, new FleaMarketResultPayload(true, "", newBalance));
                     } else {
-                        String error = (res != null && res.has("error")) ? res.get("error").getAsString() : "購入に失敗しました。";
-                        PacketDistributor.sendToPlayer(serverPlayer, new FleaMarketResultPayload(false, "§c[エラー] " + error, -1));
+                        String error = (res != null && res.has("error")) ? res.get("error").getAsString()
+                                : "購入に失敗しました。";
+                        PacketDistributor.sendToPlayer(serverPlayer,
+                                new FleaMarketResultPayload(false, "§c[エラー] " + error, -1));
                     }
-                })
-        );
+                }));
     }
 
-    private void handleFleaMarketCancelRequest(FleaMarketCancelRequestPayload payload, net.neoforged.neoforge.network.handling.IPayloadContext context) {
-        if (!(context.player() instanceof ServerPlayer serverPlayer)) return;
+    private void handleFleaMarketCancelRequest(FleaMarketCancelRequestPayload payload,
+            net.neoforged.neoforge.network.handling.IPayloadContext context) {
+        if (!(context.player() instanceof ServerPlayer serverPlayer))
+            return;
         String uuid = serverPlayer.getUUID().toString();
 
-        EconomyService.cancelFleaMarketListing(uuid, payload.listingId()).thenAccept(res ->
-                runOnServerThread(() -> {
-                    if (res != null && res.has("success") && res.get("success").getAsBoolean()) {
-                        String itemKey = res.has("itemKey") ? res.get("itemKey").getAsString() : null;
-                        int remainingQuantity = res.has("remainingQuantity") ? res.get("remainingQuantity").getAsInt() : 0;
-                        String itemName = res.has("itemName") ? res.get("itemName").getAsString() : "アイテム";
-                        String stackNbt = res.has("itemStackNbt") ? res.get("itemStackNbt").getAsString() : "";
+        EconomyService.cancelFleaMarketListing(uuid, payload.listingId()).thenAccept(res -> runOnServerThread(() -> {
+            if (res != null && res.has("success") && res.get("success").getAsBoolean()) {
+                String itemKey = res.has("itemKey") ? res.get("itemKey").getAsString() : null;
+                int remainingQuantity = res.has("remainingQuantity") ? res.get("remainingQuantity").getAsInt() : 0;
+                String itemName = res.has("itemName") ? res.get("itemName").getAsString() : "アイテム";
+                String stackNbt = res.has("itemStackNbt") ? res.get("itemStackNbt").getAsString() : "";
 
-                        if (remainingQuantity > 0) {
-                            grantFleaMarketStacks(serverPlayer, stackNbt, itemKey, remainingQuantity);
-                        }
+                if (remainingQuantity > 0) {
+                    grantFleaMarketStacks(serverPlayer, stackNbt, itemKey, remainingQuantity);
+                }
 
-                        Component displayName = EconomyItemDisplayNames.resolve(
-                                serverPlayer.registryAccess(), stackNbt, itemKey, itemName);
-                        serverPlayer.sendSystemMessage(Component.literal("§a[フリマ] 出品を取り消し、売れ残りの §e")
-                                .append(displayName)
-                                .append(Component.literal("§f を " + remainingQuantity + " 個回収しました。")));
-                        PacketDistributor.sendToPlayer(serverPlayer, new FleaMarketResultPayload(true, "", -1));
-                    } else {
-                        String error = (res != null && res.has("error")) ? res.get("error").getAsString() : "出品取消に失敗しました。";
-                        PacketDistributor.sendToPlayer(serverPlayer, new FleaMarketResultPayload(false, "§c[エラー] " + error, -1));
-                    }
-                })
-        );
+                Component displayName = EconomyItemDisplayNames.resolve(
+                        serverPlayer.registryAccess(), stackNbt, itemKey, itemName);
+                serverPlayer.sendSystemMessage(Component.literal("§a[フリマ] 出品を取り消し、売れ残りの §e")
+                        .append(displayName)
+                        .append(Component.literal("§f を " + remainingQuantity + " 個回収しました。")));
+                PacketDistributor.sendToPlayer(serverPlayer, new FleaMarketResultPayload(true, "", -1));
+            } else {
+                String error = (res != null && res.has("error")) ? res.get("error").getAsString() : "出品取消に失敗しました。";
+                PacketDistributor.sendToPlayer(serverPlayer,
+                        new FleaMarketResultPayload(false, "§c[エラー] " + error, -1));
+            }
+        }));
     }
 
     private void grantFleaMarketStacks(ServerPlayer serverPlayer, String stackNbt, String itemKey, int quantity) {
@@ -1148,8 +1186,7 @@ public class EconomyMod {
                     serverPlayer.registryAccess(),
                     stackNbt,
                     itemKey,
-                    1
-            );
+                    1);
             if (template.isEmpty()) {
                 return;
             }
@@ -1170,8 +1207,6 @@ public class EconomyMod {
         LOGGER.info("Economy standalone mod common setup");
     }
 
-
-
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
@@ -1191,57 +1226,57 @@ public class EconomyMod {
     public void onRegisterCommands(RegisterCommandsEvent event) {
         LOGGER.info("Registering Economy commands");
         event.getDispatcher().register(
-            Commands.literal("economy")
-                .then(Commands.literal("spawn_egg")
-                    .requires(source -> source.permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER))
-                    .then(Commands.argument("shop_id", IntegerArgumentType.integer(1))
-                        .then(Commands.argument("npc_type", StringArgumentType.word())
-                            .executes(context -> {
-                                int shopId = IntegerArgumentType.getInteger(context, "shop_id");
-                                String npcType = StringArgumentType.getString(context, "npc_type");
-                                return giveSpawnEgg(context.getSource(), shopId, npcType);
-                            })
-                        )
-                        .executes(context -> {
-                            int shopId = IntegerArgumentType.getInteger(context, "shop_id");
-                            return giveSpawnEgg(context.getSource(), shopId, null);
-                        })
-                    )
-                )
-                .then(Commands.literal("ranking")
-                    .then(Commands.literal("compile")
-                        .requires(source -> source.permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER))
-                        .executes(context -> {
-                            compileRanking(context.getSource());
-                            return 1;
-                        })
-                    )
-                    .then(Commands.literal("view")
-                        .executes(context -> {
-                            viewRanking(context.getSource(), null);
-                            return 1;
-                        })
-                        .then(Commands.argument("metric", StringArgumentType.word())
-                            .suggests((context, builder) -> net.minecraft.commands.SharedSuggestionProvider.suggest(new String[]{
-                                "total", "総資産", "balance", "手持ち", "bank", "銀行", "earnings", "獲得額",
-                                "lost", "ロスト", "debt", "借金", "time", "参加時間", "distance", "移動距離", "broken", "ブロック破壊",
-                                "deaths", "死亡", "kills", "モブキル", "player_kills", "プレイヤーキル", "harvest", "収穫",
-                                "potion", "ポーション", "fish", "釣り", "etf_buy", "etf購入", "etf_short", "etf空売り",
-                                "etf_profit", "etf利益", "etf_trades", "etf取引数"
-                            }, builder))
-                            .executes(context -> {
-                                viewRanking(context.getSource(), StringArgumentType.getString(context, "metric"));
-                                return 1;
-                            })
-                        )
-                    )
-                )
-        );
+                Commands.literal("economy")
+                        .then(Commands.literal("spawn_egg")
+                                .requires(source -> source.permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER))
+                                .then(Commands.argument("shop_id", IntegerArgumentType.integer(1))
+                                        .then(Commands.argument("npc_type", StringArgumentType.word())
+                                                .executes(context -> {
+                                                    int shopId = IntegerArgumentType.getInteger(context, "shop_id");
+                                                    String npcType = StringArgumentType.getString(context, "npc_type");
+                                                    return giveSpawnEgg(context.getSource(), shopId, npcType);
+                                                }))
+                                        .executes(context -> {
+                                            int shopId = IntegerArgumentType.getInteger(context, "shop_id");
+                                            return giveSpawnEgg(context.getSource(), shopId, null);
+                                        })))
+                        .then(Commands.literal("ranking")
+                                .then(Commands.literal("compile")
+                                        .requires(source -> source.permissions()
+                                                .hasPermission(Permissions.COMMANDS_GAMEMASTER))
+                                        .executes(context -> {
+                                            compileRanking(context.getSource());
+                                            return 1;
+                                        }))
+                                .then(Commands.literal("view")
+                                        .executes(context -> {
+                                            viewRanking(context.getSource(), null);
+                                            return 1;
+                                        })
+                                        .then(Commands.argument("metric", StringArgumentType.word())
+                                                .suggests((context,
+                                                        builder) -> net.minecraft.commands.SharedSuggestionProvider
+                                                                .suggest(new String[] {
+                                                                        "total", "総資産", "balance", "手持ち", "bank", "銀行",
+                                                                        "earnings", "獲得額",
+                                                                        "lost", "ロスト", "debt", "借金", "time", "参加時間",
+                                                                        "distance", "移動距離", "broken", "ブロック破壊",
+                                                                        "deaths", "死亡", "kills", "モブキル", "player_kills",
+                                                                        "プレイヤーキル", "harvest", "収穫",
+                                                                        "potion", "ポーション", "fish", "釣り", "etf_buy",
+                                                                        "etf購入", "etf_short", "etf空売り",
+                                                                        "etf_profit", "etf利益", "etf_trades", "etf取引数"
+                                                                }, builder))
+                                                .executes(context -> {
+                                                    viewRanking(context.getSource(),
+                                                            StringArgumentType.getString(context, "metric"));
+                                                    return 1;
+                                                })))));
     }
 
     private int giveSpawnEgg(CommandSourceStack source, int shopId, String npcType) throws CommandSyntaxException {
         ServerPlayer player = source.getPlayerOrException();
-        
+
         if (npcType == null) {
             // Asynchronously fetch shop details to get the npc_type and npc_model
             EconomyService.fetchShopDetails(shopId, player.getUUID().toString()).thenAccept(res -> {
@@ -1264,7 +1299,7 @@ public class EconomyMod {
                         LOGGER.error("Failed to parse shop details: ", e);
                     }
                 }
-                
+
                 final String finalType = resolvedType;
                 final String finalModel = resolvedModel;
                 final String finalName = resolvedName;
@@ -1274,10 +1309,12 @@ public class EconomyMod {
                         if ("LOAN".equalsIgnoreCase(finalType)) {
                             EconomyNpcSpawnService.giveLoanSpawnEgg(player, shopId, finalName);
                         } else {
-                            EconomyNpcSpawnService.giveConfiguredSpawnEgg(player, shopId, finalType, finalModel, finalName);
+                            EconomyNpcSpawnService.giveConfiguredSpawnEgg(player, shopId, finalType, finalModel,
+                                    finalName);
                         }
                         source.sendSuccess(() -> Component.literal(
-                                "§aNPCスポナーエッグ (ID: " + shopId + ", タイプ: " + finalType.toUpperCase() + ") を付与しました。"), true);
+                                "§aNPCスポナーエッグ (ID: " + shopId + ", タイプ: " + finalType.toUpperCase() + ") を付与しました。"),
+                                true);
                     });
                 }
             });
@@ -1285,16 +1322,24 @@ public class EconomyMod {
             return 1;
         } else {
             String defaultName = "経済NPC";
-            if ("BUYER".equalsIgnoreCase(npcType)) defaultName = "買取所";
-            else if ("STOCK_TRADER".equalsIgnoreCase(npcType)) defaultName = "取引市場";
-            else if ("FLEA_MARKET".equalsIgnoreCase(npcType)) defaultName = "フリーマーケット";
-            else if ("LOAN".equalsIgnoreCase(npcType)) defaultName = "闇金融";
+            if ("BUYER".equalsIgnoreCase(npcType))
+                defaultName = "買取所";
+            else if ("STOCK_TRADER".equalsIgnoreCase(npcType))
+                defaultName = "取引市場";
+            else if ("FLEA_MARKET".equalsIgnoreCase(npcType))
+                defaultName = "フリーマーケット";
+            else if ("LOAN".equalsIgnoreCase(npcType))
+                defaultName = "闇金融";
             if ("LOAN".equalsIgnoreCase(npcType)) {
                 EconomyNpcSpawnService.giveLoanSpawnEgg(player, shopId, defaultName);
                 source.sendSuccess(() -> Component.literal("§a融資NPCスポナーエッグ (ID: " + shopId + ") を付与しました。"), true);
             } else {
-                EconomyNpcSpawnService.giveConfiguredSpawnEgg(player, shopId, npcType, "minecraft:villager", defaultName);
-                source.sendSuccess(() -> Component.literal("§aNPCスポナーエッグ (ID: " + shopId + ", タイプ: " + npcType.toUpperCase() + ") を付与しました。"), true);
+                EconomyNpcSpawnService.giveConfiguredSpawnEgg(player, shopId, npcType, "minecraft:villager",
+                        defaultName);
+                source.sendSuccess(
+                        () -> Component.literal(
+                                "§aNPCスポナーエッグ (ID: " + shopId + ", タイプ: " + npcType.toUpperCase() + ") を付与しました。"),
+                        true);
             }
             return 1;
         }
@@ -1306,7 +1351,8 @@ public class EconomyMod {
         String uuid = player.getUUID().toString();
         String username = EconomyNicknameBridge.resolvePlayerName(player);
         UUID playerUuid = player.getUUID();
-        LOGGER.info("Player logged in: {} ({}) - resetting economy ready status and triggering join sync", username, uuid);
+        LOGGER.info("Player logged in: {} ({}) - resetting economy ready status and triggering join sync", username,
+                uuid);
         setEconomyReady(playerUuid, false);
         if (player instanceof ServerPlayer serverPlayer) {
             EconomyFeatures.syncToPlayer(serverPlayer);
@@ -1328,15 +1374,16 @@ public class EconomyMod {
 
     @SubscribeEvent
     public void onLivingDamage(LivingDamageEvent.Post event) {
-        if (event.getEntity().level().isClientSide()) return;
-        
+        if (event.getEntity().level().isClientSide())
+            return;
+
         UUID mobUuid = event.getEntity().getUUID();
         float amount = event.getOriginalDamage();
         DamageSource source = event.getSource();
-        
+
         UUID attackerUuid;
         String attackerName;
-        
+
         if (source.getEntity() instanceof Player player) {
             attackerUuid = player.getUUID();
             attackerName = player.getName().getString();
@@ -1352,18 +1399,21 @@ public class EconomyMod {
             playerDamageMap.merge(attackerUuid, amount, (oldVal, newVal) -> oldVal + newVal);
             return playerDamageMap;
         });
-        
-        LOGGER.info("Recorded damage from {} to mob {}: {} (Total for this source: {})", 
-                attackerName, event.getEntity().getType().toString(), amount, damageTracker.get(mobUuid).get(attackerUuid));
+
+        LOGGER.info("Recorded damage from {} to mob {}: {} (Total for this source: {})",
+                attackerName, event.getEntity().getType().toString(), amount,
+                damageTracker.get(mobUuid).get(attackerUuid));
     }
 
     @SubscribeEvent
     public void onLivingDeath(LivingDeathEvent event) {
-        if (event.getEntity().level().isClientSide()) return;
+        if (event.getEntity().level().isClientSide())
+            return;
 
         // プレイヤー自身の死亡を検知
         if (event.getEntity() instanceof Player player) {
-            if (!isEconomyReady(player.getUUID())) return;
+            if (!isEconomyReady(player.getUUID()))
+                return;
             LOGGER.info("Player {} has died - triggering death penalty", player.getName().getString());
             if (!player.isCreative()) {
                 EconomyService.deathPlayer(player);
@@ -1388,7 +1438,8 @@ public class EconomyMod {
             }
 
             if (totalDamage > 0) {
-                LOGGER.info("Distributing rewards for {} based on damage ratios. Total damage: {}", entityName, totalDamage);
+                LOGGER.info("Distributing rewards for {} based on damage ratios. Total damage: {}", entityName,
+                        totalDamage);
                 for (Map.Entry<UUID, Float> entry : playerDamageMap.entrySet()) {
                     UUID playerUuid = entry.getKey();
                     if (playerUuid.equals(ENVIRONMENT_UUID)) {
@@ -1403,7 +1454,8 @@ public class EconomyMod {
                         if (!isEconomyReady(playerUuid)) {
                             continue;
                         }
-                        LOGGER.info("Player {} dealt {} damage (Ratio: {})", player.getName().getString(), damage, ratio);
+                        LOGGER.info("Player {} dealt {} damage (Ratio: {})", player.getName().getString(), damage,
+                                ratio);
                         if (player.isCreative()) {
                             LOGGER.info("Skipping reward for player {} (Creative Mode)", player.getName().getString());
                             continue;
@@ -1418,7 +1470,8 @@ public class EconomyMod {
         // フォールバック: ダメージ記録がない場合は、最後にとどめを刺したプレイヤーに 100% の報酬
         DamageSource source = event.getSource();
         if (source.getEntity() instanceof Player player) {
-            if (!isEconomyReady(player.getUUID())) return;
+            if (!isEconomyReady(player.getUUID()))
+                return;
             LOGGER.info("Fallback reward trigger: Player {} landed the killing blow", player.getName().getString());
             if (player.isCreative()) {
                 LOGGER.info("Skipping fallback reward (Creative Mode)");
@@ -1430,10 +1483,13 @@ public class EconomyMod {
 
     @SubscribeEvent
     public void onBlockBreak(BreakBlockEvent event) {
-        if (event.getLevel().isClientSide()) return;
+        if (event.getLevel().isClientSide())
+            return;
         Player player = event.getPlayer();
-        if (player == null || player.isCreative()) return;
-        if (!isEconomyReady(player.getUUID())) return;
+        if (player == null || player.isCreative())
+            return;
+        if (!isEconomyReady(player.getUUID()))
+            return;
 
         BlockState state = event.getState();
         Block block = state.getBlock();
@@ -1441,9 +1497,12 @@ public class EconomyMod {
         if (block instanceof CropBlock cropBlock) {
             if (cropBlock.isMaxAge(state)) {
                 String cropName = BuiltInRegistries.BLOCK.getKey(block).getPath().toUpperCase();
-                if (cropName.equals("BEETROOTS")) cropName = "BEETROOT";
-                if (cropName.equals("POTATOES")) cropName = "POTATO";
-                if (cropName.equals("CARROTS")) cropName = "CARROT";
+                if (cropName.equals("BEETROOTS"))
+                    cropName = "BEETROOT";
+                if (cropName.equals("POTATOES"))
+                    cropName = "POTATO";
+                if (cropName.equals("CARROTS"))
+                    cropName = "CARROT";
                 String actionType = "HARVEST_" + cropName;
                 EconomyService.rewardPlayer(player, actionType);
             }
@@ -1475,8 +1534,10 @@ public class EconomyMod {
 
     @SubscribeEvent
     public void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
-        if (event.getLevel().isClientSide()) return;
-        if (!(event.getEntity() instanceof Player player) || player.isCreative()) return;
+        if (event.getLevel().isClientSide())
+            return;
+        if (!(event.getEntity() instanceof Player player) || player.isCreative())
+            return;
 
         BlockState state = event.getPlacedBlock();
         Block block = state.getBlock();
@@ -1492,10 +1553,13 @@ public class EconomyMod {
 
     @SubscribeEvent
     public void onItemFished(ItemFishedEvent event) {
-        if (event.getEntity().level().isClientSide()) return;
+        if (event.getEntity().level().isClientSide())
+            return;
         Player player = event.getEntity();
-        if (player == null || player.isCreative()) return;
-        if (!isEconomyReady(player.getUUID())) return;
+        if (player == null || player.isCreative())
+            return;
+        if (!isEconomyReady(player.getUUID()))
+            return;
 
         boolean isRare = true;
         for (ItemStack drop : event.getDrops()) {
@@ -1509,9 +1573,11 @@ public class EconomyMod {
         EconomyService.rewardPlayer(player, actionType);
     }
 
-    private record EconomyNpcInfo(int shopId, String npcType) {}
+    private record EconomyNpcInfo(int shopId, String npcType) {
+    }
 
-    private static Optional<EconomyNpcInfo> parseEconomyNpcInfo(net.minecraft.world.entity.Entity target, boolean allowPersistentData) {
+    private static Optional<EconomyNpcInfo> parseEconomyNpcInfo(net.minecraft.world.entity.Entity target,
+            boolean allowPersistentData) {
         if (target instanceof EconomyNpc economyNpc) {
             return Optional.of(new EconomyNpcInfo(economyNpc.getShopId(), economyNpc.getNpcType()));
         }
@@ -1700,8 +1766,8 @@ public class EconomyMod {
 
         Entity entity = event.getEntity();
         // 既存ワールドの日本語リテラル名も、shop_id から翻訳 Component へ差し替える
-        parseEconomyNpcInfo(entity, true).ifPresent(info ->
-                EconomyNpcSpawnService.applyLocalizedDisplayName(entity, info.shopId()));
+        parseEconomyNpcInfo(entity, true)
+                .ifPresent(info -> EconomyNpcSpawnService.applyLocalizedDisplayName(entity, info.shopId()));
 
         if (event.loadedFromDisk() || !isEconomyRelatedNpc(entity)) {
             return;
@@ -1737,7 +1803,8 @@ public class EconomyMod {
         if (!event.getLevel().isClientSide() && event.getEntity() instanceof ServerPlayer serverPlayer) {
             // クライアントへショップ画面を開くパケットを送信
             PacketDistributor.sendToPlayer(serverPlayer, new OpenShopScreenPayload(shopId, npcType));
-            LOGGER.info("Intercepted interact for shop NPC (Success): shopId={}, npcType={}, target={}", shopId, npcType, target.getType().toString());
+            LOGGER.info("Intercepted interact for shop NPC (Success): shopId={}, npcType={}, target={}", shopId,
+                    npcType, target.getType().toString());
         }
     }
 
@@ -1767,7 +1834,7 @@ public class EconomyMod {
         final java.nio.file.Path statsPath;
         try {
             statsPath = server.getWorldPath(new net.minecraft.world.level.storage.LevelResource("players/stats"))
-                .toAbsolutePath().normalize();
+                    .toAbsolutePath().normalize();
             LOGGER.info("Stats directory path (normalized): {}", statsPath);
         } catch (Exception e) {
             source.sendFailure(Component.translatable("economy.chat.ranking_stats_path_fail", e.getMessage()));
@@ -1790,7 +1857,7 @@ public class EconomyMod {
                             for (java.io.File file : files) {
                                 String filename = file.getName();
                                 String uuidStr = filename.substring(0, filename.length() - 5);
-                                
+
                                 // UUID形式チェック
                                 try {
                                     UUID.fromString(uuidStr);
@@ -1799,11 +1866,13 @@ public class EconomyMod {
                                 }
 
                                 // オンライン / nickname ストレージから表示名を解決
-                                String username = EconomyNicknameBridge.resolveUsernameForRanking(uuidStr, onlinePlayerNames);
+                                String username = EconomyNicknameBridge.resolveUsernameForRanking(uuidStr,
+                                        onlinePlayerNames);
 
                                 String content = java.nio.file.Files.readString(file.toPath());
-                                com.google.gson.JsonObject json = com.google.gson.JsonParser.parseString(content).getAsJsonObject();
-                                
+                                com.google.gson.JsonObject json = com.google.gson.JsonParser.parseString(content)
+                                        .getAsJsonObject();
+
                                 int playTime = 0;
                                 long travelDistanceCm = 0;
                                 int blocksBroken = 0;
@@ -1817,22 +1886,34 @@ public class EconomyMod {
                                 if (json.has("stats")) {
                                     com.google.gson.JsonObject statsObj = json.getAsJsonObject("stats");
                                     if (statsObj.has("minecraft:custom")) {
-                                        com.google.gson.JsonObject custom = statsObj.getAsJsonObject("minecraft:custom");
-                                        if (custom.has("minecraft:play_time")) playTime = custom.get("minecraft:play_time").getAsInt() / 20;
-                                        if (custom.has("minecraft:deaths")) deaths = custom.get("minecraft:deaths").getAsInt();
-                                        if (custom.has("minecraft:player_kills")) playerKills = custom.get("minecraft:player_kills").getAsInt();
-                                        if (custom.has("minecraft:mob_kills")) mobKills = custom.get("minecraft:mob_kills").getAsInt();
-                                        if (custom.has("minecraft:potions_brewed")) potionsBrewed = custom.get("minecraft:potions_brewed").getAsInt();
-                                        if (custom.has("minecraft:fish_caught")) fishCaught = custom.get("minecraft:fish_caught").getAsInt();
+                                        com.google.gson.JsonObject custom = statsObj
+                                                .getAsJsonObject("minecraft:custom");
+                                        if (custom.has("minecraft:play_time"))
+                                            playTime = custom.get("minecraft:play_time").getAsInt() / 20;
+                                        if (custom.has("minecraft:deaths"))
+                                            deaths = custom.get("minecraft:deaths").getAsInt();
+                                        if (custom.has("minecraft:player_kills"))
+                                            playerKills = custom.get("minecraft:player_kills").getAsInt();
+                                        if (custom.has("minecraft:mob_kills"))
+                                            mobKills = custom.get("minecraft:mob_kills").getAsInt();
+                                        if (custom.has("minecraft:potions_brewed"))
+                                            potionsBrewed = custom.get("minecraft:potions_brewed").getAsInt();
+                                        if (custom.has("minecraft:fish_caught"))
+                                            fishCaught = custom.get("minecraft:fish_caught").getAsInt();
 
                                         String[] distKeys = {
-                                            "minecraft:walk_one_cm", "minecraft:crouch_one_cm", "minecraft:sprint_one_cm",
-                                            "minecraft:swim_one_cm", "minecraft:fall_one_cm", "minecraft:fly_one_cm",
-                                            "minecraft:climb_one_cm", "minecraft:dive_one_cm", "minecraft:walk_on_water_one_cm",
-                                            "minecraft:walk_under_water_one_cm", "minecraft:strider_one_cm", "minecraft:aviate_one_cm"
+                                                "minecraft:walk_one_cm", "minecraft:crouch_one_cm",
+                                                "minecraft:sprint_one_cm",
+                                                "minecraft:swim_one_cm", "minecraft:fall_one_cm",
+                                                "minecraft:fly_one_cm",
+                                                "minecraft:climb_one_cm", "minecraft:dive_one_cm",
+                                                "minecraft:walk_on_water_one_cm",
+                                                "minecraft:walk_under_water_one_cm", "minecraft:strider_one_cm",
+                                                "minecraft:aviate_one_cm"
                                         };
                                         for (String dk : distKeys) {
-                                            if (custom.has(dk)) travelDistanceCm += custom.get(dk).getAsLong();
+                                            if (custom.has(dk))
+                                                travelDistanceCm += custom.get(dk).getAsLong();
                                         }
                                     }
 
@@ -1842,9 +1923,9 @@ public class EconomyMod {
                                             int val = entry.getValue().getAsInt();
                                             blocksBroken += val;
                                             String blockKey = entry.getKey();
-                                            if (blockKey.contains("wheat") || blockKey.contains("carrot") || 
-                                                blockKey.contains("potato") || blockKey.contains("beetroot") ||
-                                                blockKey.contains("melon") || blockKey.contains("pumpkin")) {
+                                            if (blockKey.contains("wheat") || blockKey.contains("carrot") ||
+                                                    blockKey.contains("potato") || blockKey.contains("beetroot") ||
+                                                    blockKey.contains("melon") || blockKey.contains("pumpkin")) {
                                                 harvests += val;
                                             }
                                         }
@@ -1886,19 +1967,18 @@ public class EconomyMod {
                 com.google.gson.JsonObject payload = new com.google.gson.JsonObject();
                 payload.add("players", playersArray);
 
-                EconomyService.syncRanking(payload.toString()).thenAccept(res ->
-                    runOnServerThread(() -> {
-                        if (res != null) {
-                            source.sendSuccess(() -> Component.translatable("economy.chat.ranking_compile_done"), true);
-                        } else {
-                            source.sendFailure(Component.translatable("economy.chat.ranking_compile_sync_fail"));
-                        }
-                    })
-                );
+                EconomyService.syncRanking(payload.toString()).thenAccept(res -> runOnServerThread(() -> {
+                    if (res != null) {
+                        source.sendSuccess(() -> Component.translatable("economy.chat.ranking_compile_done"), true);
+                    } else {
+                        source.sendFailure(Component.translatable("economy.chat.ranking_compile_sync_fail"));
+                    }
+                }));
 
             } catch (Exception e) {
                 LOGGER.error("Failed to compile ranking: ", e);
-                source.sendFailure(Component.translatable("economy.chat.ranking_compile_error", String.valueOf(e.getMessage())));
+                source.sendFailure(
+                        Component.translatable("economy.chat.ranking_compile_error", String.valueOf(e.getMessage())));
             }
         });
     }
@@ -1944,14 +2024,16 @@ public class EconomyMod {
 
                         int rank = 1;
                         for (com.google.gson.JsonObject record : list) {
-                            if (rank > 10) break;
+                            if (rank > 10)
+                                break;
                             String username = record.get("username").getAsString();
                             double val = record.has(sortField) ? record.get(sortField).getAsDouble() : 0.0;
                             Component valComp = rankingMetric.formatValueComponent(val);
 
                             final int finalRank = rank;
                             mcServer.getPlayerList().broadcastSystemMessage(
-                                    Component.translatable("economy.chat.ranking_entry", finalRank, username, valComp), false);
+                                    Component.translatable("economy.chat.ranking_entry", finalRank, username, valComp),
+                                    false);
                             rank++;
                         }
                     } catch (Exception e) {

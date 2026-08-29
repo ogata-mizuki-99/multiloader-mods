@@ -13,6 +13,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -103,7 +104,7 @@ public final class EconomyNpcSpawnService {
         Identifier entityTypeId = Identifier.parse(baseModel);
         EntityType<?> entityType = BuiltInRegistries.ENTITY_TYPE.get(entityTypeId)
                 .<EntityType<?>>map(Holder::value)
-                .orElse(EntityType.VILLAGER);
+                .orElse(EntityTypes.VILLAGER);
 
         Identifier eggId = Identifier.fromNamespaceAndPath(entityTypeId.getNamespace(), entityTypeId.getPath() + "_spawn_egg");
         Item eggItem = BuiltInRegistries.ITEM.get(eggId)

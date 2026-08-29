@@ -4,7 +4,6 @@ import com.ogatamizuki.lookalike.cast.CastManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.PlayerSkin;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -40,17 +39,6 @@ public final class ShadowAppearanceManager {
 
         UUID playerUuid = player.getUUID();
         CastManager.getInstance().cancelCastIfActive(player);
-        if (DisguiseManager.getInstance().isDisguised(playerUuid)) {
-            DisguiseManager.getInstance().undisguise(player);
-        }
-
-        DisguiseManager.getInstance().disguise(
-                player,
-                ShadowSkinTextures.textureProperties(),
-                PlayerSkin.Patch.EMPTY,
-                null,
-                durationSeconds
-        );
 
         ModelCustomizationHelper.set(player, ModelCustomizationHelper.ALL_PARTS);
         shadowPlayers.add(playerUuid);
@@ -83,10 +71,6 @@ public final class ShadowAppearanceManager {
         player.setCustomName(null);
         player.setCustomNameVisible(false);
         player.refreshDisplayName();
-
-        if (DisguiseManager.getInstance().isDisguised(playerUuid)) {
-            DisguiseManager.getInstance().undisguise(player);
-        }
 
         MinecraftServer server = player.level().getServer();
         if (server != null) {
@@ -122,8 +106,7 @@ public final class ShadowAppearanceManager {
     public synchronized void setPathVisualization(
             MinecraftServer server,
             List<NetworkPayloads.ShadowPathEntry> paths,
-            boolean enabled
-    ) {
+            boolean enabled) {
         activePaths = paths != null ? List.copyOf(paths) : List.of();
         pathVisualizationEnabled = enabled;
         broadcastAppearanceSync(server);
@@ -135,8 +118,7 @@ public final class ShadowAppearanceManager {
         }
         net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(
                 player,
-                buildSyncPayload()
-        );
+                buildSyncPayload());
     }
 
     public boolean isShadow(UUID uuid) {
@@ -186,7 +168,6 @@ public final class ShadowAppearanceManager {
         return new NetworkPayloads.ShadowAppearanceSyncPayload(
                 players,
                 activePaths,
-                pathVisualizationEnabled
-        );
+                pathVisualizationEnabled);
     }
 }

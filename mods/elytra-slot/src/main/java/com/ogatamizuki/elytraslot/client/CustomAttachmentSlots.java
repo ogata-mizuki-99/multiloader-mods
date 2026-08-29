@@ -17,7 +17,7 @@ public final class CustomAttachmentSlots {
             return true;
         }
 
-        if (Minecraft.getInstance().screen instanceof CreativeModeInventoryScreen creativeScreen) {
+        if (Minecraft.getInstance().gui.screen() instanceof CreativeModeInventoryScreen creativeScreen) {
             return creativeScreen.isInventoryOpen();
         }
 

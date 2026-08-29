@@ -22,7 +22,7 @@ public class WaypointSaveScreen extends Screen {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player != null) {
             RadialTeleportModClient.onWaypointScreenOpened();
-            mc.setScreen(new WaypointSaveScreen());
+            mc.gui.setScreen(new WaypointSaveScreen());
         }
     }
 

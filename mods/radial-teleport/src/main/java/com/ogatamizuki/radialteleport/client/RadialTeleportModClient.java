@@ -91,7 +91,7 @@ public class RadialTeleportModClient {
     private static void onClientTick(ClientTickEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
-        if (player == null || mc.screen != null) {
+        if (player == null || mc.gui.screen() != null) {
             if (RadialTeleportSession.isActive()) {
                 RadialTeleportSession.end(mc);
             }
@@ -157,7 +157,7 @@ public class RadialTeleportModClient {
 
     private static void onMouseInput(InputEvent.MouseButton.Pre event) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.screen != null) {
+        if (mc.player == null || mc.gui.screen() != null) {
             return;
         }
 
@@ -237,7 +237,7 @@ public class RadialTeleportModClient {
         }
 
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.screen != null) {
+        if (mc.player == null || mc.gui.screen() != null) {
             return;
         }
 

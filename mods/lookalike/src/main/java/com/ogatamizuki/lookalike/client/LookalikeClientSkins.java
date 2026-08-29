@@ -14,7 +14,6 @@ import net.minecraft.world.entity.player.PlayerSkin;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,8 +32,8 @@ final class LookalikeClientSkins {
         if (skin == null) {
             skin = resolveSkinFromTextureValue(
                     UUID.fromString("00000000-0000-0000-0000-000000000001"),
-                    ShadowSkinTextures.textureValue()
-            );
+                    ShadowSkinTextures.textureValue(),
+                    PlayerSkin.Patch.EMPTY);
             cachedShadowSkin = skin;
         }
         return skin;
@@ -64,12 +63,8 @@ final class LookalikeClientSkins {
         }
 
         UUID wearerUuid = UUID.fromString(entry.uuidStr());
-        PlayerSkin baseSkin = resolveSkinFromTextureValue(wearerUuid, entry.textureValue());
         PlayerSkin.Patch patch = entry.skinPatch();
-        if (patch != null && !patch.equals(PlayerSkin.Patch.EMPTY)) {
-            return baseSkin.with(patch);
-        }
-        return baseSkin;
+        return resolveSkinFromTextureValue(wearerUuid, entry.textureValue(), patch);
     }
 
     static PlayerSkin getDisguiseSkin(UUID uuid) {
@@ -120,15 +115,29 @@ final class LookalikeClientSkins {
         }));
     }
 
-    private static PlayerSkin resolveSkinFromTextureValue(UUID uuid, String textureValue) {
+    private static PlayerSkin resolveSkinFromTextureValue(UUID uuid, String textureValue, PlayerSkin.Patch patch) {
         String rewritten = SkinTextureHelper.rewriteTextureValue(textureValue, uuid, "Unknown");
         LinkedHashMultimap<String, Property> properties = LinkedHashMultimap.create();
         properties.put("textures", new Property("textures", rewritten));
         GameProfile profile = new GameProfile(uuid, "Unknown", new PropertyMap(properties));
-        return Minecraft.getInstance()
-                .getSkinManager()
-                .get(profile)
-                .getNow(Optional.empty())
-                .orElse(DefaultPlayerSkin.get(profile));
+        Minecraft mc = Minecraft.getInstance();
+        java.util.concurrent.CompletableFuture<java.util.Optional<PlayerSkin>> future = mc.getSkinManager()
+                .get(profile);
+        java.util.Optional<PlayerSkin> immediate = future.getNow(java.util.Optional.empty());
+        if (immediate.isPresent()) {
+            PlayerSkin skin = immediate.get();
+            return patch != null && !patch.equals(PlayerSkin.Patch.EMPTY) ? skin.with(patch) : skin;
+        }
+
+        future.thenAccept(opt -> mc.execute(() -> {
+            opt.ifPresent(skin -> {
+                PlayerSkin patchedSkin = patch != null && !patch.equals(PlayerSkin.Patch.EMPTY) ? skin.with(patch)
+                        : skin;
+                disguiseSkins.put(uuid, patchedSkin);
+            });
+        }));
+
+        PlayerSkin defaultSkin = DefaultPlayerSkin.get(profile);
+        return patch != null && !patch.equals(PlayerSkin.Patch.EMPTY) ? defaultSkin.with(patch) : defaultSkin;
     }
 }

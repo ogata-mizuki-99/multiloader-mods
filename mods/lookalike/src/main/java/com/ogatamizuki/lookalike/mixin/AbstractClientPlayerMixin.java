@@ -28,13 +28,6 @@ public class AbstractClientPlayerMixin {
     @Inject(method = "getSkin", at = @At("HEAD"), cancellable = true)
     private void lookalike$overrideDisguiseSkin(CallbackInfoReturnable<PlayerSkin> cir) {
         UUID uuid = ((AbstractClientPlayer) (Object) this).getUUID();
-        if (ClientAccess.isShadowPlayer(uuid)) {
-            PlayerSkin shadowSkin = ClientAccess.getShadowSkin();
-            if (shadowSkin != null) {
-                cir.setReturnValue(shadowSkin);
-                return;
-            }
-        }
         PlayerSkin disguiseSkin = ClientAccess.getDisguiseSkin(uuid);
         if (disguiseSkin != null) {
             cir.setReturnValue(disguiseSkin);

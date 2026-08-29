@@ -23,7 +23,7 @@ public final class BuilderPlacementHudOverlay {
 
     public static void render(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.options.hideGui || mc.screen != null) {
+        if (mc.player == null || mc.gui.hud.isHidden() || mc.gui.screen() != null) {
             return;
         }
         if (!ClientPlacementRegistry.active) {

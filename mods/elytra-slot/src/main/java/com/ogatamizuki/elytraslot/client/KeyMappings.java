@@ -60,7 +60,7 @@ public class KeyMappings {
             hasSyncedPos = true;
         }
 
-        if (mc.screen != null) {
+        if (mc.gui.screen() != null) {
             return;
         }
 

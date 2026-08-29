@@ -58,13 +58,13 @@ public class WaypointEditScreen extends Screen {
 
     public static void applyList(List<WaypointListEntry> waypoints) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.screen instanceof WaypointEditScreen screen) {
+        if (mc.gui.screen() instanceof WaypointEditScreen screen) {
             screen.updateEntries(waypoints);
         } else if (mc.player != null) {
             RadialTeleportModClient.onWaypointScreenOpened();
             WaypointEditScreen screen = new WaypointEditScreen();
             screen.updateEntries(waypoints);
-            mc.setScreen(screen);
+            mc.gui.setScreen(screen);
         }
     }
 

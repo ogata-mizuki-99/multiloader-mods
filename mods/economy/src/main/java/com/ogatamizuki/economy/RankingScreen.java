@@ -79,8 +79,8 @@ public class RankingScreen extends Screen {
         }).bounds(centerX + 90, centerY - 62, 30, 20).build());
 
         // 戻るボタン
-        this.addRenderableWidget(Button.builder(Component.literal("戻る"), b -> {
-            Minecraft.getInstance().setScreen(this.parentScreen);
+        this.addRenderableWidget(Button.builder(EconomyMasterI18n.tr("economy.ui.flea.back"), b -> {
+            Minecraft.getInstance().gui.setScreen(this.parentScreen);
         }).bounds(centerX - 40, centerY + 85, 80, 20).build());
     }
 
