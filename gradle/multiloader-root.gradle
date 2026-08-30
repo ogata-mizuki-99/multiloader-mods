@@ -1,0 +1,9 @@
+// Applied from mods/<name>/build.gradle (multiloader parent projects).
+afterEvaluate {
+    tasks.findByName('ideaModule')?.configure { enabled = false }
+    tasks.named('build') {
+        subprojects.findAll { it.parent == project && it.name in ['neoforge', 'fabric'] }.each { sub ->
+            dependsOn sub.tasks.named('build')
+        }
+    }
+}

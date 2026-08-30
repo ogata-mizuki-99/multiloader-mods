@@ -2,9 +2,9 @@ name: Build public mods
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, multiloader-26.1.2]
   pull_request:
-    branches: [main, master]
+    branches: [main, master, multiloader-26.1.2]
   workflow_dispatch:
 
 jobs:
@@ -20,6 +20,8 @@ jobs:
           - elytra-slot
           - private-chest
           - nickname
+          - lookalike
+          - instant-structure
           - economy
     steps:
       - uses: actions/checkout@v4

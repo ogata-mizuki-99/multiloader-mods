@@ -1,0 +1,77 @@
+def loadModProperties() {
+    def props = new Properties()
+    def propFile = project.parent.file('gradle.properties')
+    if (propFile.exists()) {
+        propFile.withInputStream { props.load(it) }
+    }
+    return props
+}
+
+def modProps = loadModProperties()
+def modId = modProps.getProperty('mod_id', project.parent.name)
+def modVersion = modProps.getProperty('mod_version', '1.0.0')
+def modGroupId = modProps.getProperty('mod_group_id', "com.ogatamizuki.${modId.replace('_', '')}")
+def commonProjectPath = project.parent.path + ':common'
+def commonProject = project(commonProjectPath)
+
+version = modVersion
+group = modGroupId
+
+base {
+    archivesName = "${modId}-fabric-${minecraft_version}"
+}
+
+java {
+    withSourcesJar()
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+repositories {
+    maven { url = 'https://maven.fabricmc.net/' }
+    maven { url = 'https://maven.blamejared.com' }
+    maven { url = 'https://maven.terraformersmc.com/releases/' }
+}
+
+loom {
+    mods {
+        register(modId) {
+            sourceSet sourceSets.main
+        }
+    }
+
+    runs {
+        client {
+            client()
+        }
+        server {
+            server()
+        }
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    implementation "net.fabricmc.fabric-api:${fabric_api_version}"
+    implementation commonProject
+    compileOnly "com.terraformersmc:modmenu:18.0.0"
+}
+
+tasks.named('jar', Jar) {
+    archiveFileName = "${modId}-fabric-${minecraft_version}-${modVersion}.jar"
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from(commonProject.sourceSets.main.output)
+}
+
+tasks.named('processResources', ProcessResources) {
+    inputs.property 'version', modVersion
+    filesMatching('fabric.mod.json') {
+        expand version: modVersion
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 25
+}

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "deconstructor",
+  "version": "${version}",
+  "name": "Deconstructor",
+  "description": "Adds Deconstructor and Precision Deconstructor blocks to reclaim crafting materials, plus an Enchantment Manager for book-based enchant extract, split, merge, and apply.\n\n解体機・精密解体機でクラフト品を素材に戻し、エンチャント管理機で本を使ったエンチャント操作ができます。Guide Lib 連携でゲーム内マニュアル対応（任意）。",
+  "authors": [
+    "OgataMizuki@Vtuber"
+  ],
+  "contact": {
+    "homepage": "https://github.com/ogata-mizuki-99/multiloader-mods",
+    "sources": "https://github.com/ogata-mizuki-99/multiloader-mods/tree/main/mods/deconstructor",
+    "issues": "https://github.com/ogata-mizuki-99/multiloader-mods/issues"
+  },
+  "license": "All Rights Reserved",
+  "icon": "assets/deconstructor/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.ogatamizuki.deconstructor.fabric.DeconstructorModFabric"
+    ],
+    "client": [
+      "com.ogatamizuki.deconstructor.fabric.DeconstructorModFabricClient"
+    ],
+    "modmenu": [
+      "com.ogatamizuki.deconstructor.fabric.DeconstructorModMenuEntrypoint"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": ">=26.1.2",
+    "java": ">=25"
+  },
+  "suggests": {
+    "guide_lib": "*"
+  }
+}

@@ -1,6 +1,7 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
+        maven { url = 'https://maven.fabricmc.net/' }
     }
 }
 
@@ -8,28 +9,115 @@ plugins {
     id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
 }
 
-rootProject.name = 'ogatamizuki-neoforge-mods'
+rootProject.name = 'ogatamizuki-multiloader-mods'
 
 include 'guide-lib'
 project(':guide-lib').projectDir = file('mods/guide-lib')
 
+include 'guide-lib:common'
+project(':guide-lib:common').projectDir = file('mods/guide-lib/common')
+
+include 'guide-lib:neoforge'
+project(':guide-lib:neoforge').projectDir = file('mods/guide-lib/neoforge')
+
+include 'guide-lib:fabric'
+project(':guide-lib:fabric').projectDir = file('mods/guide-lib/fabric')
+
 include 'deconstructor'
 project(':deconstructor').projectDir = file('mods/deconstructor')
+
+include 'deconstructor:common'
+project(':deconstructor:common').projectDir = file('mods/deconstructor/common')
+
+include 'deconstructor:neoforge'
+project(':deconstructor:neoforge').projectDir = file('mods/deconstructor/neoforge')
+
+include 'deconstructor:fabric'
+project(':deconstructor:fabric').projectDir = file('mods/deconstructor/fabric')
 
 include 'radial-teleport'
 project(':radial-teleport').projectDir = file('mods/radial-teleport')
 
+include 'radial-teleport:common'
+project(':radial-teleport:common').projectDir = file('mods/radial-teleport/common')
+
+include 'radial-teleport:neoforge'
+project(':radial-teleport:neoforge').projectDir = file('mods/radial-teleport/neoforge')
+
+include 'radial-teleport:fabric'
+project(':radial-teleport:fabric').projectDir = file('mods/radial-teleport/fabric')
+
 include 'good-sleep'
 project(':good-sleep').projectDir = file('mods/good-sleep')
+
+include 'good-sleep:common'
+project(':good-sleep:common').projectDir = file('mods/good-sleep/common')
+
+include 'good-sleep:neoforge'
+project(':good-sleep:neoforge').projectDir = file('mods/good-sleep/neoforge')
+
+include 'good-sleep:fabric'
+project(':good-sleep:fabric').projectDir = file('mods/good-sleep/fabric')
 
 include 'elytra-slot'
 project(':elytra-slot').projectDir = file('mods/elytra-slot')
 
+include 'elytra-slot:common'
+project(':elytra-slot:common').projectDir = file('mods/elytra-slot/common')
+
+include 'elytra-slot:neoforge'
+project(':elytra-slot:neoforge').projectDir = file('mods/elytra-slot/neoforge')
+
+include 'elytra-slot:fabric'
+project(':elytra-slot:fabric').projectDir = file('mods/elytra-slot/fabric')
+
 include 'private-chest'
 project(':private-chest').projectDir = file('mods/private-chest')
 
+include 'private-chest:common'
+project(':private-chest:common').projectDir = file('mods/private-chest/common')
+
+include 'private-chest:neoforge'
+project(':private-chest:neoforge').projectDir = file('mods/private-chest/neoforge')
+
+include 'private-chest:fabric'
+project(':private-chest:fabric').projectDir = file('mods/private-chest/fabric')
+
 include 'nickname'
 project(':nickname').projectDir = file('mods/nickname')
+
+include 'nickname:common'
+project(':nickname:common').projectDir = file('mods/nickname/common')
+
+include 'nickname:neoforge'
+project(':nickname:neoforge').projectDir = file('mods/nickname/neoforge')
+
+include 'nickname:fabric'
+project(':nickname:fabric').projectDir = file('mods/nickname/fabric')
+
+include 'lookalike'
+project(':lookalike').projectDir = file('mods/lookalike')
+
+include 'lookalike:common'
+project(':lookalike:common').projectDir = file('mods/lookalike/common')
+
+include 'lookalike:neoforge'
+project(':lookalike:neoforge').projectDir = file('mods/lookalike/neoforge')
+
+include 'lookalike:fabric'
+project(':lookalike:fabric').projectDir = file('mods/lookalike/fabric')
+
+include 'instant-structure'
+project(':instant-structure').projectDir = file('mods/instant-structure')
+
+include 'instant-structure:common'
+project(':instant-structure:common').projectDir = file('mods/instant-structure/common')
+
+include 'instant-structure:neoforge'
+project(':instant-structure:neoforge').projectDir = file('mods/instant-structure/neoforge')
+
+include 'instant-structure:fabric'
+project(':instant-structure:fabric').projectDir = file('mods/instant-structure/fabric')
 
 include 'economy'
 project(':economy').projectDir = file('mods/economy')

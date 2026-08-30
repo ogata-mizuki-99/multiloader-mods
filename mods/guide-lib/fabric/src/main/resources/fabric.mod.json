@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "guide_lib",
+  "version": "1.0.0",
+  "name": "Guide Lib",
+  "description": "Lightweight, data-driven in-game guide library for Minecraft 26.x. Content mods add JSON under data/<modid>/guide/ — no hard dependency required. Players browse all registered books from the Codex item.\n\n26.x 向けの軽量ガイド基盤 MOD。JSON のみでレシピ・使い方を Codex から参照できます。",
+  "authors": [
+    "OgataMizuki@Vtuber"
+  ],
+  "contact": {
+    "homepage": "https://github.com/ogata-mizuki-99/multiloader-mods",
+    "sources": "https://github.com/ogata-mizuki-99/multiloader-mods/tree/main/mods/guide-lib",
+    "issues": "https://github.com/ogata-mizuki-99/multiloader-mods/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/guide_lib/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.ogatamizuki.guide.fabric.GuideLibModFabric"
+    ],
+    "client": [
+      "com.ogatamizuki.guide.fabric.GuideLibModFabricClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": ">=26.1.2",
+    "java": ">=25"
+  },
+  "suggests": {
+    "jei": "*"
+  }
+}

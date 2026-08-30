@@ -1,0 +1,23 @@
+{
+  "good_sleep.configuration.title": "Good Sleep Configuration",
+  "good_sleep.configuration.section.good.sleep.common.toml": "Common Settings",
+  "good_sleep.configuration.section.good.sleep.common.toml.title": "Good Sleep Common Configuration",
+  "good_sleep.configuration.allowDaySleep": "Allow sleeping during day and morning. Sleeping in daylight advances time to night; sleeping at night advances to morning.",
+  "good_sleep.configuration.allowDaySleep.name": "Allow Daytime Sleep",
+  "good_sleep.configuration.allowDaySleep.tooltip": "Allow sleeping during day and morning. Sleeping in daylight advances time to night; sleeping at night advances to morning.",
+  "good_sleep.configuration.healWhileSleeping": "Restore health while sleeping in a bed.",
+  "good_sleep.configuration.healWhileSleeping.name": "Heal While Sleeping",
+  "good_sleep.configuration.healWhileSleeping.tooltip": "Restore health while sleeping in a bed.",
+  "good_sleep.configuration.healIntervalTicks": "Health restore interval while sleeping (ticks). 20 ticks = 1 second. 0 = full heal the moment you lie down.",
+  "good_sleep.configuration.healIntervalTicks.tooltip": "Health restore interval while sleeping (ticks). 20 ticks = 1 second. 0 = full heal the moment you lie down.",
+  "good_sleep.configuration.onePlayerSkip": "Allow one player to skip the night in multiplayer (sets playersSleepingPercentage to 0).",
+  "good_sleep.configuration.onePlayerSkip.name": "One Player Night Skip",
+  "good_sleep.configuration.onePlayerSkip.tooltip": "Allow one player to skip the night in multiplayer (sets playersSleepingPercentage to 0).",
+  "good_sleep.configuration.push_to_server": "Push to server (COMMON)",
+  "good_sleep.configuration.open_editor": "Edit settings…",
+  "good_sleep.configuration.push_hint": "On a dedicated server the server toml is authoritative. Push after editing.",
+  "good_sleep.configuration.push_sent": "Sending config to server…",
+  "good_sleep.configuration.push_ok": "Applied to server good_sleep-common.toml",
+  "good_sleep.configuration.push_denied": "OP (Game Master) permission required to push config",
+  "good_sleep.configuration.push_need_connection": "Connect to a multiplayer server to push config"
+}
