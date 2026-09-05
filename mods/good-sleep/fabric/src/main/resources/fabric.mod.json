@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "good_sleep",
+  "version": "${version}",
+  "name": "Good Sleep",
+  "description": "Sleep in bed during the day to advance time. Optional health regen while sleeping and one-player night skip in multiplayer. Toggle each feature in mod config.\n\n昼間睡眠・睡眠中 HP 回復・1 人夜スキップに対応。各機能は Mod 設定から個別に ON/OFF できます。",
+  "authors": [
+    "OgataMizuki@Vtuber"
+  ],
+  "contact": {
+    "homepage": "https://github.com/ogata-mizuki-99/multiloader-mods",
+    "sources": "https://github.com/ogata-mizuki-99/multiloader-mods",
+    "issues": "https://github.com/ogata-mizuki-99/multiloader-mods/issues"
+  },
+  "license": "All Rights Reserved",
+  "icon": "assets/good_sleep/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.ogatamizuki.sleep.fabric.SleepModFabric"
+    ],
+    "client": [
+      "com.ogatamizuki.sleep.fabric.SleepModFabricClient"
+    ],
+    "modmenu": [
+      "com.ogatamizuki.sleep.fabric.SleepModMenuEntrypoint"
+    ]
+  },
+  "mixins": [
+    "good_sleep.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "fabric-api": "*",
+    "minecraft": ">=26.2"
+  }
+}

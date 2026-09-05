@@ -1,0 +1,29 @@
+license="${mod_license}"
+
+issueTrackerURL="https://github.com/ogata-mizuki-99/multiloader-mods/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="${mod_authors}"
+logoFile="icon.png"
+description='''
+Change your displayed name on name tags, tab list, and chat with /nickname. No operator permission required for personal use.
+
+プレイヤーの表示名（ネームタグ・TAB・チャット）を /nickname で自由に変更できます。
+'''
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="[${neo_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"

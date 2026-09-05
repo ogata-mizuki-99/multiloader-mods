@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "nickname",
+  "version": "${version}",
+  "name": "Nickname",
+  "description": "Change your displayed name on name tags, tab list, and chat with /nickname. No operator permission required for personal use.\n\nプレイヤーの表示名（ネームタグ・TAB・チャット）を /nickname で自由に変更できます。",
+  "authors": [
+    "OgataMizuki@Vtuber"
+  ],
+  "contact": {
+    "homepage": "https://github.com/ogata-mizuki-99/multiloader-mods",
+    "sources": "https://github.com/ogata-mizuki-99/multiloader-mods",
+    "issues": "https://github.com/ogata-mizuki-99/multiloader-mods/issues"
+  },
+  "license": "All Rights Reserved",
+  "icon": "assets/nickname/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.ogatamizuki.nickname.fabric.NicknameModFabric"
+    ],
+    "client": [
+      "com.ogatamizuki.nickname.fabric.NicknameModFabricClient"
+    ]
+  },
+  "mixins": [
+    "nickname.fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "fabric-api": "*",
+    "minecraft": ">=26.2"
+  }
+}

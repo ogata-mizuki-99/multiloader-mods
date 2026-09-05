@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "elytra_slot",
+  "version": "${version}",
+  "name": "Elytra Slot",
+  "description": "Adds a dedicated elytra equipment slot separate from armor. Equip and glide without replacing your chestplate.\n\nエリトラ専用スロットを追加。チェスト防具と干渉せずにエリトラを装備・使用できます。",
+  "authors": [
+    "OgataMizuki@Vtuber"
+  ],
+  "contact": {
+    "homepage": "https://github.com/ogata-mizuki-99/multiloader-mods",
+    "sources": "https://github.com/ogata-mizuki-99/multiloader-mods",
+    "issues": "https://github.com/ogata-mizuki-99/multiloader-mods/issues"
+  },
+  "license": "All Rights Reserved",
+  "icon": "assets/elytra_slot/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.ogatamizuki.elytraslot.fabric.ElytraSlotModFabric"
+    ],
+    "client": [
+      "com.ogatamizuki.elytraslot.fabric.ElytraSlotModFabricClient"
+    ],
+    "modmenu": [
+      "com.ogatamizuki.elytraslot.fabric.ElytraSlotModMenuEntrypoint"
+    ]
+  },
+  "mixins": [
+    "elytra_slot.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "fabric-api": "*",
+    "minecraft": ">=26.2"
+  }
+}

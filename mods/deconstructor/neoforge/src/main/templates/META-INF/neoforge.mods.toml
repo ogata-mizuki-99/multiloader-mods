@@ -1,0 +1,36 @@
+license="${mod_license}"
+
+issueTrackerURL="https://github.com/ogata-mizuki-99/multiloader-mods/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="${mod_authors}"
+logoFile="icon.png"
+description='''
+Adds Deconstructor and Precision Deconstructor blocks to reclaim crafting materials, plus an Enchantment Manager for book-based enchant extract, split, merge, and apply.
+
+解体機・精密解体機でクラフト品を素材に戻し、エンチャント管理機で本を使ったエンチャント操作ができます。Guide Lib 連携でゲーム内マニュアル対応（任意）。
+'''
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="[${neo_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="guide_lib"
+    type="optional"
+    versionRange="[1.0.0-beta.1,)"
+    ordering="AFTER"
+    side="BOTH"

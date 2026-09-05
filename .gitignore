@@ -52,3 +52,5 @@ net/
 *.log
 crash-reports/
 command_history.txt
+
+.gradle-ci/

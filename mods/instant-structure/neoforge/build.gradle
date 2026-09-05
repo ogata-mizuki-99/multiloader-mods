@@ -1,0 +1,99 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'net.neoforged.moddev'
+    id 'idea'
+}
+
+def loadModProperties() {
+    def props = new Properties()
+    def propFile = project.parent.file('gradle.properties')
+    if (propFile.exists()) {
+        propFile.withInputStream { props.load(it) }
+    }
+    return props
+}
+def modProps = loadModProperties()
+def modId = modProps.getProperty('mod_id', project.parent.name)
+def modVersion = modProps.getProperty('mod_version', '1.0.0')
+def modGroupId = modProps.getProperty('mod_group_id', "com.ogatamizuki.${modId.replace('_', '')}")
+def modName = modProps.getProperty('mod_name', modId)
+def modLicense = modProps.getProperty('mod_license', 'All Rights Reserved')
+def modAuthors = modProps.getProperty('mod_authors', 'OgataMizuki@Vtuber')
+def range = modProps.getProperty('minecraft_version_range', "[${minecraft_version},26.3)")
+
+version = modVersion
+group = modGroupId
+
+base {
+    archivesName = "${modId}-${minecraft_version}"
+}
+
+tasks.named('jar', Jar) {
+    archiveFileName = "${modId}-${minecraft_version}-${modVersion}.jar"
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from(project(':instant-structure:common').sourceSets.main.output)
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+
+repositories {
+    maven { url = 'https://maven.blamejared.com' }
+}
+
+neoForge {
+    version = project.neo_version
+
+    runs {
+        client {
+            client()
+            systemProperty 'neoforge.enabledGameTestNamespaces', modId
+        }
+
+        server {
+            server()
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', modId
+        }
+
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        "${modId}" {
+            sourceSet(sourceSets.main)
+            sourceSet(project(':instant-structure:common').sourceSets.main)
+        }
+    }
+}
+
+dependencies {
+    implementation project(':instant-structure:common')
+    compileOnly project(':guide-lib:common')
+}
+
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var replaceProperties = [
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: range,
+            neo_version            : neo_version,
+            mod_id                 : modId,
+            mod_name               : modName,
+            mod_license            : modLicense,
+            mod_version            : modVersion,
+            mod_authors            : modAuthors,
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
+}
+sourceSets.main.resources.srcDir generateModMetadata
+neoForge.ideSyncTask generateModMetadata
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

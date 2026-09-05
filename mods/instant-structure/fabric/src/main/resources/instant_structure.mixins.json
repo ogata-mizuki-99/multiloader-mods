@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.ogatamizuki.instantstructure.fabric.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "MouseHandlerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

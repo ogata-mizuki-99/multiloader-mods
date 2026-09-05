@@ -38,7 +38,7 @@ This public tree contains only the standalone `economy` mod (`mod id: economy`).
 
 It does **not** include:
 
-- `economy-legacy` (`mizukieconomy`) — older HTTP + PostgreSQL edition for private server operators
+- `economy-legacy` (`mizukieconomy`) — archived HTTP + PostgreSQL reference under `mods/economy-legacy/` (**not in Gradle build**; see its README)
 - Node.js / Express API (`server/` in the private dev repo)
 
 Those remain private and are not required to play with this mod.

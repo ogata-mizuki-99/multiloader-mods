@@ -1,0 +1,29 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev'
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(25)
+
+repositories {
+    maven { url = 'https://maven.blamejared.com' }
+}
+
+neoForge {
+    version = project.neo_version
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+// Tests live under common/src/test but run from :economy:neoforge (plain JUnit, no NeoForge unitTest bootstrap).
+sourceSets {
+    test {
+        java.srcDirs = []
+    }
+}
+
+tasks.named('test') {
+    enabled = false
+}
