@@ -69,14 +69,14 @@ public class LookalikeModFabricClient implements ClientModInitializer {
                 return;
             }
 
-            if (client.screen instanceof ScanHistoryEditScreen) {
+            if (client.gui.screen() instanceof ScanHistoryEditScreen) {
                 wasUsingMirror = client.player.isUsingItem()
                         && LookalikeCommon.DISGUISE_MIRROR != null
                         && client.player.getUseItem().is(LookalikeCommon.DISGUISE_MIRROR.get());
                 return;
             }
 
-            if (client.screen != null) {
+            if (client.gui.screen() != null) {
                 if (LookalikeRadialSession.isActive()) {
                     LookalikeRadialSession.cancel(client);
                 }

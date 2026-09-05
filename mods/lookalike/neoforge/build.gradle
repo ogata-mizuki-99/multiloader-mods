@@ -20,7 +20,7 @@ def modGroupId = modProps.getProperty('mod_group_id', "com.ogatamizuki.${modId.r
 def modName = modProps.getProperty('mod_name', modId)
 def modLicense = modProps.getProperty('mod_license', 'MIT')
 def modAuthors = modProps.getProperty('mod_authors', 'OgataMizuki@Vtuber')
-def range = modProps.getProperty('minecraft_version_range', "[${minecraft_version},26.2)")
+def range = modProps.getProperty('minecraft_version_range', "[${minecraft_version},26.3)")
 
 version = modVersion
 group = modGroupId

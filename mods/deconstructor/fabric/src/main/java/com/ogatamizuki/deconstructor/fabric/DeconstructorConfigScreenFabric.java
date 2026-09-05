@@ -47,7 +47,7 @@ public class DeconstructorConfigScreenFabric extends Screen {
                 Component.translatable("gui.done"),
                 btn -> {
                     Config.setExcludedItems(this.excludedItemsBox.getValue());
-                    this.minecraft.setScreen(parent);
+                    this.minecraft.gui.setScreen(parent);
                 }
         ).bounds(centerX - 50, centerY + 40, 100, 20).build());
     }
@@ -63,7 +63,7 @@ public class DeconstructorConfigScreenFabric extends Screen {
                     Component.translatable("deconstructor.configuration.push_sent")
                             .withStyle(ChatFormatting.YELLOW));
         }
-        this.minecraft.setScreen(parent);
+        this.minecraft.gui.setScreen(parent);
     }
 
     @Override
@@ -85,6 +85,6 @@ public class DeconstructorConfigScreenFabric extends Screen {
         if (this.excludedItemsBox != null) {
             Config.setExcludedItems(this.excludedItemsBox.getValue());
         }
-        this.minecraft.setScreen(parent);
+        this.minecraft.gui.setScreen(parent);
     }
 }

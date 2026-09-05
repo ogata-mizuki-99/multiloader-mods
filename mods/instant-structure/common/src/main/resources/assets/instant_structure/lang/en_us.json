@@ -96,6 +96,7 @@
   "guide_lib.instant_structure.page.guide_book.text": "Craft the manual with a book and compass (guide-lib required). It explains marker, builder, and bundled templates.",
   "guide_lib.instant_structure.page.bundled_templates.text": "Bundled house and village templates are vanilla blocks exported from a Minecraft superflat world (auto-generated structures). They are copied into config/instant-structure/templates-structure/ on first launch. You may use and modify them freely in your worlds.",
   "instant_structure.screen.material_list.title": "Required Materials",
+  "instant_structure.screen.material_list.loading": "Loading materials…",
   "instant_structure.screen.material_list.empty": "No materials required.",
   "instant_structure.screen.material_list.scrollable": "Scroll to view more (%s-%s / %s)",
   "instant_structure.screen.builder.check_materials": "Material Check",

@@ -42,7 +42,13 @@ public class EnchantmentManagerRenderer implements BlockEntityRenderer<Enchantme
     @Override
     public void extractRenderState(EnchantmentManagerBlockEntity blockEntity, EnchantTableRenderState state, float partialTick, Vec3 cameraPos, ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
         BlockEntityRenderState.extractBase(blockEntity, state, crumblingOverlay);
-        state.lightCoords = net.minecraft.client.renderer.LevelRenderer.getLightCoords(blockEntity.getLevel(), blockEntity.getBlockPos().above());
+        var level = blockEntity.getLevel();
+        if (level != null) {
+            state.lightCoords = net.minecraft.util.LightCoordsUtil.pack(
+                    level.getBrightness(net.minecraft.world.level.LightLayer.BLOCK, blockEntity.getBlockPos().above()),
+                    level.getBrightness(net.minecraft.world.level.LightLayer.SKY, blockEntity.getBlockPos().above())
+            );
+        }
         state.time = (float)blockEntity.time + partialTick;
 
         float f1;

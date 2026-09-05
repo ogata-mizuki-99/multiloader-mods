@@ -420,20 +420,57 @@ public final class InstantStructureServerOps {
 
         try {
             StructureTemplate template = StructureTemplateHelper.loadTemplate(level, nbtPath);
-            if (player instanceof ServerPlayer serverPlayer) {
-                if (SpreadBuildManager.queueIfLarge(level, nbtPath, template, targetPos, transform, serverPlayer)) {
-                    return true;
-                }
+            List<StructureTemplate.StructureBlockInfo> blockInfos =
+                    StructureTemplateHelper.collectSolidBlockInfos(level, nbtPath);
+            PlacementBounds bounds = PlacementBounds.fromBlockInfos(targetPos, transform, blockInfos);
+            if (bounds == null) {
+                bounds = PlacementBounds.from(template, targetPos, transform);
+            }
+            if (bounds.containsAnyPlayer(level)) {
+                return false;
             }
 
-            StructurePlaceSettings settings = transform.toPlaceSettings();
+            ServerPlayer serverPlayer = player instanceof ServerPlayer sp ? sp : null;
+            // NeoForge と同様、占有 AABB 内を先に空気化してから配置する（壁への食い込み防止）
+            clearPlacementArea(level, bounds, serverPlayer);
 
-            BlockPos originPos = targetPos.offset(transform.toWorldRelative(BlockPos.ZERO));
-            template.placeInWorld(level, targetPos, targetPos, settings, level.getRandom(), 2);
+            if (serverPlayer != null
+                    && SpreadBuildManager.queueIfLarge(level, nbtPath, template, targetPos, transform, serverPlayer)) {
+                return true;
+            }
+
+            if (transform.usesManualPlacement()) {
+                for (StructureTemplate.StructureBlockInfo info : StructureTemplateHelper.collectSolidBlockInfos(level, nbtPath)) {
+                    BlockPos worldPos = targetPos.offset(transform.toWorldRelative(info.pos()));
+                    level.setBlock(worldPos, transform.transformBlockState(info.state()), 3);
+                }
+            } else {
+                StructurePlaceSettings settings = transform.toPlaceSettings();
+                template.placeInWorld(level, targetPos, targetPos, settings, level.getRandom(), 3);
+            }
             return true;
         } catch (Exception e) {
             InstantStructureCommon.LOGGER.error("Failed to build template {}", templateName, e);
             return false;
+        }
+    }
+
+    private static void clearPlacementArea(ServerLevel level, PlacementBounds bounds, ServerPlayer player) {
+        boolean drop = InstantStructureConfig.dropClearedBlocks
+                && player != null
+                && !player.isCreative()
+                && !player.isSpectator();
+        for (int x = bounds.minX(); x <= bounds.maxX(); x++) {
+            for (int y = bounds.minY(); y <= bounds.maxY(); y++) {
+                for (int z = bounds.minZ(); z <= bounds.maxZ(); z++) {
+                    BlockPos pos = new BlockPos(x, y, z);
+                    if (drop) {
+                        level.destroyBlock(pos, true, player);
+                    } else {
+                        level.setBlock(pos, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3);
+                    }
+                }
+            }
         }
     }
 

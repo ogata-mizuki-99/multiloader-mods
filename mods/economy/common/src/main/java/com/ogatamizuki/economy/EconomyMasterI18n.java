@@ -85,6 +85,38 @@ public final class EconomyMasterI18n {
         }
     }
 
+    /** ATM / loan shortcut labels: {@code +10,000} (JA) or {@code +$100} (EN, compact). */
+    public static String formatAmountDelta(int rawDelta) {
+        String sign = rawDelta >= 0 ? "+" : "-";
+        long abs = Math.abs((long) rawDelta);
+        if (useCents()) {
+            double dollars = abs / 100.0;
+            NumberFormat f = NumberFormat.getNumberInstance(Locale.US);
+            f.setGroupingUsed(true);
+            // Preset buttons are whole dollars — omit trailing .00 so labels fit the GUI.
+            if (Math.abs(dollars - Math.rint(dollars)) < 1e-9) {
+                f.setMinimumFractionDigits(0);
+                f.setMaximumFractionDigits(0);
+            } else {
+                f.setMinimumFractionDigits(2);
+                f.setMaximumFractionDigits(2);
+            }
+            String format = trs("economy.currency.format");
+            if (format.equals("economy.currency.format")) {
+                format = "$%s";
+            }
+            return sign + String.format(format, f.format(dollars));
+        }
+        NumberFormat f = getNumberFormatter();
+        f.setMinimumFractionDigits(0);
+        f.setMaximumFractionDigits(0);
+        return sign + f.format(abs);
+    }
+
+    public static Component amountDeltaComponent(int rawDelta) {
+        return Component.literal(formatAmountDelta(rawDelta));
+    }
+
     public static String shopKey(int shopId) {
         return "economy.shop." + shopId;
     }

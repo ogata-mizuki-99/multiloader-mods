@@ -13,6 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.BlockEntityTypes;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -33,7 +34,7 @@ public class PrivateChestModFabricClient implements ClientModInitializer {
                 (LockerMenu menu, Inventory inv, net.minecraft.network.chat.Component title) -> new LockerScreen(menu, inv, title)
         );
 
-        BlockEntityRendererRegistry.register(BlockEntityType.SKULL, LockerAwareSkullRenderer::new);
+        BlockEntityRendererRegistry.register(BlockEntityTypes.SKULL, LockerAwareSkullRenderer::new);
         BlockEntityRendererRegistry.register(PrivateChestModFabric.LOCKER_BLOCK_ENTITY_TYPE, LockerBlockEntityRenderer::new);
     }
 

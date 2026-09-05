@@ -1,14 +1,9 @@
 package com.ogatamizuki.instantstructure.client;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.ogatamizuki.instantstructure.PlacementBounds;
 import com.ogatamizuki.instantstructure.PlacementTransform;
 import com.ogatamizuki.instantstructure.PreviewBlockEntry;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
@@ -17,8 +12,6 @@ public final class PlacementPreviewRenderer {
     }
 
     public static void renderWireframe(
-            PoseStack poseStack,
-            MultiBufferSource.BufferSource bufferSource,
             BlockPos anchor,
             PlacementTransform transform,
             int sizeX,
@@ -26,7 +19,6 @@ public final class PlacementPreviewRenderer {
             int sizeZ,
             List<PreviewBlockEntry> previewBlocks,
             float lineWidth,
-            Vec3 cameraPos,
             boolean tentativelyConfirmed
     ) {
         Bounds bounds = resolveBounds(anchor, transform, sizeX, sizeY, sizeZ, previewBlocks);
@@ -34,37 +26,24 @@ public final class PlacementPreviewRenderer {
         float g = tentativelyConfirmed ? 1.0F : 0.85F;
         float b = tentativelyConfirmed ? 0.0F : 0.0F;
 
-        VertexConsumer consumer = bufferSource.getBuffer(RenderTypes.lines());
         SelectionWireframeRenderer.drawBox(
-                poseStack,
-                consumer,
                 bounds.minX(), bounds.minY(), bounds.minZ(),
                 bounds.maxX(), bounds.maxY(), bounds.maxZ(),
                 r, g, b, 1.0F,
-                lineWidth,
-                cameraPos
+                lineWidth
         );
-        bufferSource.endBatch(RenderTypes.lines());
     }
 
     public static void renderAnchorWireframe(
-            PoseStack poseStack,
-            MultiBufferSource.BufferSource bufferSource,
             BlockPos anchorBlock,
-            float lineWidth,
-            Vec3 cameraPos
+            float lineWidth
     ) {
-        VertexConsumer consumer = bufferSource.getBuffer(RenderTypes.lines());
         SelectionWireframeRenderer.drawBox(
-                poseStack,
-                consumer,
                 anchorBlock,
                 anchorBlock,
                 1.0F, 0.0F, 0.0F, 1.0F,
-                lineWidth,
-                cameraPos
+                lineWidth
         );
-        bufferSource.endBatch(RenderTypes.lines());
     }
 
     private static Bounds resolveBounds(

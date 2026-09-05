@@ -50,7 +50,7 @@ public class HudConfigScreen extends Screen {
             Config.ELYTRA_HUD_Y.save();
             Config.FIREWORK_HUD_X.save();
             Config.FIREWORK_HUD_Y.save();
-            this.minecraft.setScreen(parent);
+            this.minecraft.gui.setScreen(parent);
         }).bounds(centerX - 115, this.height - 60, 70, 20).build());
 
         addRenderableWidget(Button.builder(Component.translatable("elytra_slot.screen.config.default"), btn -> {
@@ -62,7 +62,7 @@ public class HudConfigScreen extends Screen {
         }).bounds(centerX - 35, this.height - 60, 70, 20).build());
 
         addRenderableWidget(Button.builder(Component.translatable("gui.cancel"), btn -> {
-            this.minecraft.setScreen(parent);
+            this.minecraft.gui.setScreen(parent);
         }).bounds(centerX + 45, this.height - 60, 70, 20).build());
     }
 

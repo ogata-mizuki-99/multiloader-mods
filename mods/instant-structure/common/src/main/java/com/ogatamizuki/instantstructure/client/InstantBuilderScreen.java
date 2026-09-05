@@ -169,7 +169,7 @@ public class InstantBuilderScreen extends Screen {
                 ClientPlacementRegistry.lockedAnchor = null;
                 ClientPlacementRegistry.lockedPlacementOrigin = null;
                 ClientPlacementRegistry.previewBlocks = List.of();
-                Minecraft.getInstance().setScreen(null);
+                Minecraft.getInstance().gui.setScreen(null);
                 if (Minecraft.getInstance().getConnection() != null) {
                     Minecraft.getInstance().getConnection().send(new RequestPreviewPayload(selected.category(), selected.name()));
                 }
@@ -179,7 +179,7 @@ public class InstantBuilderScreen extends Screen {
         x += SELECT_BUTTON_WIDTH + FOOTER_BUTTON_GAP;
 
         addRenderableWidget(Button.builder(Component.translatable("instant_structure.screen.builder.cancel"), btn ->
-                Minecraft.getInstance().setScreen(null)
+                Minecraft.getInstance().gui.setScreen(null)
         ).bounds(x, buttonY, CANCEL_BUTTON_WIDTH, FOOTER_BUTTON_HEIGHT).build());
         x += CANCEL_BUTTON_WIDTH + FOOTER_BUTTON_GAP;
 
@@ -239,22 +239,22 @@ public class InstantBuilderScreen extends Screen {
             TemplateInfo selected = filteredTemplates.get(selectedIndex);
             currentCosts = getMaterialCosts(selected);
             
-            // 素材確認ボタンを追加
+            // 素材確認ボタンを追加（ローカル NBT が無い場合はサーバープレビューで算出）
             addRenderableWidget(Button.builder(Component.translatable("instant_structure.screen.builder.check_materials"), btn -> {
-                Minecraft.getInstance().setScreen(new MaterialListScreen(this, currentCosts));
+                Minecraft.getInstance().gui.setScreen(new MaterialListScreen(this, selected.category(), selected.name()));
             }).bounds(listX, selectedTemplateY() + 24, 115, 20).build());
 
             boolean isOp = Minecraft.getInstance().player != null; // 簡易権限チェック (OP判定の代わり)
             if (isOp) {
                 addRenderableWidget(Button.builder(Component.translatable("instant_structure.screen.builder.delete").withStyle(ChatFormatting.RED), btn -> {
-                    Minecraft.getInstance().setScreen(new net.minecraft.client.gui.screens.ConfirmScreen(
+                    Minecraft.getInstance().gui.setScreen(new net.minecraft.client.gui.screens.ConfirmScreen(
                             confirmed -> {
                                 if (confirmed) {
                                     if (Minecraft.getInstance().getConnection() != null) {
                                         Minecraft.getInstance().getConnection().send(new DeleteTemplatePayload(selected.category(), selected.name()));
                                     }
                                 }
-                                Minecraft.getInstance().setScreen(this);
+                                Minecraft.getInstance().gui.setScreen(this);
                             },
                             Component.translatable("instant_structure.screen.builder.delete_confirm.title"),
                             Component.translatable("instant_structure.screen.builder.delete_confirm.message", selected.name())
@@ -372,42 +372,69 @@ public class InstantBuilderScreen extends Screen {
     }
 
     private List<MaterialCost> getMaterialCosts(TemplateInfo info) {
+        return computeMaterialCosts(info.category(), info.name());
+    }
+
+    /**
+     * プレビューキャッシュ → ローカル NBT の順で必要素材を集計する。
+     * 専用サーバー上のテンプレなど、クライアントに NBT が無い場合はキャッシュ待ちになる。
+     */
+    static List<MaterialCost> computeMaterialCosts(String category, String templateName) {
         List<MaterialCost> costs = new ArrayList<>();
-        java.nio.file.Path configDir = InstantStructurePaths.configRoot();
-        java.nio.file.Path nbtPath = com.ogatamizuki.instantstructure.StructureTemplateHelper.resolveTemplatePath(configDir, info.category(), info.name());
-        if (!java.nio.file.Files.exists(nbtPath)) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.level == null || mc.player == null) {
             return costs;
         }
+
+        List<com.ogatamizuki.instantstructure.PreviewBlockEntry> entries =
+                new ArrayList<>(ClientPreviewLoader.getCachedBlocks(category, templateName));
+        if (entries.isEmpty()) {
+            java.nio.file.Path nbtPath = com.ogatamizuki.instantstructure.StructureTemplateHelper.resolveTemplatePath(
+                    InstantStructurePaths.configRoot(), category, templateName);
+            if (java.nio.file.Files.exists(nbtPath)) {
+                try {
+                    entries = com.ogatamizuki.instantstructure.StructureTemplateHelper.extractSolidBlocks(
+                            mc.level.registryAccess(), nbtPath);
+                } catch (Exception e) {
+                    com.ogatamizuki.instantstructure.InstantStructureCommon.LOGGER.error(
+                            "Failed to load local template for materials: {}/{}", category, templateName, e);
+                }
+            }
+        }
+        if (entries.isEmpty()) {
+            return costs;
+        }
+
         try {
-            List<com.ogatamizuki.instantstructure.PreviewBlockEntry> entries =
-                    com.ogatamizuki.instantstructure.StructureTemplateHelper.extractSolidBlocks(Minecraft.getInstance().level.registryAccess(), nbtPath);
             Map<net.minecraft.world.item.Item, Integer> req = new HashMap<>();
-            net.minecraft.core.HolderLookup.Provider provider = Minecraft.getInstance().level.registryAccess();
+            net.minecraft.core.HolderLookup.Provider provider = mc.level.registryAccess();
             net.minecraft.core.HolderLookup<net.minecraft.world.level.block.Block> blockLookup =
                     (net.minecraft.core.HolderLookup<net.minecraft.world.level.block.Block>) provider.lookupOrThrow(net.minecraft.core.registries.Registries.BLOCK);
 
             for (com.ogatamizuki.instantstructure.PreviewBlockEntry entry : entries) {
                 net.minecraft.world.level.block.state.BlockState state =
                         com.ogatamizuki.instantstructure.BlockStateParserSupport.parse(blockLookup, entry.blockState());
-                
+
                 // 2マス占有ブロック（ベッド、ドア、2段の植物など）の重複カウントを防ぐ
-                if (state.hasProperty(net.minecraft.world.level.block.state.properties.BlockStateProperties.BED_PART) && 
-                    state.getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.BED_PART) == net.minecraft.world.level.block.state.properties.BedPart.FOOT) {
-                    continue; // HEADのみカウント
+                if (state.hasProperty(net.minecraft.world.level.block.state.properties.BlockStateProperties.BED_PART) &&
+                        state.getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.BED_PART)
+                                == net.minecraft.world.level.block.state.properties.BedPart.FOOT) {
+                    continue;
                 }
-                if (state.hasProperty(net.minecraft.world.level.block.state.properties.BlockStateProperties.DOUBLE_BLOCK_HALF) && 
-                    state.getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.DOUBLE_BLOCK_HALF) == net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER) {
-                    continue; // LOWERのみカウント
+                if (state.hasProperty(net.minecraft.world.level.block.state.properties.BlockStateProperties.DOUBLE_BLOCK_HALF) &&
+                        state.getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.DOUBLE_BLOCK_HALF)
+                                == net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER) {
+                    continue;
                 }
-                
+
                 net.minecraft.world.item.Item item = state.getBlock().asItem();
                 if (item != net.minecraft.world.item.Items.AIR) {
                     req.put(item, req.getOrDefault(item, 0) + 1);
                 }
             }
 
-            net.minecraft.world.entity.player.Inventory inv = Minecraft.getInstance().player.getInventory();
             Map<net.minecraft.world.item.Item, Integer> owned = new HashMap<>();
+            net.minecraft.world.entity.player.Inventory inv = mc.player.getInventory();
             for (int i = 0; i < inv.getContainerSize(); i++) {
                 net.minecraft.world.item.ItemStack stack = inv.getItem(i);
                 if (!stack.isEmpty()) {
@@ -415,19 +442,17 @@ public class InstantBuilderScreen extends Screen {
                 }
             }
 
-            // 設置始点の隣(またはその位置)にあるチェストのインベントリもカウントに含める
-            BlockPos anchorPos = ClientPlacementRegistry.lockedAnchor != null 
-                    ? ClientPlacementRegistry.lockedAnchor 
-                    : ClientPlacementRegistry.resolveCrosshairAnchor(Minecraft.getInstance());
-            if (anchorPos != null && Minecraft.getInstance().level != null) {
-                // 始点位置、およびその隣接6方向を検索
+            BlockPos anchorPos = ClientPlacementRegistry.lockedAnchor != null
+                    ? ClientPlacementRegistry.lockedAnchor
+                    : ClientPlacementRegistry.resolveCrosshairAnchor(mc);
+            if (anchorPos != null) {
                 List<BlockPos> checkPositions = new ArrayList<>();
                 checkPositions.add(anchorPos);
                 for (net.minecraft.core.Direction dir : net.minecraft.core.Direction.values()) {
                     checkPositions.add(anchorPos.relative(dir));
                 }
                 for (BlockPos pos : checkPositions) {
-                    net.minecraft.world.level.block.entity.BlockEntity be = Minecraft.getInstance().level.getBlockEntity(pos);
+                    net.minecraft.world.level.block.entity.BlockEntity be = mc.level.getBlockEntity(pos);
                     if (be instanceof net.minecraft.world.Container container) {
                         for (int i = 0; i < container.getContainerSize(); i++) {
                             net.minecraft.world.item.ItemStack stack = container.getItem(i);
@@ -441,7 +466,6 @@ public class InstantBuilderScreen extends Screen {
 
             List<Map.Entry<net.minecraft.world.item.Item, Integer>> sorted = new ArrayList<>(req.entrySet());
             sorted.sort((a, b) -> b.getValue().compareTo(a.getValue()));
-
             for (Map.Entry<net.minecraft.world.item.Item, Integer> entry : sorted) {
                 costs.add(new MaterialCost(entry.getKey(), entry.getValue(), owned.getOrDefault(entry.getKey(), 0)));
             }

@@ -96,6 +96,7 @@
   "guide_lib.instant_structure.page.guide_book.text": "本とコンパスでマニュアルをクラフトできます（guide-lib 導入時）。マーカー・ビルダー・同梱テンプレの説明が載っています。",
   "guide_lib.instant_structure.page.bundled_templates.text": "同梱の家・アリーナ（村）は、マインクラフトのスーパーフラットワールドで自動生成されたバニラ構造物をエクスポートしたものです。初回起動時に config/instant-structure/templates-structure/ へ展開されます。ワールド内で自由に利用・改変できます。",
   "instant_structure.screen.material_list.title": "必要な素材一覧",
+  "instant_structure.screen.material_list.loading": "素材を読み込み中…",
   "instant_structure.screen.material_list.empty": "必要な素材はありません。",
   "instant_structure.screen.material_list.scrollable": "▲▼ スクロール可 (%s〜%s / %s)",
   "instant_structure.screen.builder.check_materials": "素材確認",

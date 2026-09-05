@@ -14,7 +14,7 @@ public class EconomyHudOverlay {
 
     public static void render(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.options.hideGui) {
+        if (mc.player == null || mc.gui.hud.isHidden()) {
             return;
         }
         if (!EconomyFeatures.isBalanceHudEnabled()) {

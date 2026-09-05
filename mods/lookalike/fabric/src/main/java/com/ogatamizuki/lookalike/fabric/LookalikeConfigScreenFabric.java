@@ -61,7 +61,7 @@ public class LookalikeConfigScreenFabric extends Screen {
 
         addRenderableWidget(Button.builder(
                 Component.translatable("gui.done"),
-                btn -> this.minecraft.setScreen(parent)
+                btn -> this.minecraft.gui.setScreen(parent)
         ).bounds(centerX - 50, startY + 108, 100, 20).build());
     }
 
@@ -79,7 +79,7 @@ public class LookalikeConfigScreenFabric extends Screen {
                     Component.translatable("lookalike.configuration.push_sent")
                             .withStyle(ChatFormatting.YELLOW));
         }
-        this.minecraft.setScreen(parent);
+        this.minecraft.gui.setScreen(parent);
     }
 
     @Override
@@ -91,6 +91,6 @@ public class LookalikeConfigScreenFabric extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(parent);
+        this.minecraft.gui.setScreen(parent);
     }
 }

@@ -28,7 +28,7 @@ public class MouseHandlerMixin {
 
     @Inject(method = "onScroll", at = @At("HEAD"), cancellable = true)
     private void instantStructure$onMouseScroll(long windowPointer, double xoffset, double yoffset, CallbackInfo ci) {
-        if (this.minecraft.player == null || this.minecraft.screen != null) {
+        if (this.minecraft.player == null || this.minecraft.gui.screen() != null) {
             return;
         }
         if (!this.minecraft.options.keyShift.isDown()) {
@@ -51,7 +51,7 @@ public class MouseHandlerMixin {
 
     @Inject(method = "onButton", at = @At("HEAD"), cancellable = true)
     private void instantStructure$onMouseButton(long windowPointer, MouseButtonInfo buttonInfo, int action, CallbackInfo ci) {
-        if (this.minecraft.player == null || this.minecraft.screen != null) {
+        if (this.minecraft.player == null || this.minecraft.gui.screen() != null) {
             return;
         }
         if (action != GLFW.GLFW_PRESS) {

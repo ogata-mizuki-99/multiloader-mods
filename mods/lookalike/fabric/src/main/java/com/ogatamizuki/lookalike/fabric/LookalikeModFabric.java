@@ -100,6 +100,51 @@ public class LookalikeModFabric implements ModInitializer {
             });
         });
 
+        ServerPlayNetworking.registerGlobalReceiver(LookalikeCommonConfigPushPayload.TYPE, (payload, context) -> {
+            context.server().execute(() -> {
+                ServerPlayer serverPlayer = context.player();
+                if (!serverPlayer.createCommandSourceStack().permissions().hasPermission(
+                        net.minecraft.server.permissions.Permissions.COMMANDS_GAMEMASTER)) {
+                    serverPlayer.sendSystemMessage(
+                            Component.translatable("lookalike.configuration.push_denied")
+                                    .withStyle(net.minecraft.ChatFormatting.RED));
+                    return;
+                }
+
+                int disguiseDuration = Math.max(1, Math.min(86400, payload.disguiseDurationSeconds()));
+                int castTime = Math.max(0, Math.min(60, payload.defaultCastTimeSeconds()));
+                String effectTemplate = com.ogatamizuki.lookalike.cast.CastEffectTemplate
+                        .fromName(payload.defaultEffectTemplate())
+                        .name();
+
+                Config.disguiseDurationSeconds.set(disguiseDuration);
+                Config.disguiseDurationSeconds.save();
+                Config.allowDefaultPlayerList.set(payload.allowDefaultPlayerList());
+                Config.allowDefaultPlayerList.save();
+                Config.hideAllNametags.set(payload.hideAllNametags());
+                Config.hideAllNametags.save();
+                Config.enableMirrorCrafting.set(payload.enableMirrorCrafting());
+                Config.enableMirrorCrafting.save();
+                Config.defaultCastTimeSeconds.set(castTime);
+                Config.defaultCastTimeSeconds.save();
+                Config.defaultEffectTemplate.set(effectTemplate);
+                Config.defaultEffectTemplate.save();
+
+                LookalikeCommon.LOGGER.info(
+                        "Lookalike common config pushed by {}: disguiseDurationSeconds={}, allowDefaultPlayerList={}, hideAllNametags={}, enableMirrorCrafting={}, defaultCastTimeSeconds={}, defaultEffectTemplate={}",
+                        serverPlayer.getGameProfile().name(),
+                        Config.disguiseDurationSeconds.get(),
+                        Config.allowDefaultPlayerList.get(),
+                        Config.hideAllNametags.get(),
+                        Config.enableMirrorCrafting.get(),
+                        Config.defaultCastTimeSeconds.get(),
+                        Config.defaultEffectTemplate.get());
+                serverPlayer.sendSystemMessage(
+                        Component.translatable("lookalike.configuration.push_ok")
+                                .withStyle(net.minecraft.ChatFormatting.GREEN));
+            });
+        });
+
         // Lifecycle & Server Tick
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             ServerPlayer player = handler.getPlayer();

@@ -105,7 +105,7 @@ public class EconomyModClient {
                     mc.player.sendSystemMessage(EconomyMasterI18n.parseChatMessage(payload.message()));
                 }
 
-                Screen currentScreen = mc.screen;
+                Screen currentScreen = mc.gui.screen();
                 if (currentScreen instanceof ShopScreen shopScreen) {
                     if (payload.success()) {
                         shopScreen.onTransactionSuccess();
@@ -130,7 +130,7 @@ public class EconomyModClient {
                     mc.player.sendSystemMessage(EconomyMasterI18n.parseChatMessage(payload.message()));
                 }
 
-                Screen currentScreen = mc.screen;
+                Screen currentScreen = mc.gui.screen();
                 if (currentScreen instanceof LoanScreen loanScreen) {
                     loanScreen.onTransactionResult(payload.success());
                 }
@@ -148,7 +148,7 @@ public class EconomyModClient {
                     mc.player.sendSystemMessage(EconomyMasterI18n.parseChatMessage(payload.message()));
                 }
 
-                Screen currentScreen = mc.screen;
+                Screen currentScreen = mc.gui.screen();
                 if (currentScreen instanceof StockTradeScreen stockScreen) {
                     if (payload.success()) {
                         stockScreen.onTransactionSuccess(
@@ -181,7 +181,7 @@ public class EconomyModClient {
                 if (mc.player != null) {
                     mc.player.sendSystemMessage(message);
                 }
-                Screen currentScreen = mc.screen;
+                Screen currentScreen = mc.gui.screen();
                 if (currentScreen instanceof EconomyAdminScreen adminScreen) {
                     adminScreen.onActionResult(payload.success(), message.getString());
                 }
@@ -203,7 +203,7 @@ public class EconomyModClient {
                     mc.player.sendSystemMessage(EconomyMasterI18n.parseChatMessage(payload.message()));
                 }
 
-                Screen currentScreen = mc.screen;
+                Screen currentScreen = mc.gui.screen();
                 if (currentScreen instanceof FleaMarketScreen fleaScreen) {
                     if (payload.success()) {
                         fleaScreen.onTransactionSuccess();

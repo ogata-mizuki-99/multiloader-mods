@@ -78,7 +78,7 @@ public class RadialTeleportModFabricClient implements ClientModInitializer {
         // Client Tick
         ClientTickEvents.END_CLIENT_TICK.register(mc -> {
             LocalPlayer player = mc.player;
-            if (player == null || mc.screen != null) {
+            if (player == null || mc.gui.screen() != null) {
                 if (RadialTeleportSession.isActive()) {
                     RadialTeleportSession.end(mc);
                 }

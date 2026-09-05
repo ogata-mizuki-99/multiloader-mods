@@ -183,16 +183,16 @@ public class GuideBookScreen extends Screen {
     }
 
     private void openEntry(GuideEntry entry) {
-        Minecraft.getInstance().setScreen(new GuideEntryScreen(this, bookId, entry.id(), theme, closeOnBack));
+        Minecraft.getInstance().gui.setScreen(new GuideEntryScreen(this, bookId, entry.id(), theme, closeOnBack));
     }
 
     private void goBack() {
         if (parentScreen != null) {
-            Minecraft.getInstance().setScreen(parentScreen);
+            Minecraft.getInstance().gui.setScreen(parentScreen);
         } else if (closeOnBack) {
-            Minecraft.getInstance().setScreen(null);
+            Minecraft.getInstance().gui.setScreen(null);
         } else {
-            Minecraft.getInstance().setScreen(new CodexScreen(null, theme));
+            Minecraft.getInstance().gui.setScreen(new CodexScreen(null, theme));
         }
     }
 

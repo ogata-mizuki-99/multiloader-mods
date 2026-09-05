@@ -106,13 +106,13 @@ public class LookalikeModNeoForgeClient {
             return;
         }
 
-        if (mc.screen instanceof ScanHistoryEditScreen) {
+        if (mc.gui.screen() instanceof ScanHistoryEditScreen) {
             wasUsingMirror = player.isUsingItem()
                     && player.getUseItem().is(LookalikeCommon.DISGUISE_MIRROR.get());
             return;
         }
 
-        if (mc.screen != null) {
+        if (mc.gui.screen() != null) {
             if (LookalikeRadialSession.isActive()) {
                 LookalikeRadialSession.cancel(mc);
             }
@@ -164,7 +164,7 @@ public class LookalikeModNeoForgeClient {
         }
 
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.screen != null) {
+        if (mc.player == null || mc.gui.screen() != null) {
             return;
         }
 
@@ -190,7 +190,7 @@ public class LookalikeModNeoForgeClient {
         }
 
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.screen != null) {
+        if (mc.player == null || mc.gui.screen() != null) {
             return;
         }
 
@@ -202,7 +202,7 @@ public class LookalikeModNeoForgeClient {
         if (event.getEntity() instanceof net.minecraft.world.entity.player.Player) {
             if (LookalikeClientFlags.hideAllNametags()) {
                 Minecraft mc = Minecraft.getInstance();
-                if (mc.getConnection() != null && !mc.isSingleplayer()) {
+                if (mc.getConnection() != null && !mc.hasSingleplayerServer()) {
                     event.setCanRender(net.minecraft.util.TriState.FALSE);
                 }
             }

@@ -1,8 +1,10 @@
 package com.ogatamizuki.sleep.fabric;
 
+import com.ogatamizuki.sleep.DaySleepTimeAdvance;
 import com.ogatamizuki.sleep.SleepClientFlagsPayload;
 import com.ogatamizuki.sleep.SleepCommon;
 import com.ogatamizuki.sleep.SleepCommonConfigPushPayload;
+import com.ogatamizuki.sleep.SleepWakeFullHeal;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -11,17 +13,21 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.permissions.Permissions;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.gamerules.GameRules;
+
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SleepModFabric implements ModInitializer {
     private static final int VANILLA_SLEEPING_PERCENTAGE = 100;
+    /** 昼間睡眠中の経過 tick（バニラ sleepCounter に依存しない）。 */
+    private static final Map<UUID, Integer> DAY_SLEEP_TICKS = new ConcurrentHashMap<>();
 
     @Override
     public void onInitialize() {
@@ -52,12 +58,21 @@ public class SleepModFabric implements ModInitializer {
             });
         });
 
-        // 昼間睡眠: 昼間のベッド睡眠制限を解除 (BedRule が寝られない環境判定のとき null を返して睡眠許可)
-        EntitySleepEvents.ALLOW_SLEEPING.register((player, sleepingPos) -> {
-            if (!SleepCommon.allowDaySleep) {
-                return null;
+        EntitySleepEvents.START_SLEEPING.register((entity, sleepingPos) -> {
+            if (!(entity instanceof ServerPlayer player) || !SleepCommon.allowDaySleep) {
+                return;
             }
-            return null;
+            if (DaySleepTimeAdvance.isDaytime(player.level())) {
+                DAY_SLEEP_TICKS.put(player.getUUID(), 0);
+            }
+        });
+
+        EntitySleepEvents.STOP_SLEEPING.register((entity, sleepingPos) -> {
+            if (entity instanceof ServerPlayer player) {
+                DAY_SLEEP_TICKS.remove(player.getUUID());
+                // 深い睡眠到達後の起床（時刻スキップ含む）はここで全快。途中起床はフラグ無し。
+                SleepWakeFullHeal.onServerPlayerTick(player);
+            }
         });
 
         // プレイヤー参加時の同期
@@ -68,29 +83,62 @@ public class SleepModFabric implements ModInitializer {
         // サーバー起動時
         ServerLifecycleEvents.SERVER_STARTED.register(SleepModFabric::applySleepingPercentage);
 
-        // プレイヤーTick（睡眠時回復）
+        // プレイヤーTick（昼間→夜スキップ + 睡眠時回復 + 深い睡眠起床の全快）
         ServerTickEvents.END_SERVER_TICK.register(server -> {
-            if (!SleepCommon.healWhileSleeping) {
-                return;
-            }
-            int interval = SleepCommon.healIntervalTicks;
+            tickDaySleepAdvance(server);
+            tickHealWhileSleeping(server);
             for (ServerPlayer player : server.getPlayerList().getPlayers()) {
-                if (!player.isSleeping()) {
-                    continue;
-                }
-                if (interval == 0) {
-                    if (player.getHealth() < player.getMaxHealth()) {
-                        player.setHealth(player.getMaxHealth());
-                    }
-                    continue;
-                }
-                if (player.isSleepingLongEnough() && player.tickCount % interval == 0) {
-                    if (player.getHealth() < player.getMaxHealth()) {
-                        player.heal(1.0F);
-                    }
-                }
+                SleepWakeFullHeal.onServerPlayerTick(player);
             }
         });
+    }
+
+    private static void tickDaySleepAdvance(MinecraftServer server) {
+        if (!SleepCommon.allowDaySleep) {
+            DAY_SLEEP_TICKS.clear();
+            return;
+        }
+        for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+            if (!player.isSleeping()) {
+                DAY_SLEEP_TICKS.remove(player.getUUID());
+                continue;
+            }
+            ServerLevel level = player.level();
+            if (!DaySleepTimeAdvance.isDaytime(level)) {
+                DAY_SLEEP_TICKS.remove(player.getUUID());
+                continue;
+            }
+            int ticks = DAY_SLEEP_TICKS.merge(player.getUUID(), 1, Integer::sum);
+            if (ticks >= DaySleepTimeAdvance.SLEEP_TICKS_REQUIRED) {
+                DaySleepTimeAdvance.finishDaySleep(level);
+                DAY_SLEEP_TICKS.clear();
+                return;
+            }
+        }
+    }
+
+    private static void tickHealWhileSleeping(MinecraftServer server) {
+        if (!SleepCommon.healWhileSleeping) {
+            return;
+        }
+        int interval = SleepCommon.healIntervalTicks;
+        for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+            if (!player.isSleeping()) {
+                continue;
+            }
+            if (interval == 0) {
+                if (player.getHealth() < player.getMaxHealth()) {
+                    player.setHealth(player.getMaxHealth());
+                }
+                continue;
+            }
+            // Do not require isSleepingLongEnough(): day-sleep finishes around that threshold.
+            if (player.tickCount % interval == 0) {
+                if (player.getHealth() < player.getMaxHealth()) {
+                    player.heal(1.0F);
+                }
+            }
+        }
     }
 
     public static void syncClientFlagsToAllPlayers(MinecraftServer server) {

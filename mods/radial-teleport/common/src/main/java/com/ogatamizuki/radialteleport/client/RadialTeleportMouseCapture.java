@@ -18,7 +18,7 @@ public final class RadialTeleportMouseCapture {
             return;
         }
 
-        if (mc.screen == null && mc.player != null) {
+        if (mc.gui.screen() == null && mc.player != null) {
             mc.mouseHandler.grabMouse();
             mc.mouseHandler.setIgnoreFirstMove();
         }

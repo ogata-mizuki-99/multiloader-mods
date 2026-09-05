@@ -36,6 +36,8 @@ public final class ElytraSlotCommon {
     public static Consumer2<ServerPlayer, CustomPacketPayload> sendToTracking = (player, payload) -> {};
     public static Consumer2<ServerPlayer, CustomPacketPayload> sendToTrackingAndSelf = (player, payload) -> {};
     public static java.util.function.Consumer<CustomPacketPayload> sendToServer = payload -> {};
+    public static java.util.function.Consumer<ServerPlayer> onElytraEquipped = player -> {};
+    public static java.util.function.Consumer<ServerPlayer> onElytraUnequipped = player -> {};
 
     @FunctionalInterface
     public interface Consumer2<T, U> {
@@ -115,6 +117,7 @@ public final class ElytraSlotCommon {
             if (!player.getInventory().add(toStore)) {
                 player.drop(toStore, false);
             }
+            onElytraUnequipped.accept(player);
             syncElytraSlot(player, ItemStack.EMPTY);
             player.inventoryMenu.broadcastChanges();
             return;
@@ -135,6 +138,7 @@ public final class ElytraSlotCommon {
         stack.shrink(1);
         inventory.setItem(foundSlot, stack.isEmpty() ? ItemStack.EMPTY : stack);
         setElytra(player, toSlot);
+        onElytraEquipped.accept(player);
         syncElytraSlot(player, toSlot);
         player.inventoryMenu.broadcastChanges();
     }

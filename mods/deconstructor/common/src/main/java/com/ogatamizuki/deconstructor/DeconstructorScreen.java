@@ -9,10 +9,34 @@ import net.minecraft.world.item.ItemStack;
 public class DeconstructorScreen extends AbstractContainerScreen<DeconstructorMenu> {
     private static final int WIN_WIDTH = 176;
     private static final int WIN_HEIGHT = 202;
+    /** Left/right padding inside the panel for the title string. */
+    private static final int TITLE_PAD = 8;
 
     public DeconstructorScreen(DeconstructorMenu menu, Inventory playerInventory, Component title) {
         super(menu, playerInventory, title, WIN_WIDTH, WIN_HEIGHT);
         this.inventoryLabelY = 108;
+    }
+
+    @Override
+    protected void extractLabels(GuiGraphicsExtractor gui, int mouseX, int mouseY) {
+        int maxTitleWidth = this.imageWidth - TITLE_PAD * 2;
+        Component title = ellipsize(this.title, maxTitleWidth);
+        gui.text(this.font, title, this.titleLabelX, this.titleLabelY, 0xFF404040, false);
+        gui.text(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0xFF404040, false);
+    }
+
+    private Component ellipsize(Component text, int maxWidth) {
+        String s = text.getString();
+        if (this.font.width(s) <= maxWidth) {
+            return text;
+        }
+        String ellipsis = "...";
+        int ellipsisW = this.font.width(ellipsis);
+        int end = s.length();
+        while (end > 0 && this.font.width(s.substring(0, end)) + ellipsisW > maxWidth) {
+            end--;
+        }
+        return Component.literal(s.substring(0, Math.max(0, end)) + ellipsis);
     }
 
     @Override

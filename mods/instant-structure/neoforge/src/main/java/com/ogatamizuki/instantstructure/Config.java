@@ -22,4 +22,21 @@ public final class Config {
 
     private Config() {
     }
+
+    /** Copy NeoForge ModConfigSpec values into the shared runtime config used by build logic. */
+    public static void syncToCommon() {
+        InstantStructureConfig.enableCraftingRecipe = ENABLE_CRAFTING_RECIPE.get();
+        InstantStructureConfig.enableMaterialConsumption = ENABLE_MATERIAL_CONSUMPTION.get();
+        InstantStructureConfig.dropClearedBlocks = DROP_CLEARED_BLOCKS.get();
+    }
+
+    /** Copy shared runtime config into ModConfigSpec (after GUI / push). */
+    public static void applyFromCommon() {
+        ENABLE_CRAFTING_RECIPE.set(InstantStructureConfig.enableCraftingRecipe);
+        ENABLE_CRAFTING_RECIPE.save();
+        ENABLE_MATERIAL_CONSUMPTION.set(InstantStructureConfig.enableMaterialConsumption);
+        ENABLE_MATERIAL_CONSUMPTION.save();
+        DROP_CLEARED_BLOCKS.set(InstantStructureConfig.dropClearedBlocks);
+        DROP_CLEARED_BLOCKS.save();
+    }
 }

@@ -3,13 +3,19 @@ package com.ogatamizuki.elytraslot.neoforge;
 import com.ogatamizuki.elytraslot.*;
 import com.ogatamizuki.elytraslot.network.ActionPayload;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
@@ -19,7 +25,6 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 @Mod(ElytraSlotCommon.MODID)
 public class ElytraSlotModNeoForge {
-    // Attachment type registration
     public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES =
             DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, ElytraSlotCommon.MODID);
 
@@ -42,7 +47,13 @@ public class ElytraSlotModNeoForge {
         ElytraSlotCommon.LOGGER.info("Elytra Slot Mod (NeoForge) Initializing...");
 
         ElytraSlotCommon.getElytraItem = player -> player.getData(ELYTRA_SLOT);
-        ElytraSlotCommon.setElytraItem = (player, stack) -> player.setData(ELYTRA_SLOT, stack);
+        ElytraSlotCommon.setElytraItem = (player, stack) -> {
+            ItemStack previous = player.getData(ELYTRA_SLOT);
+            player.setData(ELYTRA_SLOT, stack);
+            if (player instanceof ServerPlayer serverPlayer && !player.level().isClientSide()) {
+                ElytraSlotNeoForgeGliding.onElytraChanged(serverPlayer, previous, stack);
+            }
+        };
         ElytraSlotCommon.getFireworkItem = player -> player.getData(FIREWORK_SLOT);
         ElytraSlotCommon.setFireworkItem = (player, stack) -> player.setData(FIREWORK_SLOT, stack);
         ElytraSlotCommon.getSlotPositions = player -> player.getData(SLOT_POSITIONS);
@@ -51,6 +62,8 @@ public class ElytraSlotModNeoForge {
         ElytraSlotCommon.sendToTracking = (player, payload) ->
                 PacketDistributor.sendToPlayersTrackingEntity(player, payload);
         ElytraSlotCommon.sendToTrackingAndSelf = PacketDistributor::sendToPlayersTrackingEntityAndSelf;
+        ElytraSlotCommon.onElytraEquipped = ElytraSlotNeoForgeGliding::apply;
+        ElytraSlotCommon.onElytraUnequipped = ElytraSlotNeoForgeGliding::remove;
 
         ElytraSlotNeoForgeConfig.init();
         modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.CLIENT, ElytraSlotNeoForgeConfig.SPEC, "elytra_slot-client.toml");
@@ -68,7 +81,6 @@ public class ElytraSlotModNeoForge {
     private void registerPayloads(RegisterPayloadHandlersEvent event) {
         PayloadRegistrar registrar = event.registrar("1");
 
-        // Register Sync Payload for Elytra
         registrar.playToClient(
                 ElytraSlotSyncPayload.TYPE,
                 ElytraSlotSyncPayload.STREAM_CODEC,
@@ -82,7 +94,6 @@ public class ElytraSlotModNeoForge {
                     });
                 });
 
-        // Register Sync Payload for Firework
         registrar.playToClient(
                 FireworkSlotSyncPayload.TYPE,
                 FireworkSlotSyncPayload.STREAM_CODEC,
@@ -96,10 +107,9 @@ public class ElytraSlotModNeoForge {
                     });
                 });
 
-        // Register Action Payload (Client to Server)
         registrar.playToServer(
-                com.ogatamizuki.elytraslot.network.ActionPayload.TYPE,
-                com.ogatamizuki.elytraslot.network.ActionPayload.STREAM_CODEC,
+                ActionPayload.TYPE,
+                ActionPayload.STREAM_CODEC,
                 (payload, context) -> {
                     context.enqueueWork(() -> {
                         net.minecraft.world.entity.player.Player player = context.player();
@@ -109,51 +119,25 @@ public class ElytraSlotModNeoForge {
                     });
                 });
 
-        // Register Slot Position Sync Payload (Bidirectional)
-        registrar.playBidirectional(
+        registrar.playToServer(
                 com.ogatamizuki.elytraslot.network.SlotPosSyncPayload.TYPE,
                 com.ogatamizuki.elytraslot.network.SlotPosSyncPayload.STREAM_CODEC,
-                (payload, context) -> {
-                    context.enqueueWork(() -> {
-                        // Client-side payload handler (no-op or local state sync)
-                    });
-                },
                 (payload, context) -> {
                     context.enqueueWork(() -> {
                         net.minecraft.world.entity.player.Player player = context.player();
                         if (player instanceof ServerPlayer serverPlayer) {
                             SlotPositions current = serverPlayer.getData(SLOT_POSITIONS);
                             serverPlayer.setData(SLOT_POSITIONS, new SlotPositions(
-                                     payload.elytraX(), payload.elytraY(),
+                                    payload.elytraX(), payload.elytraY(),
                                     payload.fireworkX(), payload.fireworkY(),
                                     current.creativeElytraX(), current.creativeElytraY(),
                                     current.creativeFireworkX(), current.creativeFireworkY()
                             ));
-                            updatePlayerContainerSlotPositions(serverPlayer, payload.elytraX(), payload.elytraY(), payload.fireworkX(), payload.fireworkY());
+                            ElytraSlotCommon.updatePlayerContainerSlotPositions(
+                                    serverPlayer, payload.elytraX(), payload.elytraY(), payload.fireworkX(), payload.fireworkY());
                         }
                     });
                 });
-    }
-
-    public static void updatePlayerContainerSlotPositions(net.minecraft.world.entity.player.Player player, int ex, int ey, int fx, int fy) {
-        try {
-            java.lang.reflect.Field xField = net.minecraft.world.inventory.Slot.class.getDeclaredField("x");
-            java.lang.reflect.Field yField = net.minecraft.world.inventory.Slot.class.getDeclaredField("y");
-            xField.setAccessible(true);
-            yField.setAccessible(true);
-
-            for (net.minecraft.world.inventory.Slot slot : player.containerMenu.slots) {
-                if (slot instanceof ElytraSlot) {
-                    xField.setInt(slot, ex);
-                    yField.setInt(slot, ey);
-                } else if (slot instanceof FireworkSlot) {
-                    xField.setInt(slot, fx);
-                    yField.setInt(slot, fy);
-                }
-            }
-        } catch (Exception e) {
-            ElytraSlotCommon.LOGGER.error("Failed to update slot positions via reflection", e);
-        }
     }
 
     private void handleServerAction(ServerPlayer player, int actionId) {
@@ -164,50 +148,111 @@ public class ElytraSlotModNeoForge {
         }
     }
 
+    public static void syncAttachmentSlotsToPlayer(ServerPlayer player) {
+        PacketDistributor.sendToPlayer(player, new ElytraSlotSyncPayload(player.getUUID(), player.getData(ELYTRA_SLOT)));
+        PacketDistributor.sendToPlayer(player, new FireworkSlotSyncPayload(player.getUUID(), player.getData(FIREWORK_SLOT)));
+    }
+
     @SubscribeEvent
-    public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-        if (event.getEntity() instanceof ServerPlayer player) {
-            ItemStack elytra = player.getData(ELYTRA_SLOT);
-            if (!elytra.isEmpty()) {
-                ElytraSlotCommon.syncSlot(player, elytra);
-            }
-            ItemStack firework = player.getData(FIREWORK_SLOT);
-            if (!firework.isEmpty()) {
-                ElytraSlotCommon.syncFireworkSlot(player, firework);
-            }
-            SlotPositions positions = player.getData(SLOT_POSITIONS);
-            ElytraSlotCommon.syncPositions(player, positions);
+    public void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
+        net.minecraft.world.entity.player.Player player = event.getEntity();
+        ItemStack held = event.getItemStack();
+
+        if (!held.is(Items.ELYTRA)) {
+            return;
+        }
+
+        event.setCanceled(true);
+        event.setCancellationResult(InteractionResult.SUCCESS);
+
+        if (!player.level().isClientSide() && player instanceof ServerPlayer serverPlayer) {
+            ItemStack currentInSlot = serverPlayer.getData(ELYTRA_SLOT);
+            serverPlayer.setItemInHand(event.getHand(), currentInSlot.copy());
+            ElytraSlotCommon.setElytra(serverPlayer, held.copy());
+            ElytraSlotCommon.syncSlot(serverPlayer, held);
         }
     }
 
     @SubscribeEvent
-    public void onStartTracking(PlayerEvent.StartTracking event) {
-        if (event.getTarget() instanceof ServerPlayer targetPlayer && event.getEntity() instanceof ServerPlayer trackingPlayer) {
-            ItemStack elytra = targetPlayer.getData(ELYTRA_SLOT);
-            if (!elytra.isEmpty()) {
-                PacketDistributor.sendToPlayer(trackingPlayer, new ElytraSlotSyncPayload(targetPlayer.getUUID(), elytra));
-            }
-            ItemStack firework = targetPlayer.getData(FIREWORK_SLOT);
-            if (!firework.isEmpty()) {
-                PacketDistributor.sendToPlayer(trackingPlayer, new FireworkSlotSyncPayload(targetPlayer.getUUID(), firework));
-            }
+    public void onLivingDrops(LivingDropsEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
+            return;
+        }
+        if (player.level().getGameRules().get(net.minecraft.world.level.gamerules.GameRules.KEEP_INVENTORY)) {
+            return;
+        }
+
+        ItemStack elytraStack = player.getData(ELYTRA_SLOT);
+        if (!elytraStack.isEmpty()) {
+            player.drop(elytraStack.copy(), true, false);
+            ElytraSlotCommon.setElytra(player, ItemStack.EMPTY);
+            ElytraSlotCommon.syncSlot(player, ItemStack.EMPTY);
+        }
+
+        ItemStack fireworkStack = player.getData(FIREWORK_SLOT);
+        if (!fireworkStack.isEmpty()) {
+            player.drop(fireworkStack.copy(), true, false);
+            ElytraSlotCommon.setFirework(player, ItemStack.EMPTY);
+            ElytraSlotCommon.syncFireworkSlot(player, ItemStack.EMPTY);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerTick(PlayerTickEvent.Post event) {
+        if (event.getEntity() instanceof ServerPlayer player && !player.level().isClientSide()) {
+            ElytraSlotNeoForgeGliding.tickSneakCancel(player);
         }
     }
 
     @SubscribeEvent
     public void onPlayerClone(PlayerEvent.Clone event) {
-        boolean keepInv = event.getEntity().level().getServer() != null && event.getEntity().level().getServer().getGameRules().get(net.minecraft.world.level.gamerules.GameRules.KEEP_INVENTORY);
-        if (!event.isWasDeath() || keepInv) {
-            // Only keep if keepInventory is on or cloned not from death
-            if (!event.isWasDeath()) {
-                event.getEntity().setData(ELYTRA_SLOT, event.getOriginal().getData(ELYTRA_SLOT));
-                event.getEntity().setData(FIREWORK_SLOT, event.getOriginal().getData(FIREWORK_SLOT));
-                event.getEntity().setData(SLOT_POSITIONS, event.getOriginal().getData(SLOT_POSITIONS));
+        if (!(event.getOriginal() instanceof ServerPlayer oldPlayer) || !(event.getEntity() instanceof ServerPlayer newPlayer)) {
+            return;
+        }
+
+        if (!event.isWasDeath() || oldPlayer.level().getGameRules().get(net.minecraft.world.level.gamerules.GameRules.KEEP_INVENTORY)) {
+            ItemStack elytraStack = oldPlayer.getData(ELYTRA_SLOT);
+            newPlayer.setData(ELYTRA_SLOT, elytraStack.copy());
+
+            ItemStack fireworkStack = oldPlayer.getData(FIREWORK_SLOT);
+            newPlayer.setData(FIREWORK_SLOT, fireworkStack.copy());
+
+            if (!elytraStack.isEmpty()) {
+                ElytraSlotNeoForgeGliding.apply(newPlayer);
             }
-        } else {
-            event.getEntity().setData(ELYTRA_SLOT, event.getOriginal().getData(ELYTRA_SLOT));
-            event.getEntity().setData(FIREWORK_SLOT, event.getOriginal().getData(FIREWORK_SLOT));
-            event.getEntity().setData(SLOT_POSITIONS, event.getOriginal().getData(SLOT_POSITIONS));
+        }
+
+        newPlayer.setData(SLOT_POSITIONS, oldPlayer.getData(SLOT_POSITIONS));
+    }
+
+    @SubscribeEvent
+    public void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            syncAttachmentSlotsToPlayer(player);
+            if (!player.getData(ELYTRA_SLOT).isEmpty()) {
+                ElytraSlotNeoForgeGliding.apply(player);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerChangeGameMode(PlayerEvent.PlayerChangeGameModeEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            syncAttachmentSlotsToPlayer(player);
+        }
+    }
+
+    @SubscribeEvent
+    public void onStartTracking(PlayerEvent.StartTracking event) {
+        if (event.getTarget() instanceof ServerPlayer targetPlayer && event.getEntity() instanceof ServerPlayer tracker) {
+            ItemStack elytraStack = targetPlayer.getData(ELYTRA_SLOT);
+            if (!elytraStack.isEmpty()) {
+                PacketDistributor.sendToPlayer(tracker, new ElytraSlotSyncPayload(targetPlayer.getUUID(), elytraStack));
+            }
+            ItemStack fireworkStack = targetPlayer.getData(FIREWORK_SLOT);
+            if (!fireworkStack.isEmpty()) {
+                PacketDistributor.sendToPlayer(tracker, new FireworkSlotSyncPayload(targetPlayer.getUUID(), fireworkStack));
+            }
         }
     }
 }

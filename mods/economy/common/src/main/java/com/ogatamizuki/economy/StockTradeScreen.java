@@ -383,7 +383,7 @@ public class StockTradeScreen extends Screen {
                 // ランキングボタン
                 this.rankingButton = Button.builder(EconomyMasterI18n.tr("economy.ranking.button"), button -> {
                     if (this.hasRankingData && this.rankingData != null) {
-                        Minecraft.getInstance().setScreen(new RankingScreen(this, this.rankingData));
+                        Minecraft.getInstance().gui.setScreen(new RankingScreen(this, this.rankingData));
                     }
                 }).bounds(centerX + 45, centerY + ROW_EXECUTE, 80, 20).build();
                 this.rankingButton.active = this.hasRankingData;

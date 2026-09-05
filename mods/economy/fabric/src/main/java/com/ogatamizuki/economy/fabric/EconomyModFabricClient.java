@@ -79,7 +79,7 @@ public class EconomyModFabricClient implements ClientModInitializer {
                 if (mc.player != null) {
                     mc.player.sendSystemMessage(EconomyMasterI18n.parseChatMessage(payload.message()));
                 }
-                Screen currentScreen = mc.screen;
+                Screen currentScreen = mc.gui.screen();
                 if (currentScreen instanceof LoanScreen loanScreen) {
                     loanScreen.onTransactionResult(payload.success());
                 }
@@ -95,7 +95,7 @@ public class EconomyModFabricClient implements ClientModInitializer {
                 if (mc.player != null) {
                     mc.player.sendSystemMessage(EconomyMasterI18n.parseChatMessage(payload.message()));
                 }
-                Screen currentScreen = mc.screen;
+                Screen currentScreen = mc.gui.screen();
                 if (currentScreen instanceof StockTradeScreen stockScreen) {
                     if (payload.success()) {
                         stockScreen.onTransactionSuccess(
@@ -129,7 +129,7 @@ public class EconomyModFabricClient implements ClientModInitializer {
                 if (mc.player != null) {
                     mc.player.sendSystemMessage(message);
                 }
-                Screen currentScreen = mc.screen;
+                Screen currentScreen = mc.gui.screen();
                 if (currentScreen instanceof EconomyAdminScreen adminScreen) {
                     adminScreen.onActionResult(payload.success(), message.getString());
                 }
@@ -148,7 +148,7 @@ public class EconomyModFabricClient implements ClientModInitializer {
                 if (mc.player != null && payload.message() != null && !payload.message().isBlank()) {
                     mc.player.sendSystemMessage(EconomyMasterI18n.parseChatMessage(payload.message()));
                 }
-                Screen currentScreen = mc.screen;
+                Screen currentScreen = mc.gui.screen();
                 if (currentScreen instanceof FleaMarketScreen fleaScreen) {
                     if (payload.success()) {
                         fleaScreen.onTransactionSuccess();
@@ -179,7 +179,7 @@ public class EconomyModFabricClient implements ClientModInitializer {
         if (mc.player != null) {
             mc.player.sendSystemMessage(EconomyMasterI18n.parseChatMessage(payload.message()));
         }
-        Screen currentScreen = mc.screen;
+        Screen currentScreen = mc.gui.screen();
         if (currentScreen instanceof ShopScreen shopScreen) {
             if (payload.success()) {
                 shopScreen.onTransactionSuccess();

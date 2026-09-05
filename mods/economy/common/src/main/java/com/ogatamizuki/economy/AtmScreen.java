@@ -33,6 +33,8 @@ public class AtmScreen extends Screen {
 
     private int cachedBalance = -1;
     private int cachedBankBalance = -1;
+    /** Half-width of the outer ATM panel (JA 135 / EN wider for $ labels). */
+    private int panelHalf = 135;
 
     protected AtmScreen() {
         super(EconomyMasterI18n.tr("economy.ui.atm.title"));
@@ -45,6 +47,9 @@ public class AtmScreen extends Screen {
 
         int centerX = this.width / 2;
         int centerY = this.height / 2;
+        boolean cents = EconomyMasterI18n.useCents();
+        this.panelHalf = cents ? 148 : 135;
+        int panelRight = centerX + this.panelHalf;
 
         // 1. ALL ボタン（左：所持金用, 右：銀行残高用）
         int allWidth = 35;
@@ -61,41 +66,46 @@ public class AtmScreen extends Screen {
             stopHolding();
         }).bounds(centerX - 40, centerY - 32, allWidth, allHeight).build());
 
-        // 2. 入力ボックス (中央)
-        this.amountBox = new EditBox(this.font, centerX - 120, centerY - 10, 130, 20,
+        // 3. 右側の加減算ボタン — パネル右端から内側に配置（はみ出し防止）
+        int rBtnWidth = cents ? 50 : 48;
+        int rBtnGap = 3;
+        int rBtnMargin = 10;
+        int rBtnX_sub = panelRight - rBtnMargin - rBtnWidth;
+        int rBtnX_add = rBtnX_sub - rBtnGap - rBtnWidth;
+        int rBtnHeight = 16;
+        int rSpacingY = 4;
+
+        // 2. 入力ボックス（加減算ボタン左端までに収める）
+        int amountBoxRight = rBtnX_add - 6;
+        int amountBoxLeft = centerX - 120;
+        int amountBoxWidth = Math.max(100, amountBoxRight - amountBoxLeft);
+        this.amountBox = new EditBox(this.font, amountBoxLeft, centerY - 10, amountBoxWidth, 20,
                 EconomyMasterI18n.tr("economy.ui.amount"));
         this.amountBox.setMaxLength(15);
         this.amountBox.setValue("");
         this.amountBox.setResponder(this::onAmountBoxChanged);
         this.addRenderableWidget(this.amountBox);
 
-        // クリアボタン (C)
+        // クリアボタン (C) — 減算列の下
         this.addRenderableWidget(Button.builder(Component.literal("C"), button -> {
             this.amountBox.setValue("");
             this.currentAmount = 0;
             stopHolding();
-        }).bounds(centerX + 60, centerY + 34, 20, 20).build());
+        }).bounds(rBtnX_sub + (rBtnWidth - 20) / 2, centerY + 34, 20, 20).build());
 
-        // 3. 右側の加減算縦並びボタン (+-10,000, +-1,000, +-100)
-        int rBtnX_add = centerX + 20;
-        int rBtnX_sub = centerX + 72;
-        int rBtnWidth = 48;
-        int rBtnHeight = 16;
-        int rSpacingY = 4;
-
-        Button btnAdd10k = Button.builder(Component.literal("+10,000"), button -> startHolding(10000))
+        Button btnAdd10k = Button.builder(EconomyMasterI18n.amountDeltaComponent(10000), button -> startHolding(10000))
                 .bounds(rBtnX_add, centerY - 25, rBtnWidth, rBtnHeight).build();
-        Button btnSub10k = Button.builder(Component.literal("-10,000"), button -> startHolding(-10000))
+        Button btnSub10k = Button.builder(EconomyMasterI18n.amountDeltaComponent(-10000), button -> startHolding(-10000))
                 .bounds(rBtnX_sub, centerY - 25, rBtnWidth, rBtnHeight).build();
 
-        Button btnAdd1k = Button.builder(Component.literal("+1,000"), button -> startHolding(1000))
+        Button btnAdd1k = Button.builder(EconomyMasterI18n.amountDeltaComponent(1000), button -> startHolding(1000))
                 .bounds(rBtnX_add, centerY - 25 + (rBtnHeight + rSpacingY), rBtnWidth, rBtnHeight).build();
-        Button btnSub1k = Button.builder(Component.literal("-1,000"), button -> startHolding(-1000))
+        Button btnSub1k = Button.builder(EconomyMasterI18n.amountDeltaComponent(-1000), button -> startHolding(-1000))
                 .bounds(rBtnX_sub, centerY - 25 + (rBtnHeight + rSpacingY), rBtnWidth, rBtnHeight).build();
 
-        Button btnAdd100 = Button.builder(Component.literal("+100"), button -> startHolding(100))
+        Button btnAdd100 = Button.builder(EconomyMasterI18n.amountDeltaComponent(100), button -> startHolding(100))
                 .bounds(rBtnX_add, centerY - 25 + 2 * (rBtnHeight + rSpacingY), rBtnWidth, rBtnHeight).build();
-        Button btnSub100 = Button.builder(Component.literal("-100"), button -> startHolding(-100))
+        Button btnSub100 = Button.builder(EconomyMasterI18n.amountDeltaComponent(-100), button -> startHolding(-100))
                 .bounds(rBtnX_sub, centerY - 25 + 2 * (rBtnHeight + rSpacingY), rBtnWidth, rBtnHeight).build();
 
         this.addRenderableWidget(btnAdd10k);
@@ -112,20 +122,22 @@ public class AtmScreen extends Screen {
         this.shortcutButtons.add(new ButtonRef(btnAdd100, 100));
         this.shortcutButtons.add(new ButtonRef(btnSub100, -100));
 
-        // 4. アクションボタン（「預け入れ」「引き出し」）
-        int actBtnWidth = 55;
+        // 4. アクションボタン（EN は Withdraw が長いので幅を広げる）
+        int actBtnWidth = cents ? 70 : 55;
         int actBtnHeight = 20;
+        int actGap = 8;
+        int actLeft = amountBoxLeft;
         this.addRenderableWidget(
                 Button.builder(EconomyMasterI18n.tr("economy.ui.atm.deposit"), button -> handleDeposit())
-                        .bounds(centerX - 115, centerY + 25, actBtnWidth, actBtnHeight)
+                        .bounds(actLeft, centerY + 25, actBtnWidth, actBtnHeight)
                         .build());
 
         this.addRenderableWidget(
                 Button.builder(EconomyMasterI18n.tr("economy.ui.atm.withdraw"), button -> handleWithdraw())
-                        .bounds(centerX - 50, centerY + 25, actBtnWidth, actBtnHeight)
+                        .bounds(actLeft + actBtnWidth + actGap, centerY + 25, actBtnWidth, actBtnHeight)
                         .build());
 
-        // 5. 閉じるボタン (画面中央に配置)
+        // 5. 閉じるボタン
         this.addRenderableWidget(Button.builder(EconomyMasterI18n.tr("economy.ui.close"), button -> this.onClose())
                 .bounds(centerX - 40, centerY + 55, 80, 20)
                 .build());
@@ -216,15 +228,17 @@ public class AtmScreen extends Screen {
 
         int centerX = this.width / 2;
         int centerY = this.height / 2;
+        int half = this.panelHalf;
+        int inner = half - 5;
 
-        drawMinecraftBevel(guiGraphics, centerX - 135, centerY - 88, centerX + 135, centerY + 85, false);
-        guiGraphics.fill(centerX - 134, centerY - 87, centerX + 134, centerY - 86, 0xFFDFB323);
+        drawMinecraftBevel(guiGraphics, centerX - half, centerY - 88, centerX + half, centerY + 85, false);
+        guiGraphics.fill(centerX - half + 1, centerY - 87, centerX + half - 1, centerY - 86, 0xFFDFB323);
 
-        drawMinecraftBevel(guiGraphics, centerX - 130, centerY - 83, centerX + 130, centerY - 65, true);
-        guiGraphics.fill(centerX - 130, centerY - 83, centerX + 130, centerY - 82, 0xFFDFB323);
+        drawMinecraftBevel(guiGraphics, centerX - inner, centerY - 83, centerX + inner, centerY - 65, true);
+        guiGraphics.fill(centerX - inner, centerY - 83, centerX + inner, centerY - 82, 0xFFDFB323);
         guiGraphics.centeredText(this.font, "§e§lBANK ATM", centerX, centerY - 78, 0xFFFFFFFF);
 
-        drawMinecraftBevel(guiGraphics, centerX - 130, centerY - 60, centerX + 130, centerY - 40, true);
+        drawMinecraftBevel(guiGraphics, centerX - inner, centerY - 60, centerX + inner, centerY - 40, true);
 
         String balanceText = EconomyMasterI18n
                 .tr("economy.ui.atm.balance", EconomyMasterI18n.formatCurrency(EconomyCommon.getCurrentBalance()))

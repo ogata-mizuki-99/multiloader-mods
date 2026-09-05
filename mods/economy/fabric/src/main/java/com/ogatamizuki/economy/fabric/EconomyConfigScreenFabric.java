@@ -99,7 +99,7 @@ public class EconomyConfigScreenFabric extends Screen {
         EconomyFabricConfig config = new EconomyFabricConfig();
         config.syncFromRuntime();
         config.save();
-        this.minecraft.setScreen(parent);
+        this.minecraft.gui.setScreen(parent);
     }
 
     private void pushToServer() {

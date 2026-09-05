@@ -1,10 +1,10 @@
 {
   "block.deconstructor.deconstructor": "Deconstructor",
   "item.deconstructor.deconstructor": "Deconstructor",
-  "container.deconstructor.deconstructor": "Deconstructor (Extract 1)",
+  "container.deconstructor.deconstructor": "Deconstructor (×1)",
   "block.deconstructor.precision_deconstructor": "Precision Deconstructor",
   "item.deconstructor.precision_deconstructor": "Precision Deconstructor",
-  "container.deconstructor.precision_deconstructor": "Precision Deconstructor (Extract 3)",
+  "container.deconstructor.precision_deconstructor": "Precision Decon (×3)",
   "block.deconstructor.enchant_manager": "Enchantment Manager",
   "item.deconstructor.enchant_manager": "Enchantment Manager",
   "container.deconstructor.enchant_manager": "Enchantment Manager",

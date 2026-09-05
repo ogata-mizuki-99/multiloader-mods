@@ -1,8 +1,10 @@
 package com.ogatamizuki.sleep.neoforge;
 
+import com.ogatamizuki.sleep.DaySleepTimeAdvance;
 import com.ogatamizuki.sleep.SleepClientFlagsPayload;
 import com.ogatamizuki.sleep.SleepCommon;
 import com.ogatamizuki.sleep.SleepCommonConfigPushPayload;
+import com.ogatamizuki.sleep.SleepWakeFullHeal;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -37,9 +39,14 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import net.neoforged.neoforge.server.ServerLifecycleHooks;
 
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 @Mod(SleepCommon.MODID)
 public class SleepModNeoForge {
     private static final int VANILLA_SLEEPING_PERCENTAGE = 100;
+    private static final Map<UUID, Integer> DAY_SLEEP_TICKS = new ConcurrentHashMap<>();
 
     public SleepModNeoForge(IEventBus modEventBus, ModContainer modContainer) {
         SleepCommon.LOGGER.info("Good Sleep Mod (NeoForge) Initializing...");
@@ -144,14 +151,43 @@ public class SleepModNeoForge {
             return;
         }
 
-        if (!Config.ALLOW_DAY_SLEEP.get() || !(event.getLevel() instanceof ServerLevel level)) {
+        if (!(event.getLevel() instanceof ServerLevel level)) {
+            return;
+        }
+
+        // 深い睡眠完了（時刻スキップ）時に全快
+        if (Config.HEAL_WHILE_SLEEPING.get()) {
+            for (ServerPlayer player : level.players()) {
+                if (player.isSleeping()) {
+                    SleepWakeFullHeal.markDeepSleepReached(player);
+                    SleepWakeFullHeal.fullHealIfEnabled(player);
+                }
+            }
+        }
+
+        if (!Config.ALLOW_DAY_SLEEP.get()) {
             return;
         }
         if (level.isDarkOutside()) {
             return;
         }
 
+        // バニラは朝へ戻すが、仕様どおり夜へ進める
         event.setAdjustment(new ClockAdjustment.Marker(ClockTimeMarkers.NIGHT));
+        DAY_SLEEP_TICKS.clear();
+    }
+
+    @SubscribeEvent
+    public void onPlayerWakeUp(PlayerWakeUpEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
+            return;
+        }
+        DAY_SLEEP_TICKS.remove(player.getUUID());
+        if (player.level().isClientSide()) {
+            return;
+        }
+        // 深い睡眠到達後の起床のみ全快（途中でベッドを出た場合はフラグ無し）
+        SleepWakeFullHeal.onServerPlayerTick(player);
     }
 
     private boolean isWerewolfActiveNight() {
@@ -211,13 +247,31 @@ public class SleepModNeoForge {
 
     @SubscribeEvent
     public void onPlayerTick(PlayerTickEvent.Post event) {
-        if (event.getEntity().level().isClientSide() || !Config.HEAL_WHILE_SLEEPING.get()) {
+        if (event.getEntity().level().isClientSide()) {
             return;
         }
         if (!(event.getEntity() instanceof ServerPlayer player)) {
             return;
         }
-        if (!player.isSleeping()) {
+
+        // 昼間睡眠: SleepFinishedTimeEvent が飛ばない場合のフォールバック
+        if (Config.ALLOW_DAY_SLEEP.get() && player.isSleeping()
+                && player.level() instanceof ServerLevel level
+                && DaySleepTimeAdvance.isDaytime(level)) {
+            int ticks = DAY_SLEEP_TICKS.merge(player.getUUID(), 1, Integer::sum);
+            if (ticks >= DaySleepTimeAdvance.SLEEP_TICKS_REQUIRED) {
+                DaySleepTimeAdvance.finishDaySleep(level);
+                DAY_SLEEP_TICKS.clear();
+                return;
+            }
+        } else {
+            DAY_SLEEP_TICKS.remove(player.getUUID());
+        }
+
+        // 深い睡眠到達の記録 / 起床時全快
+        SleepWakeFullHeal.onServerPlayerTick(player);
+
+        if (!Config.HEAL_WHILE_SLEEPING.get() || !player.isSleeping()) {
             return;
         }
 
@@ -229,28 +283,15 @@ public class SleepModNeoForge {
             return;
         }
 
-        if (!player.isSleepingLongEnough() || player.tickCount % interval != 0) {
+        // Do not require isSleepingLongEnough(): day-sleep / one-player skip often finishes
+        // at or before that threshold, so heal would never run.
+        if (player.tickCount % interval != 0) {
             return;
         }
 
         if (player.getHealth() < player.getMaxHealth()) {
             player.heal(1.0F);
         }
-    }
-
-    @SubscribeEvent
-    public void onPlayerWakeUp(PlayerWakeUpEvent event) {
-        if (event.getEntity().level().isClientSide() || !Config.HEAL_WHILE_SLEEPING.get()) {
-            return;
-        }
-        if (!(event.getEntity() instanceof ServerPlayer player)) {
-            return;
-        }
-        if (event.updateLevel()) {
-            return;
-        }
-
-        player.setHealth(player.getMaxHealth());
     }
 
     private static boolean isDaytimeSleepBlocked(Player player, BlockPos pos) {

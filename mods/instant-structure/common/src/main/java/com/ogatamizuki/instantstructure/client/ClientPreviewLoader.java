@@ -10,11 +10,26 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public final class ClientPreviewLoader {
     private static final Map<String, List<PreviewBlockEntry>> PARSED_CACHE = new ConcurrentHashMap<>();
+    private static final CopyOnWriteArrayList<Runnable> CACHE_LISTENERS = new CopyOnWriteArrayList<>();
 
     private ClientPreviewLoader() {
+    }
+
+    public static List<PreviewBlockEntry> getCachedBlocks(String category, String templateName) {
+        List<PreviewBlockEntry> blocks = PARSED_CACHE.get(cacheKey(category, templateName));
+        return blocks != null ? blocks : List.of();
+    }
+
+    public static void addCacheListener(Runnable listener) {
+        CACHE_LISTENERS.add(listener);
+    }
+
+    public static void removeCacheListener(Runnable listener) {
+        CACHE_LISTENERS.remove(listener);
     }
 
     public static void requestPreview(String category, String templateName) {
@@ -43,6 +58,7 @@ public final class ClientPreviewLoader {
                 List<PreviewBlockEntry> blocks = StructureTemplateHelper.extractSolidBlocks(mc.level, nbtPath);
                 if (!blocks.isEmpty()) {
                     PARSED_CACHE.put(cacheKey, List.copyOf(blocks));
+                    notifyCacheListeners();
                 }
                 applyIfCurrent(category, templateName, blocks);
             } catch (Exception ignored) {
@@ -57,6 +73,14 @@ public final class ClientPreviewLoader {
         }
         PARSED_CACHE.put(cacheKey(category, templateName), List.copyOf(blocks));
         applyIfCurrent(category, templateName, blocks);
+        notifyCacheListeners();
+    }
+
+    private static void notifyCacheListeners() {
+        Minecraft mc = Minecraft.getInstance();
+        for (Runnable listener : CACHE_LISTENERS) {
+            mc.execute(listener);
+        }
     }
 
     private static String cacheKey(String category, String templateName) {

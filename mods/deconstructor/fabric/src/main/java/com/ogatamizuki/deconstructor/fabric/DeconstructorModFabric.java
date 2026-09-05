@@ -5,6 +5,8 @@ import com.ogatamizuki.deconstructor.DeconstructorBlockEntity;
 import com.ogatamizuki.deconstructor.DeconstructorBlocks;
 import com.ogatamizuki.deconstructor.DeconstructorCommon;
 import com.ogatamizuki.deconstructor.DeconstructorMenu;
+import com.ogatamizuki.deconstructor.DeconstructorRecipeIndex;
+import com.ogatamizuki.deconstructor.Config;
 import com.ogatamizuki.deconstructor.EnchantmentManagerBlock;
 import com.ogatamizuki.deconstructor.EnchantmentManagerBlockEntity;
 import com.ogatamizuki.deconstructor.EnchantmentManagerMenu;
@@ -166,6 +168,33 @@ public class DeconstructorModFabric implements ModInitializer {
         DeconstructorBlocks.ENCHANT_MANAGER_BLOCK_ENTITY_TYPE = () -> enchantManagerBeType;
         DeconstructorBlocks.DECONSTRUCTOR_MENU_TYPE = () -> deconstructorMenuType;
         DeconstructorBlocks.ENCHANT_MANAGER_MENU_TYPE = () -> enchantManagerMenuType;
+
+        // Common config push (Mods 設定 → サーバー)
+        net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry.serverboundPlay().register(
+                com.ogatamizuki.deconstructor.DeconstructorCommonConfigPushPayload.TYPE,
+                com.ogatamizuki.deconstructor.DeconstructorCommonConfigPushPayload.STREAM_CODEC);
+        net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.registerGlobalReceiver(
+                com.ogatamizuki.deconstructor.DeconstructorCommonConfigPushPayload.TYPE,
+                (payload, context) -> context.server().execute(() -> {
+                    net.minecraft.server.level.ServerPlayer serverPlayer = context.player();
+                    if (!serverPlayer.createCommandSourceStack().permissions().hasPermission(
+                            net.minecraft.server.permissions.Permissions.COMMANDS_GAMEMASTER)) {
+                        serverPlayer.sendSystemMessage(
+                                Component.translatable("deconstructor.configuration.push_denied")
+                                        .withStyle(net.minecraft.ChatFormatting.RED));
+                        return;
+                    }
+                    String excludedItems = payload.excludedItems() == null ? "" : payload.excludedItems();
+                    Config.setExcludedItems(excludedItems);
+                    DeconstructorRecipeIndex.invalidate();
+                    DeconstructorCommon.LOGGER.info(
+                            "Deconstructor common config pushed by {}: excludedItems={}",
+                            serverPlayer.getGameProfile().name(),
+                            Config.getExcludedItems());
+                    serverPlayer.sendSystemMessage(
+                            Component.translatable("deconstructor.configuration.push_ok")
+                                    .withStyle(net.minecraft.ChatFormatting.GREEN));
+                }));
 
         // Trigger Fabric API's paginateTabs() to assign pages & tab positions
         net.minecraft.world.item.CreativeModeTabs.validate();

@@ -51,7 +51,7 @@ public class KeyMappings {
             hasSyncedPos = true;
         }
 
-        if (mc.screen != null) {
+        if (mc.gui.screen() != null) {
             return;
         }
 
@@ -85,7 +85,7 @@ public class KeyMappings {
                 double pct = (double) (maxDamage - damage) / maxDamage;
                 if (pct <= Config.WARNING_THRESHOLD.get() && warningCooldown == 0) {
                     mc.player.sendSystemMessage(
-                            Component.literal("§c⚠️ Elytra Durability Low! (" + (int) (pct * 100) + "%)")
+                            Component.literal("�c?? Elytra Durability Low! (" + (int) (pct * 100) + "%)")
                     );
                     mc.player.playSound(
                             net.minecraft.sounds.SoundEvents.NOTE_BLOCK_BASS.value(),

@@ -2,9 +2,9 @@ name: Build public mods
 
 on:
   push:
-    branches: [main, master, multiloader-26.1.2]
+    branches: [main, master, multiloader-26.1.2, multiloader-26.2]
   pull_request:
-    branches: [main, master, multiloader-26.1.2]
+    branches: [main, master, multiloader-26.1.2, multiloader-26.2]
   workflow_dispatch:
 
 jobs:

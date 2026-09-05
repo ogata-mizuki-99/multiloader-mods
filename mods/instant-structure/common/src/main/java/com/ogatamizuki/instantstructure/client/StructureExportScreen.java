@@ -49,7 +49,7 @@ public class StructureExportScreen extends Screen {
     public static void open(BlockPos pos1, BlockPos pos2) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player != null) {
-            mc.setScreen(new StructureExportScreen(pos1, pos2));
+            mc.gui.setScreen(new StructureExportScreen(pos1, pos2));
         }
     }
 

@@ -105,6 +105,7 @@ public class InstantStructureModNeoForge {
         CONDITION_CODECS.register(modEventBus);
 
         modEventBus.addListener(this::registerPayloads);
+        modEventBus.addListener(this::onConfigLoad);
         modEventBus.addListener(this::onConfigReload);
 
         NeoForge.EVENT_BUS.register(this);
@@ -115,10 +116,17 @@ public class InstantStructureModNeoForge {
         createDirs();
     }
 
+    private void onConfigLoad(net.neoforged.fml.event.config.ModConfigEvent.Loading event) {
+        if (event.getConfig().getSpec() == Config.SPEC) {
+            Config.syncToCommon();
+        }
+    }
+
     private void onConfigReload(net.neoforged.fml.event.config.ModConfigEvent.Reloading event) {
         if (event.getConfig().getSpec() != Config.SPEC) {
             return;
         }
+        Config.syncToCommon();
         net.minecraft.server.MinecraftServer server = net.neoforged.neoforge.server.ServerLifecycleHooks.getCurrentServer();
         if (server != null) {
             server.execute(() -> server.reloadResources(server.getPackRepository().getSelectedIds())
@@ -240,12 +248,14 @@ public class InstantStructureModNeoForge {
             Config.ENABLE_MATERIAL_CONSUMPTION.save();
             Config.DROP_CLEARED_BLOCKS.set(payload.dropClearedBlocks());
             Config.DROP_CLEARED_BLOCKS.save();
+            Config.syncToCommon();
+            InstantStructureConfig.save();
             LOGGER.info(
                     "Instant Structure common config pushed by {}: recipe={}, material={}, drop={}",
                     player.getGameProfile().name(),
-                    Config.ENABLE_CRAFTING_RECIPE.get(),
-                    Config.ENABLE_MATERIAL_CONSUMPTION.get(),
-                    Config.DROP_CLEARED_BLOCKS.get()
+                    InstantStructureConfig.enableCraftingRecipe,
+                    InstantStructureConfig.enableMaterialConsumption,
+                    InstantStructureConfig.dropClearedBlocks
             );
             player.sendSystemMessage(Component.translatable("instant_structure.screen.config.push_ok")
                     .withStyle(ChatFormatting.GREEN));
@@ -346,8 +356,8 @@ public class InstantStructureModNeoForge {
                     return;
                 }
 
-                // 素材消費チェック
-                boolean consume = Config.ENABLE_MATERIAL_CONSUMPTION.get() && !player.isCreative() && !player.isSpectator();
+                // 素材消費チェック（設定画面 / InstantStructureConfig と同一のランタイム値を使う）
+                boolean consume = InstantStructureConfig.enableMaterialConsumption && !player.isCreative() && !player.isSpectator();
                 BlockPos anchorPos = payload.hasAnchor() ? new BlockPos(payload.anchorX(), payload.anchorY(), payload.anchorZ()) : null;
                 if (consume) {
                     Map<net.minecraft.world.item.Item, Integer> required = new HashMap<>();
@@ -642,7 +652,7 @@ public class InstantStructureModNeoForge {
     }
 
     private static void clearPlacementArea(ServerLevel level, PlacementBounds bounds, ServerPlayer player) {
-        boolean drop = Config.DROP_CLEARED_BLOCKS.get() && player != null && !player.isCreative() && !player.isSpectator();
+        boolean drop = InstantStructureConfig.dropClearedBlocks && player != null && !player.isCreative() && !player.isSpectator();
         for (int x = bounds.minX(); x <= bounds.maxX(); x++) {
             for (int y = bounds.minY(); y <= bounds.maxY(); y++) {
                 for (int z = bounds.minZ(); z <= bounds.maxZ(); z++) {

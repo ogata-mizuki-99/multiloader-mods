@@ -58,7 +58,7 @@ public final class TitleScreenOverlay {
      *     if (titleSoundPlayed || titleSoundScheduled) return;
      *     titleSoundScheduled = true;
      *     mc.execute(() -> {
-     *         if (titleSoundPlayed || !(mc.screen instanceof TitleScreen)) return;
+     *         if (titleSoundPlayed || !(mc.gui.screen() instanceof TitleScreen)) return;
      *         titleSoundPlayed = true;
      *         mc.getSoundManager().play(
      *                 SimpleSoundInstance.forUI(EconomyMod.TITLE_TRANSITION_SE.get(), 1.0F));

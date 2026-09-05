@@ -44,7 +44,7 @@ public class PrivateChestConfigScreenFabric extends Screen {
 
         addRenderableWidget(Button.builder(
                 Component.translatable("gui.done"),
-                button -> this.minecraft.setScreen(parent)
+                button -> this.minecraft.gui.setScreen(parent)
         ).bounds(centerX - 50, centerY + 40, 100, 20).build());
     }
 
@@ -79,6 +79,6 @@ public class PrivateChestConfigScreenFabric extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(parent);
+        this.minecraft.gui.setScreen(parent);
     }
 }

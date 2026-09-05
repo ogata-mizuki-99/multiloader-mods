@@ -69,7 +69,7 @@ public class SlotConfigScreen extends Screen {
                         this.elytraX, this.elytraY, this.fireworkX, this.fireworkY));
             }
 
-            this.minecraft.setScreen(parent);
+            this.minecraft.gui.setScreen(parent);
         }).bounds(centerX - 115, centerY + 95, 70, 20).build());
 
         addRenderableWidget(Button.builder(Component.translatable("elytra_slot.screen.config.default"), btn -> {
@@ -81,7 +81,7 @@ public class SlotConfigScreen extends Screen {
         }).bounds(centerX - 35, centerY + 95, 70, 20).build());
 
         addRenderableWidget(Button.builder(Component.translatable("gui.cancel"), btn -> {
-            this.minecraft.setScreen(parent);
+            this.minecraft.gui.setScreen(parent);
         }).bounds(centerX + 45, centerY + 95, 70, 20).build());
     }
 

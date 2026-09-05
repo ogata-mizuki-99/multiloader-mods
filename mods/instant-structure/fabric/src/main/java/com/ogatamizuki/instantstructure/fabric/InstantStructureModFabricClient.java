@@ -6,8 +6,11 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.core.BlockPos;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 public class InstantStructureModFabricClient implements ClientModInitializer {
     @Override
@@ -43,21 +46,16 @@ public class InstantStructureModFabricClient implements ClientModInitializer {
         });
 
         ClientPlayNetworking.registerGlobalReceiver(TemplatesListPayload.TYPE, (payload, context) -> {
-            context.client().execute(() -> context.client().setScreen(new InstantBuilderScreen(payload.templates())));
+            context.client().execute(() -> context.client().gui.setScreen(new InstantBuilderScreen(payload.templates())));
         });
 
         ClientPlayNetworking.registerGlobalReceiver(TemplatePreviewPayload.TYPE, (payload, context) -> {
-            context.client().execute(() -> {
-                if (ClientPlacementRegistry.active
-                        && payload.category().equals(ClientPlacementRegistry.category)
-                        && payload.templateName().equals(ClientPlacementRegistry.templateName)) {
-                    ClientPreviewLoader.storeFromPayload(
-                            payload.category(),
-                            payload.templateName(),
-                            payload.blocks()
-                    );
-                }
-            });
+            // 設置モード外（素材確認など）でもキャッシュする。apply は loader 側で active 時のみ行う。
+            context.client().execute(() -> ClientPreviewLoader.storeFromPayload(
+                    payload.category(),
+                    payload.templateName(),
+                    payload.blocks()
+            ));
         });
 
         ClientPlayNetworking.registerGlobalReceiver(OpenExportDialogPayload.TYPE, (payload, context) -> {
@@ -84,20 +82,18 @@ public class InstantStructureModFabricClient implements ClientModInitializer {
         net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.END_CLIENT_TICK.register(
                 ClientPlacementRegistry::syncHeldItem
         );
-        net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents.BEFORE_GIZMOS.register(context -> {
+        LevelRenderEvents.COLLECT_SUBMITS.register(context -> {
             Minecraft mc = Minecraft.getInstance();
             if (mc.player == null) return;
 
-            com.mojang.blaze3d.vertex.PoseStack poseStack = context.poseStack();
-            net.minecraft.world.phys.Vec3 cam = mc.gameRenderer.getMainCamera().position();
+            PoseStack poseStack = context.poseStack();
+            SubmitNodeCollector collector = context.submitNodeCollector();
             float lineWidth = mc.getWindow().getAppropriateLineWidth();
 
-            if (ClientSelectionRegistry.isHoldingMarker(mc) && ClientSelectionRegistry.hasStart && ClientSelectionRegistry.pos1 != null) {
+            if (ClientSelectionRegistry.isHoldingMarker(mc) && ClientSelectionRegistry.hasStart
+                    && ClientSelectionRegistry.pos1 != null) {
                 BlockPos pos2 = ClientSelectionRegistry.resolvePreviewEnd(mc);
                 if (pos2 != null) {
-                    poseStack.pushPose();
-                    poseStack.translate(-cam.x, -cam.y, -cam.z);
-
                     float r;
                     float g;
                     float b;
@@ -115,41 +111,30 @@ public class InstantStructureModFabricClient implements ClientModInitializer {
                         b = 0.35F;
                     }
 
-                    net.minecraft.client.renderer.MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
-                    com.mojang.blaze3d.vertex.VertexConsumer consumer = bufferSource.getBuffer(net.minecraft.client.renderer.rendertype.RenderTypes.lines());
                     SelectionWireframeRenderer.drawBox(
-                            poseStack,
-                            consumer,
                             ClientSelectionRegistry.pos1,
                             pos2,
                             r, g, b, 1.0F,
-                            lineWidth,
-                            cam
+                            lineWidth
                     );
-                    bufferSource.endBatch(net.minecraft.client.renderer.rendertype.RenderTypes.lines());
-                    poseStack.popPose();
                 }
             }
 
-            if (ClientPlacementRegistry.isPlacementVisible(mc)) {
+            if (ClientPlacementRegistry.active) {
                 BlockPos targetPos = ClientPlacementRegistry.resolvePlacementOrigin(mc);
                 if (targetPos != null) {
-                    poseStack.pushPose();
-                    poseStack.translate(-cam.x, -cam.y, -cam.z);
-
-                    net.minecraft.client.renderer.MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
                     if (ClientPlacementRegistry.shouldRenderDetailedGhosts()) {
                         if (ClientPlacementRegistry.previewCache != null) {
                             GhostBlockRenderer.renderCached(
                                     poseStack,
-                                    bufferSource,
+                                    collector,
                                     ClientPlacementRegistry.previewCache,
-                                    cam
+                                    mc.gameRenderer.mainCamera().position()
                             );
                         } else if (!ClientPlacementRegistry.previewBlocks.isEmpty()) {
                             GhostBlockRenderer.renderBlockModels(
                                     poseStack,
-                                    bufferSource,
+                                    collector,
                                     targetPos,
                                     ClientPlacementRegistry.placementTransform(),
                                     ClientPlacementRegistry.previewBlocks
@@ -157,8 +142,6 @@ public class InstantStructureModFabricClient implements ClientModInitializer {
                         }
                     }
                     PlacementPreviewRenderer.renderWireframe(
-                            poseStack,
-                            bufferSource,
                             targetPos,
                             ClientPlacementRegistry.placementTransform(),
                             ClientPlacementRegistry.sizeX,
@@ -166,7 +149,6 @@ public class InstantStructureModFabricClient implements ClientModInitializer {
                             ClientPlacementRegistry.sizeZ,
                             ClientPlacementRegistry.previewBlocks,
                             lineWidth,
-                            cam,
                             ClientPlacementRegistry.tentativelyConfirmed
                     );
 
@@ -175,15 +157,10 @@ public class InstantStructureModFabricClient implements ClientModInitializer {
                             : ClientPlacementRegistry.resolveCrosshairAnchor(mc);
                     if (anchorBlock != null) {
                         PlacementPreviewRenderer.renderAnchorWireframe(
-                                poseStack,
-                                bufferSource,
                                 anchorBlock,
-                                lineWidth,
-                                cam
+                                lineWidth
                         );
                     }
-
-                    poseStack.popPose();
                 }
             }
         });

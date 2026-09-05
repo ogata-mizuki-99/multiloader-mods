@@ -2,6 +2,7 @@ package com.ogatamizuki.instantstructure.client;
 
 import com.ogatamizuki.instantstructure.InstantStructureCommonConfigPushPayload;
 import com.ogatamizuki.instantstructure.InstantStructureConfig;
+import com.ogatamizuki.instantstructure.InstantStructurePlatform;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -84,7 +85,7 @@ public class InstantStructureConfigScreen extends Screen {
                 .bounds(centerX - 110, centerY + 42, 220, 20)
                 .build());
 
-        addRenderableWidget(Button.builder(Component.translatable("gui.back"), btn -> this.minecraft.setScreen(parent))
+        addRenderableWidget(Button.builder(Component.translatable("gui.back"), btn -> this.minecraft.gui.setScreen(parent))
                 .bounds(centerX - 50, centerY + 72, 100, 20)
                 .build());
     }
@@ -100,7 +101,12 @@ public class InstantStructureConfigScreen extends Screen {
                             .withStyle(ChatFormatting.RED));
             return;
         }
-        mc.getConnection().send(InstantStructureCommonConfigPushPayload.fromLocalConfig());
+        InstantStructureCommonConfigPushPayload payload = InstantStructureCommonConfigPushPayload.fromLocalConfig();
+        if (InstantStructurePlatform.sendToServer != null) {
+            InstantStructurePlatform.sendToServer.accept(payload);
+        } else {
+            mc.getConnection().send(payload);
+        }
         mc.player.sendSystemMessage(
                 Component.translatable("instant_structure.screen.config.push_sent").withStyle(ChatFormatting.YELLOW));
     }
@@ -114,6 +120,6 @@ public class InstantStructureConfigScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(parent);
+        this.minecraft.gui.setScreen(parent);
     }
 }

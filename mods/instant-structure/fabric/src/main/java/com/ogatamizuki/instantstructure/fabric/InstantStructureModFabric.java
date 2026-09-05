@@ -10,6 +10,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 
@@ -101,6 +102,29 @@ public class InstantStructureModFabric implements ModInitializer {
         });
         ServerPlayNetworking.registerGlobalReceiver(DeleteTemplatePayload.TYPE, (payload, context) -> {
             context.server().execute(() -> InstantStructureServerOps.handleDeleteTemplate(context.player(), payload.category(), payload.templateName()));
+        });
+        ServerPlayNetworking.registerGlobalReceiver(InstantStructureCommonConfigPushPayload.TYPE, (payload, context) -> {
+            context.server().execute(() -> {
+                ServerPlayer player = context.player();
+                if (!player.createCommandSourceStack().permissions().hasPermission(
+                        net.minecraft.server.permissions.Permissions.COMMANDS_GAMEMASTER)) {
+                    player.sendSystemMessage(Component.translatable("instant_structure.screen.config.push_denied")
+                            .withStyle(net.minecraft.ChatFormatting.RED));
+                    return;
+                }
+                InstantStructureConfig.enableCraftingRecipe = payload.enableCraftingRecipe();
+                InstantStructureConfig.enableMaterialConsumption = payload.enableMaterialConsumption();
+                InstantStructureConfig.dropClearedBlocks = payload.dropClearedBlocks();
+                InstantStructureConfig.save();
+                InstantStructureCommon.LOGGER.info(
+                        "Instant Structure common config pushed by {}: recipe={}, material={}, drop={}",
+                        player.getGameProfile().name(),
+                        InstantStructureConfig.enableCraftingRecipe,
+                        InstantStructureConfig.enableMaterialConsumption,
+                        InstantStructureConfig.dropClearedBlocks);
+                player.sendSystemMessage(Component.translatable("instant_structure.screen.config.push_ok")
+                        .withStyle(net.minecraft.ChatFormatting.GREEN));
+            });
         });
     }
 }

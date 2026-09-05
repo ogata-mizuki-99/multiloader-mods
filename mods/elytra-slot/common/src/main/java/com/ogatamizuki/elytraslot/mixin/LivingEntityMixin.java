@@ -11,33 +11,27 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+/**
+ * NeoForge 26.2 grants custom-slot glide via {@code GLIDING_FLIGHT}, so the old
+ * {@code getItemBySlot} intercept no longer runs. Fabric still cancels on Shift via
+ * {@code EntityElytraEvents.CUSTOM}; this mixin restores the same cancel for both
+ * loaders when glide comes from the custom elytra slot (not chest-slot elytra).
+ */
 @Mixin(LivingEntity.class)
 public class LivingEntityMixin {
 
-    @Inject(method = "getItemBySlot", at = @At("RETURN"), cancellable = true)
-    private void onGetItemBySlot(EquipmentSlot slot, CallbackInfoReturnable<ItemStack> cir) {
-        if (slot == EquipmentSlot.CHEST && (Object) this instanceof Player player) {
-            ItemStack original = cir.getReturnValue();
-            if (!original.is(Items.ELYTRA)) {
-                // Only override with custom elytra if the call originates from glide/flight logic
-                boolean isFlightCheck = false;
-                for (StackTraceElement element : Thread.currentThread().getStackTrace()) {
-                    String methodName = element.getMethodName();
-                    if (methodName.equals("canGlide") || methodName.equals("updateFallFlying") || methodName.startsWith("lambda$updateFallFlying$")) {
-                        isFlightCheck = true;
-                        break;
-                    }
-                }
-                if (isFlightCheck) {
-                    if (player.isShiftKeyDown()) {
-                        return; // Sneaking/shifting cancels flight by not reporting elytra in the custom slot
-                    }
-                    ItemStack elytra = ElytraSlotCommon.getElytra(player);
-                    if (elytra.is(Items.ELYTRA)) {
-                        cir.setReturnValue(elytra);
-                    }
-                }
-            }
+    @Inject(method = "canGlide", at = @At("HEAD"), cancellable = true)
+    private void elytraSlot$cancelGlideWhenSneaking(CallbackInfoReturnable<Boolean> cir) {
+        if (!((Object) this instanceof Player player) || !player.isShiftKeyDown()) {
+            return;
+        }
+        // Chest elytra keeps vanilla behavior; only cancel custom-slot glide.
+        if (player.getItemBySlot(EquipmentSlot.CHEST).is(Items.ELYTRA)) {
+            return;
+        }
+        ItemStack custom = ElytraSlotCommon.getElytra(player);
+        if (custom.is(Items.ELYTRA) && custom.getDamageValue() < custom.getMaxDamage() - 1) {
+            cir.setReturnValue(false);
         }
     }
 }

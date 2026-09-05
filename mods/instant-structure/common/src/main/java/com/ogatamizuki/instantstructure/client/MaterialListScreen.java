@@ -1,38 +1,96 @@
 package com.ogatamizuki.instantstructure.client;
 
+import com.ogatamizuki.instantstructure.InstantStructurePlatform;
+import com.ogatamizuki.instantstructure.RequestPreviewPayload;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MaterialListScreen extends Screen {
     private final Screen parent;
-    private final List<InstantBuilderScreen.MaterialCost> costs;
+    private final String category;
+    private final String templateName;
+    private final Runnable cacheListener = this::onPreviewCached;
+    private List<InstantBuilderScreen.MaterialCost> costs;
+    private boolean loading;
+    private int waitTicks;
     private int scrollOffset = 0;
     private static final int VISIBLE_ROWS = 9;
     private static final int ROW_HEIGHT = 18;
 
-    public MaterialListScreen(Screen parent, List<InstantBuilderScreen.MaterialCost> costs) {
+    public MaterialListScreen(Screen parent, String category, String templateName) {
         super(Component.translatable("instant_structure.screen.material_list.title"));
         this.parent = parent;
-        this.costs = costs;
+        this.category = category;
+        this.templateName = templateName;
+        this.costs = new ArrayList<>(InstantBuilderScreen.computeMaterialCosts(category, templateName));
+        this.loading = this.costs.isEmpty();
     }
 
     private int maxScrollOffset() {
         return Math.max(0, costs.size() - VISIBLE_ROWS);
     }
 
+    private void onPreviewCached() {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.gui.screen() != this) {
+            return;
+        }
+        List<InstantBuilderScreen.MaterialCost> next = InstantBuilderScreen.computeMaterialCosts(category, templateName);
+        if (next.isEmpty()) {
+            return;
+        }
+        this.costs = new ArrayList<>(next);
+        this.loading = false;
+        this.scrollOffset = 0;
+    }
+
+    private void requestServerPreview() {
+        RequestPreviewPayload payload = new RequestPreviewPayload(category, templateName);
+        if (InstantStructurePlatform.sendToServer != null) {
+            InstantStructurePlatform.sendToServer.accept(payload);
+        } else if (Minecraft.getInstance().getConnection() != null) {
+            Minecraft.getInstance().getConnection().send(payload);
+        }
+        ClientPreviewLoader.requestPreview(category, templateName);
+    }
+
     @Override
     protected void init() {
         super.init();
+        ClientPreviewLoader.addCacheListener(cacheListener);
+        if (loading) {
+            requestServerPreview();
+        }
+
         int centerX = this.width / 2;
         int centerY = this.height / 2;
 
-        addRenderableWidget(Button.builder(Component.translatable("gui.back"), btn -> this.minecraft.setScreen(parent))
+        addRenderableWidget(Button.builder(Component.translatable("gui.back"), btn -> this.minecraft.gui.setScreen(parent))
                 .bounds(centerX - 50, centerY + 95, 100, 20)
                 .build());
+    }
+
+    @Override
+    public void removed() {
+        ClientPreviewLoader.removeCacheListener(cacheListener);
+        super.removed();
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (loading) {
+            waitTicks++;
+            if (waitTicks > 100) {
+                loading = false;
+            }
+        }
     }
 
     @Override
@@ -49,7 +107,9 @@ public class MaterialListScreen extends Screen {
         int top = centerY - 88;
         guiGraphics.fill(left - 4, top - 4, left + panelWidth + 4, top + panelHeight + 4, 0xA0000000);
 
-        if (costs.isEmpty()) {
+        if (loading && costs.isEmpty()) {
+            guiGraphics.centeredText(this.font, Component.translatable("instant_structure.screen.material_list.loading"), centerX, centerY, 0xFFAAAAAA);
+        } else if (costs.isEmpty()) {
             guiGraphics.centeredText(this.font, Component.translatable("instant_structure.screen.material_list.empty"), centerX, centerY, 0xFFAAAAAA);
         } else {
             int visibleCount = Math.min(costs.size() - scrollOffset, VISIBLE_ROWS);
@@ -87,6 +147,6 @@ public class MaterialListScreen extends Screen {
 
     @Override
     public void onClose() {
-        this.minecraft.setScreen(parent);
+        this.minecraft.gui.setScreen(parent);
     }
 }

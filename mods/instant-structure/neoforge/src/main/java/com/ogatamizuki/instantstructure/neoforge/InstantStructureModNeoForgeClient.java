@@ -3,14 +3,11 @@ package com.ogatamizuki.instantstructure.neoforge;
 import com.ogatamizuki.instantstructure.*;
 import com.ogatamizuki.instantstructure.client.*;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.rendertype.RenderTypes;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import net.minecraft.world.phys.Vec3;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -19,7 +16,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
+import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -77,22 +74,17 @@ public class InstantStructureModNeoForgeClient {
 
         event.register(TemplatesListPayload.TYPE, (payload, context) -> {
             Minecraft mc = Minecraft.getInstance();
-            mc.execute(() -> mc.setScreen(new InstantBuilderScreen(payload.templates())));
+            mc.execute(() -> mc.gui.setScreen(new InstantBuilderScreen(payload.templates())));
         });
 
         event.register(TemplatePreviewPayload.TYPE, (payload, context) -> {
+            // 設置モード外（素材確認など）でもキャッシュする。apply は loader 側で active 時のみ行う。
             Minecraft mc = Minecraft.getInstance();
-            mc.execute(() -> {
-                if (ClientPlacementRegistry.active
-                        && payload.category().equals(ClientPlacementRegistry.category)
-                        && payload.templateName().equals(ClientPlacementRegistry.templateName)) {
-                    ClientPreviewLoader.storeFromPayload(
-                            payload.category(),
-                            payload.templateName(),
-                            payload.blocks()
-                    );
-                }
-            });
+            mc.execute(() -> ClientPreviewLoader.storeFromPayload(
+                    payload.category(),
+                    payload.templateName(),
+                    payload.blocks()
+            ));
         });
 
         event.register(OpenExportDialogPayload.TYPE, (payload, context) -> {
@@ -126,7 +118,7 @@ public class InstantStructureModNeoForgeClient {
     @SubscribeEvent
     public void onMouseScroll(InputEvent.MouseScrollingEvent event) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.screen != null) {
+        if (mc.player == null || mc.gui.screen() != null) {
             return;
         }
         if (!mc.options.keyShift.isDown()) {
@@ -150,7 +142,7 @@ public class InstantStructureModNeoForgeClient {
     @SubscribeEvent
     public void onKeyInput(InputEvent.Key event) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.screen != null) return;
+        if (mc.player == null || mc.gui.screen() != null) return;
 
         if (event.getAction() == GLFW.GLFW_PRESS && event.getKey() == GLFW.GLFW_KEY_ESCAPE) {
             if (ClientPlacementRegistry.active) {
@@ -189,7 +181,7 @@ public class InstantStructureModNeoForgeClient {
     @SubscribeEvent
     public void onMouseInput(InputEvent.MouseButton.Pre event) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.screen != null) return;
+        if (mc.player == null || mc.gui.screen() != null) return;
 
         // Builder item handling
         if (ClientPlacementRegistry.active && ClientPlacementRegistry.isHoldingBuilder(mc)) {
@@ -266,21 +258,18 @@ public class InstantStructureModNeoForgeClient {
     }
 
     @SubscribeEvent
-    public void onRenderLevelStage(RenderLevelStageEvent.AfterTranslucentBlocks event) {
+    public void onSubmitCustomGeometry(SubmitCustomGeometryEvent event) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null) return;
 
         PoseStack poseStack = event.getPoseStack();
-        Vec3 cam = mc.gameRenderer.getMainCamera().position();
+        SubmitNodeCollector collector = event.getSubmitNodeCollector();
         float lineWidth = mc.getWindow().getAppropriateLineWidth();
 
         if (ClientSelectionRegistry.isHoldingMarker(mc) && ClientSelectionRegistry.hasStart
                 && ClientSelectionRegistry.pos1 != null) {
             BlockPos pos2 = ClientSelectionRegistry.resolvePreviewEnd(mc);
             if (pos2 != null) {
-                poseStack.pushPose();
-                poseStack.translate(-cam.x, -cam.y, -cam.z);
-
                 float r;
                 float g;
                 float b;
@@ -298,41 +287,30 @@ public class InstantStructureModNeoForgeClient {
                     b = 0.35F;
                 }
 
-                MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
-                VertexConsumer consumer = bufferSource.getBuffer(RenderTypes.lines());
                 SelectionWireframeRenderer.drawBox(
-                        poseStack,
-                        consumer,
                         ClientSelectionRegistry.pos1,
                         pos2,
                         r, g, b, 1.0F,
-                        lineWidth,
-                        cam
+                        lineWidth
                 );
-                bufferSource.endBatch(RenderTypes.lines());
-                poseStack.popPose();
             }
         }
 
-        if (ClientPlacementRegistry.isPlacementVisible(mc)) {
+        if (ClientPlacementRegistry.active) {
             BlockPos targetPos = ClientPlacementRegistry.resolvePlacementOrigin(mc);
             if (targetPos != null) {
-                poseStack.pushPose();
-                poseStack.translate(-cam.x, -cam.y, -cam.z);
-
-                MultiBufferSource.BufferSource bufferSource = mc.renderBuffers().bufferSource();
                 if (ClientPlacementRegistry.shouldRenderDetailedGhosts()) {
                     if (ClientPlacementRegistry.previewCache != null) {
                         GhostBlockRenderer.renderCached(
                                 poseStack,
-                                bufferSource,
+                                collector,
                                 ClientPlacementRegistry.previewCache,
-                                cam
+                                mc.gameRenderer.mainCamera().position()
                         );
                     } else if (!ClientPlacementRegistry.previewBlocks.isEmpty()) {
                         GhostBlockRenderer.renderBlockModels(
                                 poseStack,
-                                bufferSource,
+                                collector,
                                 targetPos,
                                 ClientPlacementRegistry.placementTransform(),
                                 ClientPlacementRegistry.previewBlocks
@@ -340,8 +318,6 @@ public class InstantStructureModNeoForgeClient {
                     }
                 }
                 PlacementPreviewRenderer.renderWireframe(
-                        poseStack,
-                        bufferSource,
                         targetPos,
                         ClientPlacementRegistry.placementTransform(),
                         ClientPlacementRegistry.sizeX,
@@ -349,7 +325,6 @@ public class InstantStructureModNeoForgeClient {
                         ClientPlacementRegistry.sizeZ,
                         ClientPlacementRegistry.previewBlocks,
                         lineWidth,
-                        cam,
                         ClientPlacementRegistry.tentativelyConfirmed
                 );
 
@@ -358,15 +333,10 @@ public class InstantStructureModNeoForgeClient {
                         : ClientPlacementRegistry.resolveCrosshairAnchor(mc);
                 if (anchorBlock != null) {
                     PlacementPreviewRenderer.renderAnchorWireframe(
-                            poseStack,
-                            bufferSource,
                             anchorBlock,
-                            lineWidth,
-                            cam
+                            lineWidth
                     );
                 }
-
-                poseStack.popPose();
             }
         }
     }

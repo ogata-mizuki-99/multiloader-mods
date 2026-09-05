@@ -21,7 +21,7 @@
   "guide_lib.economy.page.money.rewards": "[How to earn]\n· Mine ores\n· Harvest crops, pumpkins, melons\n· Fish (rarer fish pay more)\n· Kill mobs (split by damage dealt)\nChat shows \"Earned ¥…\" when\nyou get a reward.",
   "guide_lib.economy.page.money.penalty": "[Watch out]\nDying costs part of your cash.\nMoney in the bank is safe.\nDeposit at an ATM before\ncarrying large amounts.",
   "guide_lib.economy.page.atm.spotlight": "Right-click an ATM in the world\nto open deposit and withdraw screens.",
-  "guide_lib.economy.page.atm.usage": "Enter an amount, then:\nDeposit — cash to bank\nWithdraw — bank to cash\nUse ±10,000 / ±1,000 / ±100,\nALL buttons, or hold to adjust quickly.",
+  "guide_lib.economy.page.atm.usage": "Enter an amount, then:\nDeposit — cash to bank\nWithdraw — bank to cash\nUse ±$100 / ±$10 / ±$1,\nALL buttons, or hold to adjust quickly.",
   "guide_lib.economy.page.shop_npc.spotlight": "Right-click villager-style NPCs\nto open a shop screen.\nEach location may buy, sell,\ntrade stocks, or run a flea market.",
   "guide_lib.economy.page.shop_npc.types": "[NPC roles]\n· Shop — buy items\n· Pawn shop — sell your items\n· Exchange — ETF trading screen\n· Flea market — player listings\nThey look like villagers;\ninteract to see what each one does.",
   "guide_lib.economy.page.shop_npc.trade": "Pick an item from the list,\nthen Buy/Sell 1 or 16.\nBalance, inventory count, and\npurchase limits are shown.\nButtons gray out if you\ncannot afford the trade.",

@@ -24,7 +24,7 @@ public abstract class MouseHandlerMixin {
 
     @Inject(method = "onButton", at = @At("HEAD"), cancellable = true)
     private void lookalike$onMouseButton(long window, MouseButtonInfo buttonInfo, int action, CallbackInfo ci) {
-        if (this.minecraft.player == null || this.minecraft.screen != null) {
+        if (this.minecraft.player == null || this.minecraft.gui.screen() != null) {
             return;
         }
 
@@ -54,7 +54,7 @@ public abstract class MouseHandlerMixin {
 
     @Inject(method = "onScroll", at = @At("HEAD"), cancellable = true)
     private void lookalike$onMouseScroll(long window, double xoffset, double yoffset, CallbackInfo ci) {
-        if (LookalikeRadialSession.isActive() && this.minecraft.screen == null) {
+        if (LookalikeRadialSession.isActive() && this.minecraft.gui.screen() == null) {
             ci.cancel();
         }
     }

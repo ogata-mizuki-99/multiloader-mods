@@ -8,7 +8,7 @@ import com.ogatamizuki.instantstructure.PlacementTransform;
 import com.ogatamizuki.instantstructure.PreviewBlockEntry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.block.BlockQuadOutput;
 import net.minecraft.client.renderer.block.BlockStateModelSet;
 import net.minecraft.client.renderer.block.ModelBlockRenderer;
@@ -37,7 +37,7 @@ public final class GhostBlockRenderer {
 
     public static void renderBlockModels(
             PoseStack poseStack,
-            MultiBufferSource.BufferSource bufferSource,
+            SubmitNodeCollector collector,
             BlockPos origin,
             PlacementTransform transform,
             List<PreviewBlockEntry> blocks
@@ -56,27 +56,26 @@ public final class GhostBlockRenderer {
         ModelBlockRenderer blockRenderer = getSharedRenderer(mc);
         BlockStateModelSet modelSet = mc.getModelManager().getBlockStateModelSet();
         boolean cutoutLeaves = mc.options.cutoutLeaves().get();
-        VertexConsumer consumer = bufferSource.getBuffer(RenderTypes.translucentMovingBlock());
 
-        BlockQuadOutput output = createGhostOutput(poseStack, consumer);
+        collector.submitCustomGeometry(poseStack, RenderTypes.translucentMovingBlock(), (pose, consumer) -> {
+            BlockQuadOutput output = createGhostOutput(poseStack, consumer);
 
-        for (PreviewBlockEntry entry : blocks) {
-            BlockState rawState = BlockStateParserSupport.parse(blockLookup, entry.blockState());
-            if (rawState.isAir()) {
-                continue;
+            for (PreviewBlockEntry entry : blocks) {
+                BlockState rawState = BlockStateParserSupport.parse(blockLookup, entry.blockState());
+                if (rawState.isAir()) {
+                    continue;
+                }
+
+                BlockState state = transform.transformBlockState(rawState);
+                BlockPos worldPos = transform.toWorldPos(origin, new BlockPos(entry.x(), entry.y(), entry.z()));
+                renderBlockAt(poseStack, blockRenderer, modelSet, cutoutLeaves, output, worldPos, state, level);
             }
-
-            BlockState state = transform.transformBlockState(rawState);
-            BlockPos worldPos = transform.toWorldPos(origin, new BlockPos(entry.x(), entry.y(), entry.z()));
-            renderBlockAt(poseStack, blockRenderer, modelSet, cutoutLeaves, output, worldPos, state, level);
-        }
-
-        bufferSource.endBatch(RenderTypes.translucentMovingBlock());
+        });
     }
 
     public static void renderCached(
             PoseStack poseStack,
-            MultiBufferSource.BufferSource bufferSource,
+            SubmitNodeCollector collector,
             PlacementPreviewCache cache,
             Vec3 cameraPos
     ) {
@@ -93,8 +92,6 @@ public final class GhostBlockRenderer {
         ModelBlockRenderer blockRenderer = getSharedRenderer(mc);
         BlockStateModelSet modelSet = mc.getModelManager().getBlockStateModelSet();
         boolean cutoutLeaves = mc.options.cutoutLeaves().get();
-        VertexConsumer consumer = bufferSource.getBuffer(RenderTypes.translucentMovingBlock());
-        BlockQuadOutput output = createGhostOutput(poseStack, consumer);
 
         double radiusSq = PreviewPerformancePolicy.detailedGhostRadiusSquared();
         
@@ -118,17 +115,19 @@ public final class GhostBlockRenderer {
             nearBlocks.sort((b1, b2) -> Double.compare(b1.distSq, b2.distSq));
         }
 
-        int rendered = 0;
-        for (DistBlock entry : nearBlocks) {
-            if (rendered >= maxGhosts) {
-                break;
-            }
-            PlacementPreviewCache.CachedBlock block = entry.block;
-            renderBlockAt(poseStack, blockRenderer, modelSet, cutoutLeaves, output, block.worldPos(), block.state(), level);
-            rendered++;
-        }
+        collector.submitCustomGeometry(poseStack, RenderTypes.translucentMovingBlock(), (pose, consumer) -> {
+            BlockQuadOutput output = createGhostOutput(poseStack, consumer);
 
-        bufferSource.endBatch(RenderTypes.translucentMovingBlock());
+            int rendered = 0;
+            for (DistBlock entry : nearBlocks) {
+                if (rendered >= maxGhosts) {
+                    break;
+                }
+                PlacementPreviewCache.CachedBlock block = entry.block;
+                renderBlockAt(poseStack, blockRenderer, modelSet, cutoutLeaves, output, block.worldPos(), block.state(), level);
+                rendered++;
+            }
+        });
     }
 
     private static BlockQuadOutput createGhostOutput(PoseStack poseStack, VertexConsumer consumer) {

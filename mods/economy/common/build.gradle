@@ -17,7 +17,7 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
-// Tests live under common/src/test but run from :economy:neoforge (NeoForge unitTest + JUnit deps).
+// Tests live under common/src/test but run from :economy:neoforge (plain JUnit, no NeoForge unitTest bootstrap).
 sourceSets {
     test {
         java.srcDirs = []

@@ -20,7 +20,7 @@ def modGroupId = modProps.getProperty('mod_group_id', "com.ogatamizuki.${modId.r
 def modName = modProps.getProperty('mod_name', modId)
 def modLicense = modProps.getProperty('mod_license', 'All Rights Reserved')
 def modAuthors = modProps.getProperty('mod_authors', 'OgataMizuki@Vtuber')
-def range = modProps.getProperty('minecraft_version_range', "[${minecraft_version},26.2)")
+def range = modProps.getProperty('minecraft_version_range', "[${minecraft_version},26.3)")
 
 version = modVersion
 group = modGroupId
@@ -84,12 +84,6 @@ neoForge {
             sourceSet(project(':economy:common').sourceSets.main)
         }
     }
-
-    unitTest {
-        enable()
-        testedMod = mods."${modId}"
-        loadedMods = [mods."${modId}"]
-    }
 }
 
 configurations {
@@ -102,6 +96,11 @@ sourceSets {
     }
 }
 
+configurations {
+    testCompileOnly.extendsFrom compileOnly
+    testImplementation.extendsFrom implementation
+}
+
 dependencies {
     implementation project(':economy:common')
 
@@ -110,7 +109,12 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-test {
+tasks.named('compileTestJava', JavaCompile).configure {
+    classpath += sourceSets.main.compileClasspath
+}
+
+tasks.named('test', Test).configure {
+    classpath += sourceSets.main.runtimeClasspath
     useJUnitPlatform()
 }
 

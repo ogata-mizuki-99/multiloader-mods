@@ -74,37 +74,45 @@ public class LoanScreen extends Screen {
         this.amountBox.setResponder(this::onAmountBoxChanged);
         this.addRenderableWidget(this.amountBox);
 
-        this.addRenderableWidget(Button.builder(Component.literal("C"), button -> {
-            this.amountBox.setValue("");
-            this.currentAmount = 0;
-        }).bounds(centerX + 60, centerY + CLEAR_Y, 20, 20).build());
+        boolean cents = EconomyMasterI18n.useCents();
+        int panelHalf = cents ? 148 : 135;
+        int panelRight = centerX + panelHalf;
 
-        int rBtnX_add = centerX + 20;
-        int rBtnX_sub = centerX + 72;
-        int rBtnWidth = 48;
+        int rBtnWidth = cents ? 50 : 48;
+        int rBtnGap = 3;
+        int rBtnMargin = 10;
+        int rBtnX_sub = panelRight - rBtnMargin - rBtnWidth;
+        int rBtnX_add = rBtnX_sub - rBtnGap - rBtnWidth;
         int rBtnHeight = 16;
         int rSpacingY = 4;
 
-        this.addRenderableWidget(Button.builder(Component.literal("+10,000"), button -> changeAmount(10000))
+        this.addRenderableWidget(Button.builder(Component.literal("C"), button -> {
+            this.amountBox.setValue("");
+            this.currentAmount = 0;
+        }).bounds(rBtnX_sub + (rBtnWidth - 20) / 2, centerY + CLEAR_Y, 20, 20).build());
+
+        this.addRenderableWidget(Button.builder(EconomyMasterI18n.amountDeltaComponent(10000), button -> changeAmount(10000))
                 .bounds(rBtnX_add, centerY + PRESET_TOP, rBtnWidth, rBtnHeight).build());
-        this.addRenderableWidget(Button.builder(Component.literal("-10,000"), button -> changeAmount(-10000))
+        this.addRenderableWidget(Button.builder(EconomyMasterI18n.amountDeltaComponent(-10000), button -> changeAmount(-10000))
                 .bounds(rBtnX_sub, centerY + PRESET_TOP, rBtnWidth, rBtnHeight).build());
-        this.addRenderableWidget(Button.builder(Component.literal("+1,000"), button -> changeAmount(1000))
+        this.addRenderableWidget(Button.builder(EconomyMasterI18n.amountDeltaComponent(1000), button -> changeAmount(1000))
                 .bounds(rBtnX_add, centerY + PRESET_TOP + (rBtnHeight + rSpacingY), rBtnWidth, rBtnHeight).build());
-        this.addRenderableWidget(Button.builder(Component.literal("-1,000"), button -> changeAmount(-1000))
+        this.addRenderableWidget(Button.builder(EconomyMasterI18n.amountDeltaComponent(-1000), button -> changeAmount(-1000))
                 .bounds(rBtnX_sub, centerY + PRESET_TOP + (rBtnHeight + rSpacingY), rBtnWidth, rBtnHeight).build());
-        this.addRenderableWidget(Button.builder(Component.literal("+100"), button -> changeAmount(100))
+        this.addRenderableWidget(Button.builder(EconomyMasterI18n.amountDeltaComponent(100), button -> changeAmount(100))
                 .bounds(rBtnX_add, centerY + PRESET_TOP + 2 * (rBtnHeight + rSpacingY), rBtnWidth, rBtnHeight).build());
-        this.addRenderableWidget(Button.builder(Component.literal("-100"), button -> changeAmount(-100))
+        this.addRenderableWidget(Button.builder(EconomyMasterI18n.amountDeltaComponent(-100), button -> changeAmount(-100))
                 .bounds(rBtnX_sub, centerY + PRESET_TOP + 2 * (rBtnHeight + rSpacingY), rBtnWidth, rBtnHeight).build());
 
-        int actBtnWidth = 55;
+        int actBtnWidth = cents ? 70 : 55;
         int actBtnHeight = 20;
+        int actLeft = centerX - 120;
+        int actGap = 8;
         this.borrowButton = Button.builder(EconomyMasterI18n.tr("economy.ui.loan.borrow"), button -> handleBorrow())
-                .bounds(centerX - 115, centerY + ACT_Y, actBtnWidth, actBtnHeight)
+                .bounds(actLeft, centerY + ACT_Y, actBtnWidth, actBtnHeight)
                 .build();
         this.repayButton = Button.builder(EconomyMasterI18n.tr("economy.ui.loan.repay"), button -> handleRepay())
-                .bounds(centerX - 50, centerY + ACT_Y, actBtnWidth, actBtnHeight)
+                .bounds(actLeft + actBtnWidth + actGap, centerY + ACT_Y, actBtnWidth, actBtnHeight)
                 .build();
 
         this.addRenderableWidget(this.borrowButton);

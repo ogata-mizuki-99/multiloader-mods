@@ -125,18 +125,18 @@ public class CodexScreen extends Screen {
     }
 
     private void openBook(GuideBook book) {
-        Minecraft.getInstance().setScreen(new GuideBookScreen(this, book.id(), theme));
+        Minecraft.getInstance().gui.setScreen(new GuideBookScreen(this, book.id(), theme));
     }
 
     private void openHelp() {
-        Minecraft.getInstance().setScreen(new GuideBookScreen(this, Identifier.parse("guide_lib:help"), theme));
+        Minecraft.getInstance().gui.setScreen(new GuideBookScreen(this, Identifier.parse("guide_lib:help"), theme));
     }
 
     private void closeScreen() {
         if (parentScreen != null) {
-            Minecraft.getInstance().setScreen(parentScreen);
+            Minecraft.getInstance().gui.setScreen(parentScreen);
         } else {
-            Minecraft.getInstance().setScreen(null);
+            Minecraft.getInstance().gui.setScreen(null);
         }
     }
 

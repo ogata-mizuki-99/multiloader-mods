@@ -44,7 +44,7 @@ public final class LookalikeClientState {
         scanHistory.clear();
         scanHistory.addAll(payload.entries());
         Minecraft mc = Minecraft.getInstance();
-        if (mc.screen instanceof ScanHistoryEditScreen editScreen) {
+        if (mc.gui.screen() instanceof ScanHistoryEditScreen editScreen) {
             editScreen.updateEntries(scanHistory);
         }
     }

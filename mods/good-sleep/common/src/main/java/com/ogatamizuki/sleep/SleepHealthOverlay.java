@@ -27,7 +27,7 @@ public final class SleepHealthOverlay {
 
     public static void render(GuiGraphicsExtractor guiGraphics, DeltaTracker deltaTracker, RenderLayer original) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.options.hideGui) {
+        if (mc.player == null || mc.gui.hud.isHidden()) {
             return;
         }
 
