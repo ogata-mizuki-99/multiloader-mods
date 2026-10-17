@@ -147,7 +147,7 @@ public final class EconomyNpcSpawnService {
         eggStack.set(DataComponents.CUSTOM_NAME, eggDisplayName(shopId, shopName));
 
         if (!player.getInventory().add(eggStack)) {
-            player.drop(eggStack, false);
+            player.drop(eggStack, false, net.minecraft.util.Prediction.SERVER_ONLY);
         }
     }
 
@@ -175,7 +175,7 @@ public final class EconomyNpcSpawnService {
         eggStack.set(DataComponents.CUSTOM_NAME, eggDisplayName(shopId, shopName));
 
         if (!player.getInventory().add(eggStack)) {
-            player.drop(eggStack, false);
+            player.drop(eggStack, false, net.minecraft.util.Prediction.SERVER_ONLY);
         }
     }
 

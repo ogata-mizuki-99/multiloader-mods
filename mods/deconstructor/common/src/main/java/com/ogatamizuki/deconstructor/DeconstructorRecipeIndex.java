@@ -170,7 +170,7 @@ public final class DeconstructorRecipeIndex {
             }
         } else if (display instanceof net.minecraft.world.item.crafting.display.SlotDisplay.TagSlotDisplay tsd) {
             try {
-                for (var holder : net.minecraft.core.registries.BuiltInRegistries.ITEM.getTagOrEmpty(tsd.tag())) {
+                for (var holder : tsd.tag()) {
                     if (holder != null && holder.value() != null) {
                         return new ItemStack(holder.value());
                     }

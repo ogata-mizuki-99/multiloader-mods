@@ -6,6 +6,7 @@ import com.ogatamizuki.guide.client.screen.GuideItemTooltips;
 import com.ogatamizuki.guide.client.screen.GuideUi;
 import com.ogatamizuki.guide.model.GuidePage;
 import com.ogatamizuki.guide.model.GuideTheme;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
@@ -121,7 +122,7 @@ public class CraftingPageRenderer implements PageRenderer {
             return false;
         }
         int button = event.button();
-        if (button != 0 && button != 1) {
+        if (button != InputConstants.MOUSE_BUTTON_LEFT && button != InputConstants.MOUSE_BUTTON_RIGHT) {
             return false;
         }
         double mouseX = event.x();

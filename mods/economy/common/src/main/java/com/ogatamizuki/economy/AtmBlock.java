@@ -13,16 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 
-import com.mojang.serialization.MapCodec;
-
 public class AtmBlock extends HorizontalDirectionalBlock {
-    public static final MapCodec<AtmBlock> CODEC = simpleCodec(AtmBlock::new);
-
-    @Override
-    protected MapCodec<? extends HorizontalDirectionalBlock> codec() {
-        return CODEC;
-    }
-
     public AtmBlock(BlockBehaviour.Properties properties) {
         super(properties);
         // デフォルトの向きを北に設定

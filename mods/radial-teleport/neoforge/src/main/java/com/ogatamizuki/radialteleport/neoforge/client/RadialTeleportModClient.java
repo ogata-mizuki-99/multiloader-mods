@@ -26,7 +26,7 @@ import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.minecraft.resources.Identifier;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import java.util.List;
 
@@ -132,16 +132,16 @@ public class RadialTeleportModClient {
             return;
         }
 
-        if (event.getAction() != GLFW.GLFW_PRESS) {
+        if (event.getAction() != InputConstants.PRESS) {
             return;
         }
 
-        if (event.getButton() == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+        if (event.getButton() == InputConstants.MOUSE_BUTTON_RIGHT) {
             handleWaypointSaveClick(mc, event);
             return;
         }
 
-        if (event.getButton() != GLFW.GLFW_MOUSE_BUTTON_LEFT || !RadialTeleportSession.isActive()) {
+        if (event.getButton() != InputConstants.MOUSE_BUTTON_LEFT || !RadialTeleportSession.isActive()) {
             return;
         }
 

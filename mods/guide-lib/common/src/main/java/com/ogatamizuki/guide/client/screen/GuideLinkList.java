@@ -1,6 +1,7 @@
 package com.ogatamizuki.guide.client.screen;
 
 import com.ogatamizuki.guide.model.GuideTheme;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -398,7 +399,7 @@ public final class GuideLinkList {
     }
 
     public boolean mouseClicked(MouseButtonEvent event) {
-        if (event.button() != 0) {
+        if (event.button() != InputConstants.MOUSE_BUTTON_LEFT) {
             return false;
         }
         double mouseX = event.x();

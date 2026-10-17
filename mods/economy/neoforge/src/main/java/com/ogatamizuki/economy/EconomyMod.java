@@ -178,7 +178,7 @@ public class EconomyMod {
 
         NeoForge.EVENT_BUS.register(this);
 
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(ModConfig.Type.LOCAL, Config.SPEC);
     }
 
     public static void syncRegistries() {

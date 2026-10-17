@@ -20,7 +20,7 @@ import net.neoforged.neoforge.client.event.SubmitCustomGeometryEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 @Mod(value = InstantStructureCommon.MODID, dist = Dist.CLIENT)
 public class InstantStructureModNeoForgeClient {
@@ -144,7 +144,7 @@ public class InstantStructureModNeoForgeClient {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null || mc.gui.screen() != null) return;
 
-        if (event.getAction() == GLFW.GLFW_PRESS && event.getKey() == GLFW.GLFW_KEY_ESCAPE) {
+        if (event.getAction() == InputConstants.PRESS && event.getKey() == InputConstants.KEY_ESCAPE) {
             if (ClientPlacementRegistry.active) {
                 ClientPlacementRegistry.reset();
             } else if (ClientSelectionRegistry.isHoldingMarker(mc) && ClientSelectionRegistry.hasStart) {
@@ -185,8 +185,8 @@ public class InstantStructureModNeoForgeClient {
 
         // Builder item handling
         if (ClientPlacementRegistry.active && ClientPlacementRegistry.isHoldingBuilder(mc)) {
-            if (event.getAction() == GLFW.GLFW_PRESS) {
-                if (event.getButton() == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+            if (event.getAction() == InputConstants.PRESS) {
+                if (event.getButton() == InputConstants.MOUSE_BUTTON_RIGHT) {
                     if (mc.options.keyShift.isDown()) {
                         if (ClientPlacementRegistry.tentativelyConfirmed) {
                             ClientPlacementRegistry.clearTentative();
@@ -237,7 +237,7 @@ public class InstantStructureModNeoForgeClient {
                             event.setCanceled(true);
                         }
                     }
-                } else if (event.getButton() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+                } else if (event.getButton() == InputConstants.MOUSE_BUTTON_LEFT) {
                     ClientPlacementRegistry.reset();
                     event.setCanceled(true);
                 }
@@ -245,7 +245,7 @@ public class InstantStructureModNeoForgeClient {
         }
         // Marker item handling
         else if (ClientSelectionRegistry.isHoldingMarker(mc)) {
-            if (event.getAction() == GLFW.GLFW_PRESS && event.getButton() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+            if (event.getAction() == InputConstants.PRESS && event.getButton() == InputConstants.MOUSE_BUTTON_LEFT) {
                 if (ClientSelectionRegistry.hasStart) {
                     if (mc.getConnection() != null) {
                         mc.getConnection().send(new com.ogatamizuki.instantstructure.ExportCancelPayload(true));

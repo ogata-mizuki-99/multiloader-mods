@@ -41,7 +41,7 @@ public class LockerAwareSkullRenderer extends SkullBlockRenderer {
         if (state.skullType == SkullBlock.Types.PLAYER && isLockerTopHead(state.blockPos)) {
             poseStack.pushPose();
             poseStack.translate(0.5F, 0.0F, 0.5F);
-            poseStack.mulPose(Axis.YP.rotationDegrees(180.0F));
+            poseStack.rotateDegrees(Axis.YP, 180.0F);
             poseStack.scale(LOCKER_HEAD_SCALE, LOCKER_HEAD_SCALE, LOCKER_HEAD_SCALE);
             poseStack.translate(-0.5F, 0.0F, -0.5F);
             super.submit(state, poseStack, submitNodeCollector, camera);

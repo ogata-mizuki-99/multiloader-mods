@@ -67,7 +67,7 @@ public class RadialTeleportModNeoForge {
         modEventBus.addListener(this::registerPayloads);
         modEventBus.addListener(this::onConfigReload);
 
-        modContainer.registerConfig(ModConfig.Type.COMMON, ConfigNeoForge.SPEC);
+        modContainer.registerConfig(ModConfig.Type.LOCAL, ConfigNeoForge.SPEC);
         modEventBus.addListener((ModConfigEvent.Loading e) -> ConfigNeoForge.sync());
 
         NeoForge.EVENT_BUS.register(this);
@@ -360,7 +360,7 @@ public class RadialTeleportModNeoForge {
         for (ServerPlayer target : targets) {
             ItemStack copy = stack.copy();
             if (!target.getInventory().add(copy)) {
-                target.drop(copy, false);
+                target.drop(copy, false, net.minecraft.util.Prediction.SERVER_ONLY);
             } else {
                 target.inventoryMenu.broadcastChanges();
             }

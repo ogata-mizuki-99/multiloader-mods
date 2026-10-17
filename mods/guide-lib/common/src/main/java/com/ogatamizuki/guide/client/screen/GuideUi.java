@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -90,15 +90,15 @@ public final class GuideUi {
     private GuideUi() {}
 
     public static boolean isRightClick(MouseButtonEvent event) {
-        return event.button() == 1;
+        return event.button() == InputConstants.MOUSE_BUTTON_RIGHT;
     }
 
     public static boolean isPrevPageKey(KeyEvent event) {
-        return event.key() == GLFW.GLFW_KEY_LEFT;
+        return event.key() == InputConstants.KEY_LEFT;
     }
 
     public static boolean isNextPageKey(KeyEvent event) {
-        return event.key() == GLFW.GLFW_KEY_RIGHT;
+        return event.key() == InputConstants.KEY_RIGHT;
     }
 
     public static boolean isMouseOver(double mouseX, double mouseY, int x, int y, int width, int height) {

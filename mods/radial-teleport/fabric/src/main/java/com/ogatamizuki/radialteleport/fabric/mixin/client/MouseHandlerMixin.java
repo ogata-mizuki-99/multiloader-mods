@@ -12,7 +12,7 @@ import net.minecraft.client.MouseHandler;
 import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -35,13 +35,13 @@ public abstract class MouseHandlerMixin {
             return;
         }
 
-        if (action != GLFW.GLFW_PRESS) {
+        if (action != InputConstants.PRESS) {
             return;
         }
 
         int button = buttonInfo.button();
 
-        if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+        if (button == InputConstants.MOUSE_BUTTON_RIGHT) {
             if (!RadialTeleportSession.isActive() && RadialTeleportModFabricClient.isWaypointModifierDown()) {
                 LocalPlayer player = this.minecraft.player;
                 if (player != null && RadialTeleportClientHooks.isHoldingCompass(player)) {
@@ -58,7 +58,7 @@ public abstract class MouseHandlerMixin {
             }
         }
 
-        if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT && RadialTeleportSession.isActive()) {
+        if (button == InputConstants.MOUSE_BUTTON_LEFT && RadialTeleportSession.isActive()) {
             if (RadialTeleportOverlay.isMouseOverCenter()) {
                 ci.cancel();
                 if (!RadialTeleportClientFlags.enableWaypoints()) {

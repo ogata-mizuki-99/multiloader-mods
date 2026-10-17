@@ -81,7 +81,7 @@ public class LookalikeModNeoForge {
         LookalikePlatform.isModLoadedCheck = modId -> net.neoforged.fml.ModList.get().isLoaded(modId);
 
         LookalikeConfigMigration.migrateConfigFile();
-        modContainer.registerConfig(ModConfig.Type.COMMON, LookalikeNeoForgeConfig.SPEC);
+        modContainer.registerConfig(ModConfig.Type.LOCAL, LookalikeNeoForgeConfig.SPEC);
         LookalikeNeoForgeConfig.syncToCommon();
 
         ITEMS.register(modEventBus);
@@ -365,7 +365,7 @@ public class LookalikeModNeoForge {
                     ItemStack book = GuideLibIntegration.createGuideBook();
                     if (!book.isEmpty()) {
                         if (!player.getInventory().add(book)) {
-                            player.drop(book, false);
+                            player.drop(book, false, net.minecraft.util.Prediction.SERVER_ONLY);
                         } else {
                             player.inventoryMenu.broadcastChanges();
                         }

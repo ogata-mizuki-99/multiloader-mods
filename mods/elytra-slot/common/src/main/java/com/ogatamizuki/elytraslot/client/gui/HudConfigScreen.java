@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.KeyEvent;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 public class HudConfigScreen extends Screen {
     private final Screen parent;
@@ -196,13 +196,13 @@ public class HudConfigScreen extends Screen {
             int moveY = 0;
             int keyCode = event.key();
 
-            if (keyCode == GLFW.GLFW_KEY_UP) {
+            if (keyCode == InputConstants.KEY_UP) {
                 moveY = -1;
-            } else if (keyCode == GLFW.GLFW_KEY_DOWN) {
+            } else if (keyCode == InputConstants.KEY_DOWN) {
                 moveY = 1;
-            } else if (keyCode == GLFW.GLFW_KEY_LEFT) {
+            } else if (keyCode == InputConstants.KEY_LEFT) {
                 moveX = -1;
-            } else if (keyCode == GLFW.GLFW_KEY_RIGHT) {
+            } else if (keyCode == InputConstants.KEY_RIGHT) {
                 moveX = 1;
             }
 

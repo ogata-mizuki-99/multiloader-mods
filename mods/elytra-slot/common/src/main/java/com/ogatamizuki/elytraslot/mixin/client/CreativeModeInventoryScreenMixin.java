@@ -60,7 +60,11 @@ public abstract class CreativeModeInventoryScreenMixin extends AbstractContainer
         return null;
     }
 
-    @Inject(method = "slotClicked", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            method = "slotClicked(Lnet/minecraft/world/inventory/Slot;IILnet/minecraft/world/inventory/ContainerInput;)V",
+            at = @At("HEAD"),
+            cancellable = true
+    )
     private void elytraSlot$handleCreativeCustomSlotClick(
             Slot slot,
             int slotId,

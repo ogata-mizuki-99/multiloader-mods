@@ -1,6 +1,5 @@
 package com.ogatamizuki.deconstructor;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -24,11 +23,6 @@ public class EnchantmentManagerBlock extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> blockEntityType) {
         return level.isClientSide() ? createTickerHelper(blockEntityType, DeconstructorBlocks.ENCHANT_MANAGER_BLOCK_ENTITY_TYPE.get(), EnchantmentManagerBlockEntity::bookAnimationTick) : null;
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return null;
     }
 
     @Override

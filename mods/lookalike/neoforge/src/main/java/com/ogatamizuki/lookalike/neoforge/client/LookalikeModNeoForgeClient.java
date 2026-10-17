@@ -21,7 +21,7 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.client.network.event.RegisterClientPayloadHandlersEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import java.util.List;
 
@@ -156,7 +156,7 @@ public class LookalikeModNeoForgeClient {
     }
 
     private static void onMouseInput(InputEvent.MouseButton.Pre event) {
-        if (event.getAction() != GLFW.GLFW_PRESS || event.getButton() != GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+        if (event.getAction() != InputConstants.PRESS || event.getButton() != InputConstants.MOUSE_BUTTON_LEFT) {
             return;
         }
         if (!LookalikeRadialSession.isActive()) {

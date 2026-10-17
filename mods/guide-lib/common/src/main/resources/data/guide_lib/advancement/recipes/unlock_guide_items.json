@@ -14,7 +14,7 @@
     "has_codex_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "guide_lib:codex"
+        "recipes": "guide_lib:codex"
       }
     }
   },

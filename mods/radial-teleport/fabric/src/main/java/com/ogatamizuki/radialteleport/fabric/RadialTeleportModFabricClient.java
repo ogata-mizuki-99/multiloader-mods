@@ -16,8 +16,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
-import org.lwjgl.glfw.GLFW;
-
 import java.util.List;
 
 public class RadialTeleportModFabricClient implements ClientModInitializer {
@@ -35,8 +33,8 @@ public class RadialTeleportModFabricClient implements ClientModInitializer {
         // Register KeyBinding
         WAYPOINT_MODIFIER = KeyMappingHelper.registerKeyMapping(new KeyMapping(
                 "key.radial_teleport.waypoint_modifier",
-                InputConstants.Type.KEYSYM,
-                GLFW.GLFW_KEY_LEFT_SHIFT,
+                InputConstants.Type.KEYBOARD,
+                InputConstants.KEY_LSHIFT,
                 CATEGORY
         ));
 

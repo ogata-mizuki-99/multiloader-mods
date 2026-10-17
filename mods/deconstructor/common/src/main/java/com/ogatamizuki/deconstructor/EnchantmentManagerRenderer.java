@@ -75,8 +75,8 @@ public class EnchantmentManagerRenderer implements BlockEntityRenderer<Enchantme
         poseStack.translate(0.0F, bob, 0.0F);
         
         float yRot = state.yRot;
-        poseStack.mulPose(Axis.YP.rotation(-yRot));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(80.0F));
+        poseStack.rotate(Axis.YP, -yRot);
+        poseStack.rotateDegrees(Axis.ZP, 80.0F);
         
         float flip1 = Mth.frac(state.flip + 0.25F) * 1.6F - 0.3F;
         float flip2 = Mth.frac(state.flip + 0.75F) * 1.6F - 0.3F;
@@ -94,9 +94,20 @@ public class EnchantmentManagerRenderer implements BlockEntityRenderer<Enchantme
             -1,
             ORANGE_BOOK_TEXTURE,
             this.sprites,
-            0,
-            state.breakProgress
+            0
         );
+        if (state.breakProgress != null) {
+            queue.order(1).submitCrumblingOverlay(
+                this.bookModel,
+                bookState,
+                poseStack,
+                ORANGE_BOOK_TEXTURE.renderType(this.bookModel.renderType()),
+                state.lightCoords,
+                OverlayTexture.NO_OVERLAY,
+                -1,
+                state.breakProgress
+            );
+        }
         
         poseStack.popPose();
     }
