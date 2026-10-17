@@ -184,14 +184,14 @@ public class ElytraSlotModNeoForge {
 
         ItemStack elytraStack = player.getData(ELYTRA_SLOT);
         if (!elytraStack.isEmpty()) {
-            player.drop(elytraStack.copy(), true, false);
+            player.drop(elytraStack.copy(), true, net.minecraft.util.Prediction.SERVER_ONLY);
             ElytraSlotCommon.setElytra(player, ItemStack.EMPTY);
             ElytraSlotCommon.syncSlot(player, ItemStack.EMPTY);
         }
 
         ItemStack fireworkStack = player.getData(FIREWORK_SLOT);
         if (!fireworkStack.isEmpty()) {
-            player.drop(fireworkStack.copy(), true, false);
+            player.drop(fireworkStack.copy(), true, net.minecraft.util.Prediction.SERVER_ONLY);
             ElytraSlotCommon.setFirework(player, ItemStack.EMPTY);
             ElytraSlotCommon.syncFireworkSlot(player, ItemStack.EMPTY);
         }

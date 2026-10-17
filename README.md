@@ -1,6 +1,6 @@
 # OgataMizuki Multiloader MODs
 
-Minecraft **26.2** / NeoForge & Fabric 向けの公開 MOD 群です。Gradle マルチプロジェクトでまとめてビルドできます。
+Minecraft **26.3** / NeoForge & Fabric 向けの公開 MOD 群です。Gradle マルチプロジェクトでまとめてビルドできます。
 
 | MOD | Gradle | mod id | License |
 |-----|--------|--------|---------|
@@ -21,12 +21,12 @@ Minecraft **26.2** / NeoForge & Fabric 向けの公開 MOD 群です。Gradle �
 
 **All public MODs require:**
 
-- **Minecraft 26.2**
-- **NeoForge 26.2+** and/or **Fabric Loader + Fabric API** for 26.2
-- **Java 25** (included with the Minecraft 26.2 launcher)
+- **Minecraft 26.3**
+- **NeoForge 26.3+** and/or **Fabric Loader + Fabric API** for 26.3
+- **Java 25** (included with the Minecraft 26.3 launcher)
 
-Older Minecraft / Forge versions are not supported on this branch (`multiloader-26.2`).  
-For 26.1.2 builds, use branch `multiloader-26.1.2`.
+Older Minecraft / Forge versions are not supported on this branch (`multiloader-26.3`).  
+For 26.2 builds, use branch `multiloader-26.2`. For 26.1.2 builds, use branch `multiloader-26.1.2`.
 
 ## Build
 
@@ -51,4 +51,4 @@ JAR は `mods/<name>/build/libs/` に出力されます。
 ## Source
 
 - GitHub: https://github.com/ogata-mizuki-99/multiloader-mods
-- Branch for MC 26.2: `multiloader-26.2`
+- Branch for MC 26.3: `multiloader-26.3`

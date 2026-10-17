@@ -256,7 +256,7 @@ public class RadialTeleportModFabric implements ModInitializer {
         for (ServerPlayer target : targets) {
             ItemStack copy = stack.copy();
             if (!target.getInventory().add(copy)) {
-                target.drop(copy, false);
+                target.drop(copy, false, net.minecraft.util.Prediction.SERVER_ONLY);
             } else {
                 target.inventoryMenu.broadcastChanges();
             }

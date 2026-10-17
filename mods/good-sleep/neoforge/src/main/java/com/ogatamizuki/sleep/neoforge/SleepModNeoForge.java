@@ -51,7 +51,7 @@ public class SleepModNeoForge {
     public SleepModNeoForge(IEventBus modEventBus, ModContainer modContainer) {
         SleepCommon.LOGGER.info("Good Sleep Mod (NeoForge) Initializing...");
 
-        modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(ModConfig.Type.LOCAL, Config.SPEC);
         modEventBus.addListener(this::onConfigReload);
         modEventBus.addListener(this::registerPayloads);
         NeoForge.EVENT_BUS.register(this);

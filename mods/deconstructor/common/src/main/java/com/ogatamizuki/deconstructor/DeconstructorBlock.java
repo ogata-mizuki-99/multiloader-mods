@@ -1,6 +1,5 @@
 package com.ogatamizuki.deconstructor;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -18,11 +17,6 @@ public class DeconstructorBlock extends BaseEntityBlock {
     public DeconstructorBlock(Properties properties, int maxExtractCount) {
         super(properties);
         this.maxExtractCount = maxExtractCount;
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return null;
     }
 
     public int getMaxExtractCount() {

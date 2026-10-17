@@ -76,19 +76,30 @@ public class LockerBlockEntityRenderer implements BlockEntityRenderer<LockerBloc
             CameraRenderState camera) {
         poseStack.pushPose();
         poseStack.translate(0.5D, 0.0D, 0.5D);
-        poseStack.mulPose(Axis.YP.rotationDegrees(-state.facing.toYRot()));
+        poseStack.rotateDegrees(Axis.YP, -state.facing.toYRot());
         poseStack.scale(1.0F, -1.0F, 1.0F);
         poseStack.translate(-0.5D, -2.0D, -0.5D);
 
+        var renderType = RenderTypes.entityCutout(LOCKER_ATLAS);
         submitNodeCollector.submitModel(
                 this.model,
                 state,
                 poseStack,
-                RenderTypes.entityCutout(LOCKER_ATLAS),
+                renderType,
                 state.lightCoords,
                 OverlayTexture.NO_OVERLAY,
-                0,
-                state.breakProgress);
+                0);
+        if (state.breakProgress != null) {
+            submitNodeCollector.order(1).submitCrumblingOverlay(
+                    this.model,
+                    state,
+                    poseStack,
+                    renderType,
+                    state.lightCoords,
+                    OverlayTexture.NO_OVERLAY,
+                    0,
+                    state.breakProgress);
+        }
 
         poseStack.popPose();
     }

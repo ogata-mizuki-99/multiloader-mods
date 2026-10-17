@@ -10,7 +10,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -270,7 +270,7 @@ public class WaypointEditScreen extends Screen {
 
     @Override
     public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-        if (event.button() == GLFW.GLFW_MOUSE_BUTTON_LEFT && !entries.isEmpty()) {
+        if (event.button() == InputConstants.MOUSE_BUTTON_LEFT && !entries.isEmpty()) {
             double mouseX = event.x();
             double mouseY = event.y();
             for (int viewportIndex = 0; viewportIndex < viewportRows; viewportIndex++) {

@@ -1,5 +1,6 @@
 package com.ogatamizuki.guide.client.jei;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.ogatamizuki.guide.platform.Services;
 import net.minecraft.world.item.ItemStack;
 
@@ -30,11 +31,11 @@ public final class GuideJeiBridge {
         if (!isLoaded() || stack.isEmpty()) {
             return false;
         }
-        if (button == 0) {
+        if (button == InputConstants.MOUSE_BUTTON_LEFT) {
             showIngredientRecipes(stack);
             return true;
         }
-        if (button == 1) {
+        if (button == InputConstants.MOUSE_BUTTON_RIGHT) {
             showIngredientUses(stack);
             return true;
         }

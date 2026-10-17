@@ -98,7 +98,7 @@ public class InstantStructureModNeoForge {
         InstantStructurePlatform.getConfigDir = () -> FMLPaths.CONFIGDIR.get();
         InstantStructurePlatform.isModLoadedCheck = modId -> net.neoforged.fml.ModList.get().isLoaded(modId);
 
-        modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.COMMON, Config.SPEC);
+        modContainer.registerConfig(net.neoforged.fml.config.ModConfig.Type.LOCAL, Config.SPEC);
         ITEMS.register(modEventBus);
         CREATIVE_MODE_TABS.register(modEventBus);
         CONDITION_CODECS.register("crafting_recipe_enabled", () -> CraftingRecipeEnabledCondition.CODEC);

@@ -1,6 +1,5 @@
 package com.ogatamizuki.privatechest;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,14 +28,8 @@ import org.jetbrains.annotations.Nullable;
 public class LockerBlock extends BaseEntityBlock {
     private static final ThreadLocal<Boolean> BREAKING_STRUCTURE = ThreadLocal.withInitial(() -> false);
 
-    public static final MapCodec<LockerBlock> CODEC = simpleCodec(LockerBlock::new);
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<LockerPart> PART = EnumProperty.create("part", LockerPart.class);
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 
     public LockerBlock(Properties properties) {
         super(properties);

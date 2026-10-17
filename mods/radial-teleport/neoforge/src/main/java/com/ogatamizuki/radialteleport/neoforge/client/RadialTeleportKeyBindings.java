@@ -5,7 +5,6 @@ import com.ogatamizuki.radialteleport.RadialTeleportCommon;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;
 import net.neoforged.neoforge.client.settings.KeyConflictContext;
-import org.lwjgl.glfw.GLFW;
 
 public final class RadialTeleportKeyBindings {
     public static final KeyMapping.Category CATEGORY = new KeyMapping.Category(
@@ -22,8 +21,8 @@ public final class RadialTeleportKeyBindings {
         WAYPOINT_MODIFIER = new KeyMapping(
                 "key.radial_teleport.waypoint_modifier",
                 KeyConflictContext.IN_GAME,
-                InputConstants.Type.KEYSYM,
-                GLFW.GLFW_KEY_LEFT_SHIFT,
+                InputConstants.Type.KEYBOARD,
+                InputConstants.KEY_LSHIFT,
                 CATEGORY
         );
         event.register(WAYPOINT_MODIFIER);

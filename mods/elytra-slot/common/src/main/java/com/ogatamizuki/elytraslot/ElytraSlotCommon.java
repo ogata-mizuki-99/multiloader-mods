@@ -115,7 +115,7 @@ public final class ElytraSlotCommon {
             setElytra(player, ItemStack.EMPTY);
             ItemStack toStore = slotElytra.copy();
             if (!player.getInventory().add(toStore)) {
-                player.drop(toStore, false);
+                player.drop(toStore, false, net.minecraft.util.Prediction.SERVER_ONLY);
             }
             onElytraUnequipped.accept(player);
             syncElytraSlot(player, ItemStack.EMPTY);

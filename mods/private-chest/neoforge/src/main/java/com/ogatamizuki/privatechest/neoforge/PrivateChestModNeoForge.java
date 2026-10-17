@@ -114,7 +114,7 @@ public class PrivateChestModNeoForge {
         PrivateChestCommon.LOCKER_BLOCK_ENTITY_TYPE = LOCKER_BLOCK_ENTITY_TYPE;
         PrivateChestCommon.LOCKER_MENU_TYPE = LOCKER_MENU_TYPE;
 
-        modContainer.registerConfig(ModConfig.Type.COMMON, ConfigNeoForge.SPEC);
+        modContainer.registerConfig(ModConfig.Type.LOCAL, ConfigNeoForge.SPEC);
         modEventBus.addListener((ModConfigEvent.Loading e) -> ConfigNeoForge.sync());
 
         BLOCKS.register(modEventBus);
@@ -216,7 +216,7 @@ public class PrivateChestModNeoForge {
             if (added) {
                 target.inventoryMenu.broadcastChanges();
             } else {
-                target.drop(stack, false);
+                target.drop(stack, false, net.minecraft.util.Prediction.SERVER_ONLY);
             }
         }
 

@@ -7,7 +7,7 @@ import com.ogatamizuki.lookalike.client.ScanHistoryEditScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
 import net.minecraft.client.input.MouseButtonInfo;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -28,13 +28,13 @@ public abstract class MouseHandlerMixin {
             return;
         }
 
-        if (action != GLFW.GLFW_PRESS) {
+        if (action != InputConstants.PRESS) {
             return;
         }
 
         int button = buttonInfo.button();
 
-        if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT && LookalikeRadialSession.isActive()) {
+        if (button == InputConstants.MOUSE_BUTTON_LEFT && LookalikeRadialSession.isActive()) {
             ci.cancel();
 
             LookalikeRadialSession.refreshHoverForInput(this.minecraft);

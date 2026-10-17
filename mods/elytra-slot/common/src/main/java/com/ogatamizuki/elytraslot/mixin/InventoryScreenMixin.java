@@ -47,7 +47,11 @@ public abstract class InventoryScreenMixin extends Screen {
         }
     }
 
-    @Inject(method = "slotClicked", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            method = "slotClicked(Lnet/minecraft/world/inventory/Slot;IILnet/minecraft/world/inventory/ContainerInput;)V",
+            at = @At("HEAD"),
+            cancellable = true
+    )
     private void elytraSlot$handleSurvivalCustomSlotClick(
             Slot slot,
             int slotId,

@@ -232,7 +232,7 @@ public class PrivateChestModFabric implements ModInitializer {
             if (added) {
                 target.inventoryMenu.broadcastChanges();
             } else {
-                target.drop(stack, false);
+                target.drop(stack, false, net.minecraft.util.Prediction.SERVER_ONLY);
             }
         }
 

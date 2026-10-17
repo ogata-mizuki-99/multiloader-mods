@@ -1,6 +1,5 @@
 package com.ogatamizuki.economy;
 
-import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;
@@ -22,16 +21,10 @@ import org.jetbrains.annotations.Nullable;
 
 /** 経済データ管理用掲示板ブロック（3x2・全員が残高閲覧、管理操作は OP/ソロのみ）。 */
 public class EconomyAdminBlock extends Block {
-    public static final MapCodec<EconomyAdminBlock> CODEC = simpleCodec(EconomyAdminBlock::new);
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final EnumProperty<BoardPart> PART = EnumProperty.create("part", BoardPart.class);
 
     private static final ThreadLocal<Boolean> BREAKING_STRUCTURE = ThreadLocal.withInitial(() -> false);
-
-    @Override
-    protected MapCodec<EconomyAdminBlock> codec() {
-        return CODEC;
-    }
 
     public EconomyAdminBlock(BlockBehaviour.Properties properties) {
         super(properties);

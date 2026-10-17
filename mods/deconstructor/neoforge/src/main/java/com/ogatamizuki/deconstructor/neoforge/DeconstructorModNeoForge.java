@@ -113,7 +113,7 @@ public class DeconstructorModNeoForge {
     public DeconstructorModNeoForge(IEventBus modEventBus, ModContainer modContainer) {
         DeconstructorCommon.LOGGER.info("Deconstructor Mod (NeoForge) Initializing...");
 
-        modContainer.registerConfig(ModConfig.Type.COMMON, ConfigNeoForge.SPEC);
+        modContainer.registerConfig(ModConfig.Type.LOCAL, ConfigNeoForge.SPEC);
         modEventBus.addListener(this::onConfigReload);
         modEventBus.addListener(this::registerPayloads);
 

@@ -32,7 +32,10 @@ public final class GuideRecipeCache {
     private GuideRecipeCache() {}
 
     public static RecipeManager createRecipeManager() {
-        recipeManager = new RecipeManager(RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY));
+        RegistryAccess registryAccess = RegistryAccess.fromRegistryOfRegistries(BuiltInRegistries.REGISTRY);
+        // Recipes are a datapack registry. The title-screen client reload only has built-in registries,
+        // and constructing RecipeManager there aborts the reload (black screen).
+        registryAccess.lookup(Registries.RECIPE).ifPresent(ignored -> recipeManager = new RecipeManager(registryAccess));
         loadFromModJars();
         return recipeManager;
     }
@@ -82,7 +85,7 @@ public final class GuideRecipeCache {
 
         GuideModResourceScanner.scanRecipeJson().forEach((recipeId, json) -> {
             try {
-                Recipe<?> recipe = Recipe.CODEC.parse(ops, json).getOrThrow();
+                Recipe<?> recipe = Recipe.DIRECT_CODEC.parse(ops, json).getOrThrow();
                 if (!(recipe instanceof CraftingRecipe craftingRecipe)) {
                     return;
                 }

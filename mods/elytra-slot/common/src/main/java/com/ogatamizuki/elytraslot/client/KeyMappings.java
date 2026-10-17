@@ -4,12 +4,12 @@ import com.ogatamizuki.elytraslot.Config;
 import com.ogatamizuki.elytraslot.ElytraSlotCommon;
 import com.ogatamizuki.elytraslot.network.ActionPayload;
 import com.ogatamizuki.elytraslot.network.SlotPosSyncPayload;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.ItemStack;
-import org.lwjgl.glfw.GLFW;
 
 public class KeyMappings {
     public static final KeyMapping.Category CATEGORY = new KeyMapping.Category(
@@ -18,14 +18,14 @@ public class KeyMappings {
 
     public static final KeyMapping QUICK_SWAP_KEY = new KeyMapping(
             "key.elytra_slot.quick_swap",
-            GLFW.GLFW_KEY_G,
+            InputConstants.KEY_G,
             CATEGORY
     );
 
     /** Glide boost via firework slot. Default: R (rebindable in Controls). */
     public static final KeyMapping FIREWORK_BOOST_KEY = new KeyMapping(
             "key.elytra_slot.firework_boost",
-            GLFW.GLFW_KEY_R,
+            InputConstants.KEY_R,
             CATEGORY
     );
 
@@ -85,7 +85,7 @@ public class KeyMappings {
                 double pct = (double) (maxDamage - damage) / maxDamage;
                 if (pct <= Config.WARNING_THRESHOLD.get() && warningCooldown == 0) {
                     mc.player.sendSystemMessage(
-                            Component.literal("§c?? Elytra Durability Low! (" + (int) (pct * 100) + "%)")
+                            Component.literal("\u00a7c!! Elytra Durability Low! (" + (int) (pct * 100) + "%)")
                     );
                     mc.player.playSound(
                             net.minecraft.sounds.SoundEvents.NOTE_BLOCK_BASS.value(),

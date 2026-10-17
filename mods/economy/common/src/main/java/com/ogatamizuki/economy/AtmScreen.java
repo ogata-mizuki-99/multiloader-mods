@@ -276,12 +276,8 @@ public class AtmScreen extends Screen {
         // オートリピート処理の更新
         Minecraft mc = Minecraft.getInstance();
 
-        // LWJGL を用いて現在アクティブなスレッドの GLFW ウィンドウコンテキストを取得
-        long window = org.lwjgl.glfw.GLFW.glfwGetCurrentContext();
-
-        // マウス左クリックが押されているか判定
-        boolean mouseLDown = org.lwjgl.glfw.GLFW.glfwGetMouseButton(window,
-                org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LEFT) == org.lwjgl.glfw.GLFW.GLFW_PRESS;
+        // マウス左クリックが押されているか判定（26.3: GLFW → MouseHandler）
+        boolean mouseLDown = mc.mouseHandler.isLeftPressed();
 
         if (mouseLDown) {
             // 現在のマウス座標を取得して GUI スケールに変換
